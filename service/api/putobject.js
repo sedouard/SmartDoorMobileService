@@ -80,6 +80,7 @@ exports.put = function(request, response) {
 
 				doorbell.save(function(err, dBell){
 					console.log('Sucessfully entered doorbell registration to MongoDB');
+                    response.send(statusCodes.OK, { message : 'Hello World!' });
 				});
 
 			}
@@ -88,5 +89,5 @@ exports.put = function(request, response) {
 
     });
 
-    response.send(statusCodes.OK, { message : 'Hello World!' });
+    
 };
