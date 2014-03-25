@@ -49,7 +49,7 @@ exports.put = function(request, response) {
 				{
 					for(var requestUser in request.body.users)
 					{
-						if(u.id == requestUser.id)
+						if(doorbell.users[u.id] == request.body.users[requestUser])
 						{
                             console.log('user already registered for this doorbell');
 							userMatched = true;
