@@ -7,7 +7,7 @@
     "node": ">= 0.8.19"
   },
   "dependencies": {
-	"mongoose": "3.8.x"
+	"mongoose": "3.8.x",
 	"nconf": "0.6.x"
   },
   "devDependencies": {},
