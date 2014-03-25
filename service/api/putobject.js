@@ -21,8 +21,8 @@ exports.put = function(request, response) {
     		mobileDevices: []
 		});
 
-    	console.log('Looking for doorbellID ' + doorBellID + ' in mongo');
-		doorbellSchema.findOne( {doorBellID: req.query.doorbellId} , function(err, doorbell){
+    	console.log('Looking for doorbellID ' + request.body.doorBellID + ' in mongo');
+		doorbellSchema.findOne( {doorBellID: request.query.doorBellID} , function(err, doorbell){
 			if(err) return console.error(err);
 
 			if(doorbell == null){
@@ -52,7 +52,7 @@ exports.put = function(request, response) {
 				if(!userMatched) 
 				{
 					console.log('The specified user hasn not been registered to doorbell');
-					console.log('registering user ' + request.body.users[0] + ' for doorbell ' + req.query.doorBellID)
+					console.log('registering user ' + request.body.users[0] + ' for doorbell ' + request.query.doorBellID)
 					//assume that there is only one user
 					doorbell.users.push(request.body.users[0]);
 				}
