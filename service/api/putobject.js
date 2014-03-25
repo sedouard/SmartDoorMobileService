@@ -119,13 +119,6 @@ exports.put = function(request, response) {
 					}
 				}
 
-				if(!deviceMatched){
-					console.log('The specified device has not been registered to doorbell');
-					console.log('registering device ' + request.bodymobileDevices[0] + ' for doorbell ' + request.body.doorBellID)
-					//assume that there is only one user
-					doorbell.users(request.body.users[0]);
-				}
-
 				doorbell.save(function(err, dBell){
 					console.log('Sucessfully updated doorbell registration ' + request.body.doorBellID + ' in MongoDB');
                     response.send(statusCodes.OK, { message : 'Sucessfully updated doorbell registration ' + request.body.doorBellID });
