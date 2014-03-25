@@ -23,8 +23,8 @@ exports.put = function(request, response) {
     		mobileDevices: []
 		});
 
-    	console.log('Looking for doorbellID ' + request.body.doorBellID + ' in mongo');
-		doorbellSchema.findOne( {doorBellID: request.query.doorBellID} , function(err, doorbell){
+    	console.log('Looking for doorBellID ' + request.body.doorBellID + ' in mongo');
+		doorbellSchema.findOne( {doorBellID: request.body.doorBellID} , function(err, doorbell){
 			if(err) return console.error(err);
 
 			if(doorbell == null){
