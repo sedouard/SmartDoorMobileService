@@ -51,7 +51,7 @@ exports.put = function(request, response) {
 					{
 						if(u.id == requestUser.id)
 						{
-                            
+                            console.log('user already registered for this doorbell');
 							userMatched = true;
 							break;
 						}
