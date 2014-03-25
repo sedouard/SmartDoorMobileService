@@ -16,6 +16,8 @@ var doorbellSchema = mongoose.Schema({
 //Note, you should compile your models globally, as subsequent api calls may cause
 //errors as you can only do this once per node instance.
 var DoorBell = mongoose.model('DoorBell', doorbellSchema);
+
+//Begin PUT api
 exports.put = function(request, response) {
     // Use "request.service" to access features of your mobile service, e.g.:
     //   var tables = request.service.tables;
