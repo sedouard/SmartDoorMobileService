@@ -4,6 +4,7 @@ exports.put = function(request, response) {
     // Use "request.service" to access features of your mobile service, e.g.:
     //   var tables = request.service.tables;
     //   var push = request.service.push;
+    console.log('putobject script running from: ' + __dirname);
     console.log('Servicing request ' + request);
     nconf.argv()
     .env()
