@@ -41,7 +41,7 @@ exports.put = function(request, response) {
 				{
 					for(var requestUser in request.body.users)
 					{
-						if(u == requestUser)
+						if(u.id == requestUser.id)
 						{
 							userMatched = true;
 							break;
@@ -61,7 +61,7 @@ exports.put = function(request, response) {
 
 				for(var m in doorbell.mobileDevices)
 				{
-					for(var requestDevice in request.body.users)
+					for(var requestDevice in request.body.mobileDevices)
 					{
 						if(m.deviceId == requestDevice.Id)
 						{
