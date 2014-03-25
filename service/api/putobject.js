@@ -72,7 +72,7 @@ exports.put = function(request, response) {
                         {
                             console.log('The specified device for user ' + request.body.users[0].id + ' hasn not been registered to doorbell '
                             + request.body.doorBellID);
-					        console.log('registering device ' + request.body.users[0].mobileDevice[0].deviceId + ' for doorbell ' + request.body.doorBellID)
+					        console.log('registering device ' + request.body.users[0].mobileDevices[0].deviceId + ' for doorbell ' + request.body.doorBellID)
                             doorbell.users.mobileDevices.push(request.body.users[0].mobileDevices[0]);
                         }
                         break;    
