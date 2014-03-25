@@ -48,15 +48,36 @@ exports.put = function(request, response) {
 				for(var u in doorbell.users)
 				{
                     //there is expected to only be one user in the request user array
-					for(var requestUser in request.body.users)
+					if(doorbell.users[u].id == request.body.users[0].id)
 					{
-						if(doorbell.users[u.id] == request.body.users[requestUser])
-						{
-                            console.log('user already registered for this doorbell');
-							userMatched = true;
-							break;
-						}
+                        console.log('user already registered for this doorbell');
+						userMatched = true;
+						var deviceMatched = false;
+                        //check to see if this device is already registered for this user, for this doorbell
+                        for(var i in doorbell.users[u].mobileDevices)
+                        {
+                            var deviceFromClient = request.body.users[0].mobileDevices[0];
+                            if(doorbell.users[u].mobileDevices[i].deviceId == deviceFromClient.deviceId)
+                            {
+                                //we found a match, update the device push notification channel
+                                console.log('updating user ' + doorbell.users[u].id + ' device channel');
+                                //Update the stored matching device with the newest provided channel
+                                doorbell.users[u].mobileDevices[i].channel = deviceFromClient.deviceId;
+                                deviceMatched = true;
+                                break;
+                            }
+                        }
+                        
+                        if(!deviceMatched)
+                        {
+                            console.log('The specified device for user ' + request.body.users[0].id + ' hasn not been registered to doorbell '
+                            + request.body.doorBellID);
+					        console.log('registering device ' + request.body.users[0].mobileDevice[0].deviceId + ' for doorbell ' + request.body.doorBellID)
+                            doorbell.users.mobileDevices.push(request.body.users[0].mobileDevices[0]);
+                        }
+                        break;    
 					}
+					
 				}
 
 				if(!userMatched) 
@@ -91,10 +112,10 @@ exports.put = function(request, response) {
 				}
 
 				if(!deviceMatched){
-					console.log('The specified device hasn not been registered to doorbell');
-					console.log('registering device ' + request.body.mobileDevices[0] + ' for doorbell ' + request.body.doorBellID)
+					console.log('The specified device has not been registered to doorbell');
+					console.log('registering device ' + request.bodymobileDevices[0] + ' for doorbell ' + request.body.doorBellID)
 					//assume that there is only one user
-					doorbell.users.push(request.body.users[0]);
+					doorbell.users(request.body.users[0]);
 				}
 
 				doorbell.save(function(err, dBell){
