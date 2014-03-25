@@ -34,10 +34,12 @@ exports.put = function(request, response) {
 				var dbEntity = new DoorBell(request.body);
                 dbEntity.save(function(err, entity){
                     console.log('sucessfully created new registration for registration: ' + entity);
+                    response.send(statusCodes.OK, { message : 'Hello World!' });
+                    return;
                 });
 
 			}
-			//this doorbell has already been registered
+			//this doorbell has already been registered, update the registration
 			else {
 				//search if this user is already registered to this doorbell
 				//this 2x for loop should be fine since we don't expect the
