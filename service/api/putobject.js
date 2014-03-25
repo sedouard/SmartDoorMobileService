@@ -28,7 +28,7 @@ exports.put = function(request, response) {
 			if(doorbell == null){
 				var DoorBell = mongoose.model('DoorBell', doorbellSchema);
 				//take the entire body's json. Assuming it fits into this schema
-				var dbEntity = new DoorBell(req.body);
+				var dbEntity = new DoorBell(request.body);
 
 			}
 			//this doorbell has already been registered
@@ -73,7 +73,7 @@ exports.put = function(request, response) {
 
 				if(!deviceMatched){
 					console.log('The specified device hasn not been registered to doorbell');
-					console.log('registering device ' + request.body.mobileDevices[0] + ' for doorbell ' + req.query.doorBellID)
+					console.log('registering device ' + request.body.mobileDevices[0] + ' for doorbell ' + request.query.doorBellID)
 					//assume that there is only one user
 					doorbell.users.push(request.body.users[0]);
 				}
