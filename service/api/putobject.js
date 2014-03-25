@@ -34,7 +34,7 @@ exports.put = function(request, response) {
 				var dbEntity = new DoorBell(request.body);
                 dbEntity.save(function(err, entity){
                     console.log('sucessfully created new registration for registration: ' + entity);
-                    response.send(statusCodes.OK, { message : 'Hello World!' });
+                    response.send(201, { message : 'Sucessfully created doorbell registration for doorBellID: ' +  request.body.doorBellID});
                     return;
                 });
 
@@ -120,7 +120,7 @@ exports.put = function(request, response) {
 
 				doorbell.save(function(err, dBell){
 					console.log('Sucessfully updated doorbell registration ' + request.body.doorBellID + ' in MongoDB');
-                    response.send(statusCodes.OK, { message : 'Hello World!' });
+                    response.send(statusCodes.OK, { message : 'Sucessfully updated doorbell registration ' + request.body.doorBellID });
 				});
 
 			}
