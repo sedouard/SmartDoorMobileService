@@ -17,7 +17,8 @@ var doorbellSchema = mongoose.Schema({
 //errors as you can only do this once per node instance.
 var DoorBell = mongoose.model('DoorBell', doorbellSchema);
 
-//Begin PUT api
+//Begin PUT api, this api will register or update the registration of the doorbell object
+//the request body.
 exports.put = function(request, response) {
     // Use "request.service" to access features of your mobile service, e.g.:
     //   var tables = request.service.tables;
