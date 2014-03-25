@@ -9,7 +9,7 @@ exports.put = function(request, response) {
     .env()
     .file({ file: '../shared/ServiceConfiguration.json' });
 
-    mongoose.connect(nconf.get("SmartDoor.MongodbConnectionString"););
+    mongoose.connect(nconf.get("SmartDoor.MongodbConnectionString"));
 
     var db = mongoose.connection;
     db.on('error', console.error.bind(console, 'connection error:'));
@@ -22,7 +22,7 @@ exports.put = function(request, response) {
 		});
 
     	console.log('Looking for doorbellID ' + doorBellID + ' in mongo');
-		doorbellSchema.findOne( {doorBellID: req.query.doorbellId} ), function(err, doorbell){
+		doorbellSchema.findOne( {doorBellID: req.query.doorbellId} , function(err, doorbell){
 			if(err) return console.error(err);
 
 			if(doorbell == null){
