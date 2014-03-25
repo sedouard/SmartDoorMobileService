@@ -47,6 +47,7 @@ exports.put = function(request, response) {
 				var userMatched = false;
 				for(var u in doorbell.users)
 				{
+                    //there is expected to only be one user in the request user array
 					for(var requestUser in request.body.users)
 					{
 						if(doorbell.users[u.id] == request.body.users[requestUser])
