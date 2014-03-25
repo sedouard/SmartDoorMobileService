@@ -65,22 +65,13 @@ exports.post = function(request, response) {
         port: 443,
         method: 'POST'
     };
-
-    var req = https.post(options, function(res){
-        if (rest.statusCode != 201) {
-            console.log('Could not post photo to blob storage');
-            request.respond(500, 'Could not post photo to blob storage');
-            return;
+    addPhotoToDoorbell(req.query.doorbellID, id, function (err) {
+        if (!err) {
+            request.respond(500, 'Could not record photo entry in database');
         }
-
-        console.log('Sucessfully uploaded photo ' + id + '.jpg')
-        addPhotoToDoorbell(req.query.doorbellID, id, function (err) {
-            if (!err) {
-                request.respond(500, 'Could not record photo entry in database');
-            }
-            request.respond(201, 'Sucesfully posted photo for doorbell ' + request.query.doorbellID);
-        });
+        request.respond(200, sasQueryString);
     });
+    
 
     //write the photo to the body
     req.write(request.body);
