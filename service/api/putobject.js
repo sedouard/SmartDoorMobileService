@@ -8,7 +8,7 @@ exports.put = function(request, response) {
     nconf.argv()
     .env()
     .file({ file: '../shared/ServiceConfiguration.json' });
-
+    console.log('Connecting to mongodb: ' + nconf.get("SmartDoor.MongodbConnectionString"));
     mongoose.connect(nconf.get("SmartDoor.MongodbConnectionString"));
 
     var db = mongoose.connection;
