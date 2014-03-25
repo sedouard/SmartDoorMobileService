@@ -5,7 +5,7 @@ exports.put = function(request, response) {
     //   var tables = request.service.tables;
     //   var push = request.service.push;
     //console.log('putobject script running from: ' + __dirname);
-    console.log('Servicing request ' + request);
+    console.log('Servicing request for doorbell registration' + request.body);
     nconf.argv()
     .env()
     .file({ file: '..\\shared\\ServiceConfiguration.json' });
@@ -24,11 +24,12 @@ exports.put = function(request, response) {
 		});
 
     	console.log('Looking for doorBellID ' + request.body.doorBellID + ' in mongo');
-		doorbellSchema.findOne( {doorBellID: request.body.doorBellID} , function(err, doorbell){
+        var DoorBell = mongoose.model('DoorBell', doorbellSchema);
+		DoorBell.findOne( {doorBellID: request.body.doorBellID} , function(err, doorbell){
 			if(err) return console.error(err);
 
 			if(doorbell == null){
-				var DoorBell = mongoose.model('DoorBell', doorbellSchema);
+				console.log('No registration found, creating a new one');
 				//take the entire body's json. Assuming it fits into this schema
 				var dbEntity = new DoorBell(request.body);
 
