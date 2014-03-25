@@ -9,7 +9,8 @@
   "dependencies": {
 	"mongoose": "3.8.x",
 	"nconf": "0.6.x",
-	"azure" : "0.8.x"
+	"azure" : "0.8.x",
+	"uuid" : "1.4.x"
   },
   "devDependencies": {},
   "scripts": {},

@@ -1,7 +1,29 @@
 var qs = require('querystring');
 var azure = require('azure');
 var mongoose = require('mongoose');
+var https = require('https');
+var uuid = require('uuid');
 
+var doorbellSchema = mongoose.Schema({
+    doorBellID: String,
+    users: [{
+        id: String,
+        mobileDevices: [{
+            deviceId: String,
+            channel: String
+        }]
+    }
+    ],
+    photos: [{
+        //path in the main storage container
+        blobId: String,
+        //time photo was uploaded
+        timeStamp: String
+    }]
+});
+//Note, you should compile your models globally, as subsequent api calls may cause
+//errors as you can only do this once per node instance.
+var DoorBell = mongoose.model('DoorBell', doorbellSchema);
 exports.post = function(request, response) {
     // Use "request.service" to access features of your mobile service, e.g.:
     //   var tables = request.service.tables;
@@ -23,24 +45,87 @@ exports.post = function(request, response) {
                 request.respond(statusCodes.OK);
             }
         });
-       var sharedAccessPolicy = { 
+    var sharedAccessPolicy = { 
         AccessPolicy: {
             Permissions: 'rw', //Read and Write permissions
             Expiry: minutesFromNow(5) 
         }
     };
-    
+    //create a time random id
+    var id = uuid.v4();
     var sasUrl = blobService.generateSharedAccessSignature(containerName,
-                    request.query.fileName, sharedAccessPolicy);
+                    id+'.jpg', sharedAccessPolicy);
     
+
+
     var sasQueryString = { 'sasUrl' : sasUrl.baseUrl + sasUrl.path + '?' + qs.stringify(sasUrl.queryString) };                    
     
-    request.respond(200, sasQueryString);
+    var options = {
+        url: sasQueryString,
+        port: 443,
+        method: 'POST'
+    };
+
+    var req = https.post(options, function(res){
+        if (rest.statusCode != 201) {
+            console.log('Could not post photo to blob storage');
+            request.respond(500, 'Could not post photo to blob storage');
+            return;
+        }
+
+        console.log('Sucessfully uploaded photo ' + id + '.jpg')
+        addPhotoToDoorbell(req.query.doorbellID, id, function (err) {
+            if (!err) {
+                request.respond(500, 'Could not record photo entry in database');
+            }
+            request.respond(201, 'Sucesfully posted photo for doorbell ' + request.query.doorbellID);
+        });
+    });
+
+    //write the photo to the body
+    req.write(request.body);
+    req.end();
 };
 
 exports.get = function(request, response) {
     response.send(statusCodes.OK, { message : 'Hello World!' });
 };
+
+function addPhotoToDoorbell(doorbellID, photoId, callback) {
+    console.log('Connecting to mongodb: ' + nconf.get("SmartDoor.MongodbConnectionString"));
+    //TODO: We really need to figure out why nconf doesn't work in mobile services
+    mongoose.connect("mongodb://MongoLab-4q:X7TH5fVZWynS6qUM1rht7olpktsJgNr94_ArcTVwHqs-@ds030607.mongolab.com:30607/MongoLab-4q");
+    var db = mongoose.connection;
+    db.on('error', console.error.bind(console, 'connection error:'));
+    db.once('open', function callback() {
+        console.log("Sucessfully Logged into mongo");
+    });
+
+    console.log('Looking for doorBellID ' + request.body.doorBellID + ' in mongo');
+        
+    DoorBell.findOne( {doorBellID: request.body.doorBellID} , function(err, doorbell){
+        if(err) return console.error(err);
+
+        if(doorbell == null){
+            callback('Could not find doorbellID' - doorbellID);
+        }
+        var date = new Date();
+        doorbell.photos.push({
+            blobId: photoId+'.jpg',
+            timeStamp: date.getMilliseconds()
+        });
+
+        doorbell.save(function (err) {
+            if(!err)
+            {
+                response.send(false, 'Sucessfully created doorbell photo for ' + request.query.doorBellID );
+            }
+            else {
+                callback(true, 'Failed to create doorbell photo for' + request.body.doorBellID);
+            }
+        })
+    });
+}
 
 function minutesFromNow(minutes) {
     var date = new Date()

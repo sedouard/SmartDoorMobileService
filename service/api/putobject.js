@@ -39,7 +39,7 @@ exports.put = function(request, response) {
 
     	console.log('Looking for doorBellID ' + request.body.doorBellID + ' in mongo');
         
-        //Subsequent api calls seems to leave DoorBell initialized. Null-check for safety
+
 		DoorBell.findOne( {doorBellID: request.body.doorBellID} , function(err, doorbell){
 			if(err) return console.error(err);
 
