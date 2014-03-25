@@ -24,7 +24,7 @@ var doorbellSchema = mongoose.Schema({
 //Note, you should compile your models globally, as subsequent api calls may cause
 //errors as you can only do this once per node instance.
 var DoorBell = mongoose.model('DoorBell', doorbellSchema);
-exports.post = function(request, response) {
+exports.get = function(request, response) {
     // Use "request.service" to access features of your mobile service, e.g.:
     //   var tables = request.service.tables;
     //   var push = request.service.push;
@@ -60,11 +60,6 @@ exports.post = function(request, response) {
 
     var sasQueryString = { 'sasUrl' : sasUrl.baseUrl + sasUrl.path + '?' + qs.stringify(sasUrl.queryString) };                    
     
-    var options = {
-        url: sasQueryString,
-        port: 443,
-        method: 'POST'
-    };
     addPhotoToDoorbell(req.query.doorbellID, id, function (err) {
         if (!err) {
             request.respond(500, 'Could not record photo entry in database');
@@ -72,14 +67,6 @@ exports.post = function(request, response) {
         request.respond(200, sasQueryString);
     });
     
-
-    //write the photo to the body
-    req.write(request.body);
-    req.end();
-};
-
-exports.get = function(request, response) {
-    response.send(statusCodes.OK, { message : 'Hello World!' });
 };
 
 function addPhotoToDoorbell(doorbellID, photoId, callback) {
@@ -92,15 +79,19 @@ function addPhotoToDoorbell(doorbellID, photoId, callback) {
         console.log("Sucessfully Logged into mongo");
     });
 
-    console.log('Looking for doorBellID ' + request.body.doorBellID + ' in mongo');
+    console.log('Looking for doorBellID ' + doorbellID + ' in mongo');
         
-    DoorBell.findOne( {doorBellID: request.body.doorBellID} , function(err, doorbell){
+    DoorBell.findOne({ doorBellID: doorbellID }, function (err, doorbell) {
         if(err) return console.error(err);
 
         if(doorbell == null){
             callback('Could not find doorbellID' - doorbellID);
         }
         var date = new Date();
+
+        if (doorbell.photos == null) {
+            doorbell.photos = new Array();
+        }
         doorbell.photos.push({
             blobId: photoId+'.jpg',
             timeStamp: date.getMilliseconds()
@@ -109,10 +100,10 @@ function addPhotoToDoorbell(doorbellID, photoId, callback) {
         doorbell.save(function (err) {
             if(!err)
             {
-                response.send(false, 'Sucessfully created doorbell photo for ' + request.query.doorBellID );
+                response.send(false, 'Sucessfully created doorbell photo for ' + doorbellID);
             }
             else {
-                callback(true, 'Failed to create doorbell photo for' + request.body.doorBellID);
+                callback(true, 'Failed to create doorbell photo for' + doorbellID);
             }
         })
     });
