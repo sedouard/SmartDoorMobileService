@@ -11,6 +11,7 @@ function doorBellRingListener() {
         sb.receiveQueueMessage("arduino", { timeoutIntervalInS: 90 }, 
         function(err, data) {
             //TODO: Send push notification from here
+            console.log('Recieved ring notification for doorbell: ' + data.doorBellID);
             console.log(data);
             listenForMessages();
         });
