@@ -1,5 +1,19 @@
 var mongoose = require('mongoose');
 var nconf = require('nconf');
+//schema for the doorbell object in mongodb
+var doorbellSchema = mongoose.Schema({
+    		doorBellID: String,
+    		users: [{
+                    id : String,
+                    mobileDevices: [{
+                        deviceId : String,
+                        channel : String
+                    }]
+                }
+            ],
+    		
+		});
+
 exports.put = function(request, response) {
     // Use "request.service" to access features of your mobile service, e.g.:
     //   var tables = request.service.tables;
@@ -17,18 +31,6 @@ exports.put = function(request, response) {
     db.on('error', console.error.bind(console, 'connection error:'));
     db.once('open', function callback() {
     	console.log("Sucessfully Logged into mongo");
-    	var doorbellSchema = mongoose.Schema({
-    		doorBellID: String,
-    		users: [{
-                    id : String,
-                    mobileDevices: [{
-                        deviceId : String,
-                        channel : String
-                    }]
-                }
-            ],
-    		
-		});
 
     	console.log('Looking for doorBellID ' + request.body.doorBellID + ' in mongo');
         var DoorBell;
