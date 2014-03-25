@@ -68,15 +68,24 @@ exports.put = function(request, response) {
 				}
 
 				var deviceMatched = false;
-
-				for(var m in doorbell.mobileDevices)
+                
+                //iterate through all the mobile devices registered for users of this doorbell
+                //if the mobile device specified in the request doesn't exist, add it. If it does
+                //exist, update the channel
+                //we only allow one device insertion/update at a time
+				for(var m in doorbell.users.mobileDevices)
 				{
-					for(var requestDevice in request.body.mobileDevices)
+					for(var i in request.body.users.mobileDevices)
 					{
-						if(m.deviceId == requestDevice.Id)
+						if(request.body.users.mobileDevices[i].deviceId == doorbell.users.mobileDevices[i].deviceId)
 						{
 							deviceMatched = true;
-							break;
+                            //update the already registered device's push notification channel with 
+                            //the freshest one
+                            console.log('Updating the channel for registered device ' + request.body.users.mobileDevices[i].deviceId);
+                            doorbell.users.mobileDevices[i].channel = request.body.users.mobileDevices[i].channel;
+							//we are done because we updated the mobile device
+                            break;
 						}
 					}
 				}
