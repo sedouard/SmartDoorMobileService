@@ -32,6 +32,9 @@ exports.put = function(request, response) {
 				console.log('No registration found, creating a new one');
 				//take the entire body's json. Assuming it fits into this schema
 				var dbEntity = new DoorBell(request.body);
+                dbEntity.save(function(err, entity){
+                    console.log('sucessfully created new registration for registration: ' + entity);
+                });
 
 			}
 			//this doorbell has already been registered
