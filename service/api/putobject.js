@@ -62,7 +62,7 @@ exports.put = function(request, response) {
 				if(!userMatched) 
 				{
 					console.log('The specified user hasn not been registered to doorbell');
-					console.log('registering user ' + request.body.users[0] + ' for doorbell ' + request.query.doorBellID)
+					console.log('registering user ' + request.body.users[0].id + ' for doorbell ' + request.body.doorBellID)
 					//assume that there is only one user
 					doorbell.users.push(request.body.users[0]);
 				}
