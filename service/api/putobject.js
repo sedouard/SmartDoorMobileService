@@ -19,8 +19,15 @@ exports.put = function(request, response) {
     	console.log("Sucessfully Logged into mongo");
     	var doorbellSchema = mongoose.Schema({
     		doorBellID: String,
-    		users: [],
-    		mobileDevices: []
+    		users: [{
+                    id : String,
+                    mobileDevices: [{
+                        deviceId : String,
+                        channel : String
+                    }]
+                }
+            ],
+    		
 		});
 
     	console.log('Looking for doorBellID ' + request.body.doorBellID + ' in mongo');
