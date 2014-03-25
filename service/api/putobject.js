@@ -35,6 +35,7 @@ exports.put = function(request, response) {
                 dbEntity.save(function(err, entity){
                     console.log('sucessfully created new registration for registration: ' + entity);
                     response.send(201, { message : 'Sucessfully created doorbell registration for doorBellID: ' +  request.body.doorBellID});
+                    mongoose.disconnect();
                     return;
                 });
 
@@ -121,6 +122,7 @@ exports.put = function(request, response) {
 				doorbell.save(function(err, dBell){
 					console.log('Sucessfully updated doorbell registration ' + request.body.doorBellID + ' in MongoDB');
                     response.send(statusCodes.OK, { message : 'Sucessfully updated doorbell registration ' + request.body.doorBellID });
+                    mongoose.disconnect();
 				});
 
 			}
