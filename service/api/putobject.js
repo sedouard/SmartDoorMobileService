@@ -4,11 +4,11 @@ exports.put = function(request, response) {
     // Use "request.service" to access features of your mobile service, e.g.:
     //   var tables = request.service.tables;
     //   var push = request.service.push;
-    console.log('putobject script running from: ' + __dirname);
+    //console.log('putobject script running from: ' + __dirname);
     console.log('Servicing request ' + request);
     nconf.argv()
     .env()
-    .file({ file: '../shared/ServiceConfiguration.json' });
+    .file({ file: '..\\shared\\ServiceConfiguration.json' });
     console.log('Connecting to mongodb: ' + nconf.get("SmartDoor.MongodbConnectionString"));
     mongoose.connect(nconf.get("SmartDoor.MongodbConnectionString"));
 
