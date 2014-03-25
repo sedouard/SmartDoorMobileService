@@ -8,7 +8,8 @@
   },
   "dependencies": {
 	"mongoose": "3.8.x",
-	"nconf": "0.6.x"
+	"nconf": "0.6.x",
+	"azure" : "0.8.x"
   },
   "devDependencies": {},
   "scripts": {},
