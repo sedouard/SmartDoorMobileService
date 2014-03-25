@@ -1,6 +1,6 @@
+var azure = require('azure');
+var nconf = require('nconf');
 function doorBellRingListener() {
-    var azure = require('azure');
-    var nconf = require('nconf');
     nconf.argv()
         .env()
         .file({ file: 'Web.config.json' });
