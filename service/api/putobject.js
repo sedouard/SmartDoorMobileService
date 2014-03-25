@@ -31,7 +31,11 @@ exports.put = function(request, response) {
 		});
 
     	console.log('Looking for doorBellID ' + request.body.doorBellID + ' in mongo');
-        var DoorBell = mongoose.model('DoorBell', doorbellSchema);
+        var DoorBell;
+        
+        if(DoorBell == null){
+            DoorBell = mongoose.model('DoorBell', doorbellSchema);
+        }
 		DoorBell.findOne( {doorBellID: request.body.doorBellID} , function(err, doorbell){
 			if(err) return console.error(err);
 
