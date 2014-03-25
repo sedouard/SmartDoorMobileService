@@ -11,7 +11,7 @@ exports.put = function(request, response) {
     .file({ file: '..\\shared\\ServiceConfiguration.json' });
     console.log('Connecting to mongodb: ' + nconf.get("SmartDoor.MongodbConnectionString"));
     //TODO: We really need to figure out why nconf doesn't work in mobile services
-    mongoose.connect("mongodb://MongoLab-4q:X7TH5fVZWynS6qUM1rht7olpktsJgNr94_ArcTVwHqs-@ds030607.mongolab.com:30607/MongoLab-4q"));
+    mongoose.connect("mongodb://MongoLab-4q:X7TH5fVZWynS6qUM1rht7olpktsJgNr94_ArcTVwHqs-@ds030607.mongolab.com:30607/MongoLab-4q");
 
     var db = mongoose.connection;
     db.on('error', console.error.bind(console, 'connection error:'));
