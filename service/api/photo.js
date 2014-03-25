@@ -1,13 +1,15 @@
 var qs = require('querystring');
 var azure = require('azure');
+var mongoose = require('mongoose');
+
 exports.post = function(request, response) {
     // Use "request.service" to access features of your mobile service, e.g.:
     //   var tables = request.service.tables;
     //   var push = request.service.push;
     
     var containerName = 'maincontainer';
-    var accountName = 'touchgram';
-    var accountKey = 'TfCN96/gajQTvm3mPWp/fd3oH1v6guqAod18mJtBweTgR5gfIgMMhX9RqLQbGu6LJqMKTuDFJ7sVguysETjRPQ==';
+    var accountName = 'smartdoor';
+    var accountKey = 'fy6fTMAFrAPNH1raM5BivcGoxUiUufrVvVkvZsnKzmjCZw1w6eqQWyc5pnTebPwhXYG0Yk9rw5UeSo3uHEEXPA==';
     var host = accountName + '.blob.core.windows.net';
     var blobService = azure.createBlobService(accountName, accountKey, host);
     
@@ -30,7 +32,7 @@ exports.post = function(request, response) {
     
     var sasUrl = blobService.generateSharedAccessSignature(containerName,
                     request.query.fileName, sharedAccessPolicy);
- 
+    
     var sasQueryString = { 'sasUrl' : sasUrl.baseUrl + sasUrl.path + '?' + qs.stringify(sasUrl.queryString) };                    
     
     request.respond(200, sasQueryString);
