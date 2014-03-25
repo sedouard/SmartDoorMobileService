@@ -33,6 +33,7 @@ exports.put = function(request, response) {
     	console.log('Looking for doorBellID ' + request.body.doorBellID + ' in mongo');
         var DoorBell;
         
+        //Subsequent api calls seems to leave DoorBell initialized. Null-check for safety
         if(DoorBell == null){
             DoorBell = mongoose.model('DoorBell', doorbellSchema);
         }
