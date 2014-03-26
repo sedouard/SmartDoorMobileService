@@ -16,7 +16,7 @@ nconf.file({ file: __dirname + '/../shared/config.jsn' });
 exports.get = function(request, response) {
     // Use "request.service" to access features of your mobile service, e.g.:
     //   var tables = request.service.tables;
-    //   var push = request.service.push;
+    //   var push = request.service.push;  
     console.log('Query params: ' + request.query);
     var containerName = nconf.get('SmartDoor.Storage.PhotoContainerName');
     var accountName = nconf.get('SmartDoor.Storage.AccountName');
