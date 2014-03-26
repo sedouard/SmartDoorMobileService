@@ -3,7 +3,7 @@ var azure = require('azure');
 var mongoose = require('mongoose');
 var https = require('https');
 var uuid = require('uuid');
-var mongoosechemas = require('../shared/mongoosechemas.js');
+var mongoosechemas = require('../shared/mongooschemas.js');
 var nconf = require('nconf');
 //Note, you should compile your models globally, as subsequent api calls may cause
 //errors as you can only do this once per node instance.

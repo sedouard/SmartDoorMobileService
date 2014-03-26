@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 var nconf = require('nconf');
-var mongoosechemas = require('../shared/mongoosechemas.js');
+var mongoosechemas = require('../shared/mongooschemas.js');
 
 //schema for the doorbell object in mongodb
 var DoorBell = var DoorBell = mongoosechemas.getDoorBellModel();
