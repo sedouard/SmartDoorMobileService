@@ -3,35 +3,20 @@ var azure = require('azure');
 var mongoose = require('mongoose');
 var https = require('https');
 var uuid = require('uuid');
-
-var doorbellSchema = mongoose.Schema({
-    doorBellID: String,
-    users: [{
-        id: String,
-        mobileDevices: [{
-            deviceId: String,
-            channel: String
-        }]
-    }
-    ],
-    photos: [{
-        //path in the main storage container
-        blobId: String,
-        //time photo was uploaded
-        timeStamp: String
-    }]
-});
+var mongoosechemas = require('../shared/mongoosechemas.js');
+var nconf = require('nconf');
 //Note, you should compile your models globally, as subsequent api calls may cause
 //errors as you can only do this once per node instance.
-var DoorBell = mongoose.model('DoorBell', doorbellSchema);
+var DoorBell = mongoosechemas.getDoorBellModel();
+nconf.argv().env().file({ file: '../shared/config.json' });
 exports.get = function(request, response) {
     // Use "request.service" to access features of your mobile service, e.g.:
     //   var tables = request.service.tables;
     //   var push = request.service.push;
     
-    var containerName = 'maincontainer';
-    var accountName = 'smartdoor';
-    var accountKey = 'fy6fTMAFrAPNH1raM5BivcGoxUiUufrVvVkvZsnKzmjCZw1w6eqQWyc5pnTebPwhXYG0Yk9rw5UeSo3uHEEXPA==';
+    var containerName = nconf.get('SmartDoor.Storage.PhotoContainerName');
+    var accountName = nconf.get('SmartDoor.Storage.AccountName');
+    var accountKey = nconf.get('SmartDoor.Storage,AccountKey');
     var host = accountName + '.blob.core.windows.net';
     var blobService = azure.createBlobService(accountName, accountKey, host);
     
@@ -71,21 +56,25 @@ exports.get = function(request, response) {
 
 function addPhotoToDoorbell(doorbellID, photoId, callback) {
     //TODO: We really need to figure out why nconf doesn't work in mobile services
-    mongoose.connect("mongodb://MongoLab-4q:X7TH5fVZWynS6qUM1rht7olpktsJgNr94_ArcTVwHqs-@ds030607.mongolab.com:30607/MongoLab-4q");
+    var connectionString = nconf.get('SmartDoor.MongodbConnectionString');
+    console.log('Connecting to mongodb with connection string: ' + connectionString);
+    mongoose.connect(connectionString);
     var db = mongoose.connection;
     db.on('error', console.error.bind(console, 'connection error:'));
     db.once('open', function callback() {
         console.log("Sucessfully Logged into mongo");
-    });
 
-    console.log('Looking for doorBellID ' + doorbellID + ' in mongo');
+        console.log('Looking for doorBellID ' + doorbellID + ' in mongo');
         
-    DoorBell.findOne({ doorBellID: doorbellID }, function (err, doorbell) {
+        //Query for the speicfied doorbell. There should only be one in the DB.
+        DoorBell.findOne({ doorBellID: doorbellID }, function (err, doorbell) {
         if(err) return console.error(err);
 
         if(doorbell == null){
             callback('Could not find doorbellID' + doorbellID);
         }
+
+        //Create a new entry for photo and associate with this doorbell
         var date = new Date();
 
         if (doorbell.photos == null) {
@@ -106,6 +95,9 @@ function addPhotoToDoorbell(doorbellID, photoId, callback) {
             }
         })
     });
+    });
+
+    
 }
 
 function minutesFromNow(minutes) {

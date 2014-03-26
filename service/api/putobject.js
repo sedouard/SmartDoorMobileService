@@ -1,21 +1,11 @@
 var mongoose = require('mongoose');
 var nconf = require('nconf');
+var mongoosechemas = require('../shared/mongoosechemas.js');
+
 //schema for the doorbell object in mongodb
-var doorbellSchema = mongoose.Schema({
-    		doorBellID: String,
-    		users: [{
-                    id : String,
-                    mobileDevices: [{
-                        deviceId : String,
-                        channel : String
-                    }]
-                }
-            ],
-    		
-		});
-//Note, you should compile your models globally, as subsequent api calls may cause
-//errors as you can only do this once per node instance.
-var DoorBell = mongoose.model('DoorBell', doorbellSchema);
+var DoorBell = var DoorBell = mongoosechemas.getDoorBellModel();
+//get configuration settings file
+nconf.argv().env().file({ file: '../shared/config.json' });
 
 //Begin PUT api, this api will register or update the registration of the doorbell object
 //the request body.
@@ -30,7 +20,7 @@ exports.put = function(request, response) {
     .file({ file: '..\\shared\\ServiceConfiguration.json' });
     console.log('Connecting to mongodb: ' + nconf.get("SmartDoor.MongodbConnectionString"));
     //TODO: We really need to figure out why nconf doesn't work in mobile services
-    mongoose.connect("mongodb://MongoLab-4q:X7TH5fVZWynS6qUM1rht7olpktsJgNr94_ArcTVwHqs-@ds030607.mongolab.com:30607/MongoLab-4q");
+    mongoose.connect(nconf.get("SmartDoor.MongodbConnectionString"));
 
     var db = mongoose.connection;
     db.on('error', console.error.bind(console, 'connection error:'));
