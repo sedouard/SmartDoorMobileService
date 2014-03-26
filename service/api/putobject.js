@@ -17,9 +17,6 @@ exports.put = function(request, response) {
     //   var push = request.service.push;
     //console.log('putobject script running from: ' + __dirname);
     console.log('Servicing request for doorbell registration' + request.body);
-    nconf.argv()
-    .env()
-    .file({ file: '..\\shared\\ServiceConfiguration.json' });
     console.log('Connecting to mongodb: ' + nconf.get("SmartDoor.MongodbConnectionString"));
     //TODO: We really need to figure out why nconf doesn't work in mobile services
     mongoose.connect(nconf.get("SmartDoor.MongodbConnectionString"));
