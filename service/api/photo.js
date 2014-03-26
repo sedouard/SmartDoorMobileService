@@ -30,12 +30,9 @@ exports.get = function(request, response) {
         ,{publicAccessLevel : 'blob'}
         , function (error) {
             if (error) {
-                request.respond(500,{message: 'Could not create blob'});
-            } else {
                 console.log(error);
-                request.respond(statusCodes.OK);
+                return request.respond(500,{message: 'Could not create blob'});
             }
-
             var sharedAccessPolicy = { 
                 AccessPolicy: {
                     Permissions: 'rw', //Read and Write permissions
@@ -50,6 +47,8 @@ exports.get = function(request, response) {
 
 
             var sasQueryString = { 'sasUrl' : sasUrl.baseUrl + sasUrl.path + '?' + qs.stringify(sasUrl.queryString) };                    
+            
+            console.log('Adding photo ' + id + '.jpg to doorbell ' + request.query.doorBellID);
             
             addPhotoToDoorbell(request.query.doorbellID, id, function (err) {
                 if (!err) {
