@@ -16,6 +16,20 @@ exports.get = function(request, response) {
     
     console.log('Query params: ' + request.query);
     return request.respond(200, { message: "Hello" });
+    if(!request.query.doorbellID)
+    {
+        return request.respond(400,{message: 'Must specifiy doorbellID in url parameters'});
+    }
+    
+    var containerName = nconf.get('SmartDoor.Storage.PhotoContainerName');
+    var accountName = nconf.get('SmartDoor.Storage.AccountName');
+    var accountKey = nconf.get('SmartDoor.Storage,AccountKey');
+    var host = accountName + '.blob.core.windows.net';
+    
+    console.log('Connecting to blob service account: ' + accountName);
+    var blobService = azure.createBlobService(accountName, accountKey, host);
+    
+    
     
     
 }
