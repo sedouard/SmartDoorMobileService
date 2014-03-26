@@ -15,52 +15,7 @@ nconf.file({ file: __dirname + '/../shared/config.jsn' });
 exports.get = function(request, response) {
     
     console.log('Query params: ' + request.query);
-
-    if(!request.query.doorbellID)
-    {
-        return request.respond(400,{message: 'Must specifiy doorbellID in url parameters'});
-    }
-    
-    var containerName = nconf.get('SmartDoor.Storage.PhotoContainerName');
-    var accountName = nconf.get('SmartDoor.Storage.AccountName');
-    var accountKey = nconf.get('SmartDoor.Storage,AccountKey');
-    var host = accountName + '.blob.core.windows.net';
-    
-    console.log('Connecting to blob service account: ' + accountName);
-    var blobService = azure.createBlobService(accountName, accountKey, host);
-    
-    blobService.createContainerIfNotExists(containerName
-        ,{publicAccessLevel : 'blob'}
-        , function (error) {
-            if (error) {
-                console.log(error);
-                return request.respond(500,{message: 'Could not create blob'});
-            }
-            var sharedAccessPolicy = { 
-                AccessPolicy: {
-                    Permissions: 'rw', //Read and Write permissions
-                    Expiry: minutesFromNow(5) 
-                }
-            };
-            //create a time random id
-            var id = uuid.v4();
-            var sasUrl = blobService.generateSharedAccessSignature(containerName,
-                            id+'.jpg', sharedAccessPolicy);
-            
-
-
-            var sasQueryString = { 'sasUrl' : sasUrl.baseUrl + sasUrl.path + '?' + qs.stringify(sasUrl.queryString) };                    
-            
-            console.log('Adding photo ' + id + '.jpg to doorbell ' + request.query.doorBellID);
-            
-            addPhotoToDoorbell(request.query.doorbellID, id, function (err) {
-                if (!err) {
-                    console.log(err);
-                    return request.respond(500,{ message: 'Could not record photo entry in database' });
-                }
-                return request.respond(200, sasQueryString);
-            });
-    });
+    return request.respond(200, { message: "Hello" });
     
     
 }
