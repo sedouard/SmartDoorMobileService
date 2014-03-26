@@ -88,15 +88,15 @@ function addPhotoToDoorbell(doorbellID, photoId, callback) {
         });
 
         doorbell.save(function (err) {
-            if(!err)
-            {
-                callback(false, 'Sucessfully created doorbell photo for ' + doorbellID);
-            }
-            else {
-                callback(true, 'Failed to create doorbell photo for' + doorbellID);
-            }
-        })
-    });
+                if(!err)
+                {
+                    callback(false, 'Sucessfully created doorbell photo for ' + doorbellID);
+                }
+                else {
+                    callback(true, 'Failed to create doorbell photo for' + doorbellID);
+                }
+            });
+        });
     });
 
     
