@@ -52,9 +52,9 @@ exports.get = function(request, response) {
             
             addPhotoToDoorbell(request.query.doorbellID, id, function (err) {
                 if (!err) {
-                    request.respond(500,{ message: 'Could not record photo entry in database' });
+                    return request.respond(500,{ message: 'Could not record photo entry in database' });
                 }
-                request.respond(200, sasQueryString);
+                return request.respond(200, sasQueryString);
             });
     });
     
