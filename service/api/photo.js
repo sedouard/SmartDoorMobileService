@@ -55,6 +55,7 @@ exports.get = function(request, response) {
             
             addPhotoToDoorbell(request.query.doorbellID, id, function (err) {
                 if (!err) {
+                    console.log(err);
                     return request.respond(500,{ message: 'Could not record photo entry in database' });
                 }
                 return request.respond(200, sasQueryString);
@@ -78,32 +79,29 @@ function addPhotoToDoorbell(doorbellID, photoId, callback) {
         
         //Query for the speicfied doorbell. There should only be one in the DB.
         DoorBell.findOne({ doorBellID: doorbellID }, function (err, doorbell) {
-        if(err) return console.error(err);
+            if(err) return console.error(err);
 
-        if(doorbell == null){
-            callback('Could not find doorbellID' + doorbellID);
-        }
+            if(doorbell == null){
+                callback('Could not find doorbellID' + doorbellID);
+            }
 
-        //Create a new entry for photo and associate with this doorbell
-        var date = new Date();
+            //Create a new entry for photo and associate with this doorbell
+            var date = new Date();
 
-        if (!doorbell.photos) {
-            doorbell.photos = new Array();
-        }
-        doorbell.photos.push({
-            blobId: photoId+'.jpg',
-            timeStamp: date.getMilliseconds()
-        });
-
-        doorbell.save(function (err) {
-                if(!err)
-                {
-                    callback(false, 'Sucessfully created doorbell photo for ' + doorbellID);
-                }
-                else {
-                    callback(true, 'Failed to create doorbell photo for' + doorbellID);
-                }
+            if (!doorbell.photos) {
+                doorbell.photos = new Array();
+            }
+            doorbell.photos.push({
+                blobId: photoId+'.jpg',
+                timeStamp: date.getMilliseconds()
             });
+
+            doorbell.save(function (err) {
+                    if(err)
+                    {
+                        callback(err);
+                    }
+                });
         });
     });
 
