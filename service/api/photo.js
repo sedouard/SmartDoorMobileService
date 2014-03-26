@@ -8,12 +8,12 @@ var nconf = require('nconf');
 //Note, you should compile your models globally, as subsequent api calls may cause
 //errors as you can only do this once per node instance.
 var DoorBell = mongoosechemas.getDoorBellModel();
-nconf.argv().env().file({ file: '../shared/config.jsn' });
+
 exports.get = function(request, response) {
     // Use "request.service" to access features of your mobile service, e.g.:
     //   var tables = request.service.tables;
     //   var push = request.service.push;
-    
+    nconf.argv().env().file({ file: '../shared/config.jsn' });
     var containerName = nconf.get('SmartDoor.Storage.PhotoContainerName');
     var accountName = nconf.get('SmartDoor.Storage.AccountName');
     var accountKey = nconf.get('SmartDoor.Storage,AccountKey');
