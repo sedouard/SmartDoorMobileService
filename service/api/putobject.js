@@ -15,7 +15,11 @@ var doorbellSchema = mongoose.Schema({
 		});
 //Note, you should compile your models globally, as subsequent api calls may cause
 //errors as you can only do this once per node instance.
-var DoorBell = mongoose.model('DoorBell', doorbellSchema);
+var DoorBell = mongoose.model('DoorBell');
+
+if(!DoorBell){
+    DoorBell = mongoose.model('DoorBell', doorbellSchema);
+}
 
 //Begin PUT api, this api will register or update the registration of the doorbell object
 //the request body.
