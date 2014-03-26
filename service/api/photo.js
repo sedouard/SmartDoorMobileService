@@ -60,7 +60,7 @@ exports.get = function(request, response) {
 
     var sasQueryString = { 'sasUrl' : sasUrl.baseUrl + sasUrl.path + '?' + qs.stringify(sasUrl.queryString) };                    
     
-    addPhotoToDoorbell(req.query.doorbellID, id, function (err) {
+    addPhotoToDoorbell(request.query.doorbellID, id, function (err) {
         if (!err) {
             request.respond(500, 'Could not record photo entry in database');
         }
@@ -70,7 +70,6 @@ exports.get = function(request, response) {
 };
 
 function addPhotoToDoorbell(doorbellID, photoId, callback) {
-    console.log('Connecting to mongodb: ' + nconf.get("SmartDoor.MongodbConnectionString"));
     //TODO: We really need to figure out why nconf doesn't work in mobile services
     mongoose.connect("mongodb://MongoLab-4q:X7TH5fVZWynS6qUM1rht7olpktsJgNr94_ArcTVwHqs-@ds030607.mongolab.com:30607/MongoLab-4q");
     var db = mongoose.connection;
@@ -85,7 +84,7 @@ function addPhotoToDoorbell(doorbellID, photoId, callback) {
         if(err) return console.error(err);
 
         if(doorbell == null){
-            callback('Could not find doorbellID' - doorbellID);
+            callback('Could not find doorbellID' + doorbellID);
         }
         var date = new Date();
 
@@ -100,7 +99,7 @@ function addPhotoToDoorbell(doorbellID, photoId, callback) {
         doorbell.save(function (err) {
             if(!err)
             {
-                response.send(false, 'Sucessfully created doorbell photo for ' + doorbellID);
+                callback(false, 'Sucessfully created doorbell photo for ' + doorbellID);
             }
             else {
                 callback(true, 'Failed to create doorbell photo for' + doorbellID);
