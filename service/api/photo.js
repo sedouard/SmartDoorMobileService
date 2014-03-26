@@ -22,7 +22,7 @@ exports.get = function(request, response) {
 
         console.log(data);
     });
-    nconf.file({ file: 'config.jsn' });
+    nconf.file({ file: '/api/config.jsn' });
     var containerName = nconf.get('SmartDoor.Storage.PhotoContainerName');
     var accountName = nconf.get('SmartDoor.Storage.AccountName');
     var accountKey = nconf.get('SmartDoor.Storage,AccountKey');
