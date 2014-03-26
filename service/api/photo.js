@@ -29,34 +29,36 @@ exports.get = function(request, response) {
     blobService.createContainerIfNotExists(containerName
         ,{publicAccessLevel : 'blob'}
         , function (error) {
-            if (!error) {
-                request.respond(200, item);
+            if (error) {
+                request.respond(500,{message: 'Could not create blob'});
             } else {
                 console.log(error);
                 request.respond(statusCodes.OK);
             }
-        });
-    var sharedAccessPolicy = { 
-        AccessPolicy: {
-            Permissions: 'rw', //Read and Write permissions
-            Expiry: minutesFromNow(5) 
-        }
-    };
-    //create a time random id
-    var id = uuid.v4();
-    var sasUrl = blobService.generateSharedAccessSignature(containerName,
-                    id+'.jpg', sharedAccessPolicy);
-    
+
+            var sharedAccessPolicy = { 
+                AccessPolicy: {
+                    Permissions: 'rw', //Read and Write permissions
+                    Expiry: minutesFromNow(5) 
+                }
+            };
+            //create a time random id
+            var id = uuid.v4();
+            var sasUrl = blobService.generateSharedAccessSignature(containerName,
+                            id+'.jpg', sharedAccessPolicy);
+            
 
 
-    var sasQueryString = { 'sasUrl' : sasUrl.baseUrl + sasUrl.path + '?' + qs.stringify(sasUrl.queryString) };                    
-    
-    addPhotoToDoorbell(request.query.doorbellID, id, function (err) {
-        if (!err) {
-            request.respond(500, 'Could not record photo entry in database');
-        }
-        request.respond(200, sasQueryString);
+            var sasQueryString = { 'sasUrl' : sasUrl.baseUrl + sasUrl.path + '?' + qs.stringify(sasUrl.queryString) };                    
+            
+            addPhotoToDoorbell(request.query.doorbellID, id, function (err) {
+                if (!err) {
+                    request.respond(500,{ message: 'Could not record photo entry in database' });
+                }
+                request.respond(200, sasQueryString);
+            });
     });
+    
     
 };
 
