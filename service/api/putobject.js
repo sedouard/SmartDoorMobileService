@@ -3,7 +3,7 @@ var nconf = require('nconf');
 var mongoosechemas = require('../shared/mongooschemas.js');
 
 //schema for the doorbell object in mongodb
-var DoorBell = var DoorBell = mongoosechemas.getDoorBellModel();
+var DoorBell = mongoosechemas.getDoorBellModel();
 //get configuration settings file
 nconf.argv().env().file({ file: '../shared/config.jsn' });
 

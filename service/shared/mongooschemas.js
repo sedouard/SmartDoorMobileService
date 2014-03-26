@@ -1,3 +1,5 @@
+var mongoose = require('mongoose');
+
 exports.doorbellSchema = mongoose.Schema({
     		doorBellID: String,
     		users: [{
