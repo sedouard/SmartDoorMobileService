@@ -5,7 +5,7 @@ var mongoosechemas = require('../shared/mongoosechemas.js');
 //schema for the doorbell object in mongodb
 var DoorBell = var DoorBell = mongoosechemas.getDoorBellModel();
 //get configuration settings file
-nconf.argv().env().file({ file: '../shared/config.json' });
+nconf.argv().env().file({ file: '../shared/config.jsn' });
 
 //Begin PUT api, this api will register or update the registration of the doorbell object
 //the request body.
