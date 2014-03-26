@@ -85,7 +85,7 @@ function addPhotoToDoorbell(doorbellID, photoId, callback) {
         //Create a new entry for photo and associate with this doorbell
         var date = new Date();
 
-        if (doorbell.photos == null) {
+        if (!doorbell.photos) {
             doorbell.photos = new Array();
         }
         doorbell.photos.push({
