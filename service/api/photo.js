@@ -5,6 +5,7 @@ var https = require('https');
 var uuid = require('uuid');
 var mongoosechemas = require('../shared/mongooschemas.js');
 var nconf = require('nconf');
+var fs = require('fs');
 //Note, you should compile your models globally, as subsequent api calls may cause
 //errors as you can only do this once per node instance.
 var DoorBell = mongoosechemas.getDoorBellModel();
