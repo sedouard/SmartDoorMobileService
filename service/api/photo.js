@@ -14,12 +14,13 @@ var DoorBell = mongoosechemas.DoorBell;
 nconf.file({ file: __dirname + '/../shared/config.jsn' });
 exports.get = function(request, response) {
     
+    console.log('Query params: ' + request.query);
+
     if(!request.query.doorbellID)
     {
         return request.respond(400,{message: 'Must specifiy doorbellID in url parameters'});
     }
     
-    console.log('Query params: ' + request.query);
     var containerName = nconf.get('SmartDoor.Storage.PhotoContainerName');
     var accountName = nconf.get('SmartDoor.Storage.AccountName');
     var accountKey = nconf.get('SmartDoor.Storage,AccountKey');
