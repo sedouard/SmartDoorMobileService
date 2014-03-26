@@ -16,8 +16,9 @@ exports.doorbellSchema = mongoose.Schema({
             }]
 		});
 exports.getDoorBellModel = function() {
-	//Note, you should compile your models globally, as subsequent api calls may cause
-	//errors as you can only do this once per node instance.
+	//Note, you should check if your model has already been compiled by some other api.
+    //Otherwise you'll hit an exception that the model is already registered with
+    //mongoose
     var DoorBell;
     try
     {
@@ -28,5 +29,7 @@ exports.getDoorBellModel = function() {
     {
         DoorBell = mongoose.model('DoorBell', exports.doorbellSchema);
     }
+
+    return DoorBell;
 };
 //Note, you sho

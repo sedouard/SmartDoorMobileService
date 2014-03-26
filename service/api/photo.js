@@ -6,8 +6,8 @@ var uuid = require('uuid');
 var mongoosechemas = require('../shared/mongooschemas.js');
 var nconf = require('nconf');
 var fs = require('fs');
-//Note, you should compile your models globally, as subsequent api calls may cause
-//errors as you can only do this once per node instance.
+//Get the doorbell model. This function will take care of making sure it hasn't already
+//been compiled
 var DoorBell = mongoosechemas.getDoorBellModel();
 //get config settings. Note for azure mobile services, you should use the absolute path, as relative
 //paths (eg: file: 'config.jsn') doesn't work. Also do not name your file '.json' or else azure will
