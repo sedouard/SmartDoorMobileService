@@ -14,9 +14,12 @@ var DoorBell = mongoosechemas.DoorBell;
 //pick it up as a route configuration rather than a service configuration
 nconf.file({ file: __dirname + '/../shared/config.jsn' });
 exports.get = function(request, response) {
-    // Use "request.service" to access features of your mobile service, e.g.:
-    //   var tables = request.service.tables;
-    //   var push = request.service.push;  
+    
+    if(!request.doorbellID)
+    {
+        return request.respond(400,{message: 'Must specifiy doorbellID in url parameters'});
+    }
+    
     console.log('Query params: ' + request.query);
     var containerName = nconf.get('SmartDoor.Storage.PhotoContainerName');
     var accountName = nconf.get('SmartDoor.Storage.AccountName');
