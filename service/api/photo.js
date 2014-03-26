@@ -16,7 +16,7 @@ exports.get = function(request, response) {
     
     console.log('Query params: ' + request.query);
     
-    if(!request.query.doorbellID)
+    if(request.query.doorbellID == null)
     {
         return request.respond(400,{message: 'Must specifiy doorbellID in url parameters'});
     }
@@ -51,8 +51,13 @@ exports.get = function(request, response) {
             var sasQueryString = { 'sasUrl': sasUrl.baseUrl + sasUrl.path + '?' + qs.stringify(sasUrl.queryString) };
 
             console.log('Adding photo ' + id + '.jpg to doorbell ' + request.query.doorBellID);
-
-            return request.respond(200, { message: "Hello" });
+            addPhotoToDoorbell(request.query.doorbellID, id, function (err) {
+                if (!err) {
+                    console.log(err);
+                    return request.respond(500, { message: 'Could not record photo entry in database' });
+                }
+                return request.respond(200, sasQueryString);
+            });
         });
     
    
