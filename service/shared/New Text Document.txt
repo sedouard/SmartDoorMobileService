@@ -1,1 +1,0 @@
-{"SmartDoor.MongodbConnectionString":"mongodb://MongoLab-4q:X7TH5fVZWynS6qUM1rht7olpktsJgNr94_ArcTVwHqs-@ds030607.mongolab.com:30607/MongoLab-4q"}
