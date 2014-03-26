@@ -1,4 +1,4 @@
-var qs = require('querystring');
+//var qs = require('querystring');
 var azure = require('azure');
 var mongoose = require('mongoose');
 var https = require('https');
