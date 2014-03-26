@@ -100,6 +100,10 @@ function addPhotoToDoorbell(doorbellID, photoId, callback) {
                     {
                         callback(err);
                     }
+                    else
+                    {
+                        callback(false);
+                    }
                 });
         });
     });
