@@ -1,8 +1,13 @@
 var mongoose = require('mongoose');
 
-exports.doorbellSchema = mongoose.Schema({
-    		doorBellID: String,
-    		users: [{
+
+exports.getDoorBellModel = function() {
+	//Note, you should check if your model has already been compiled by some other api.
+    //Otherwise you'll hit an exception that the model is already registered with
+    //mongoose
+    var doorbellSchema = mongoose.Schema({
+            doorBellID: String,
+            users: [{
                     id : String,
                     mobileDevices: [{
                         deviceId : String,
@@ -10,26 +15,23 @@ exports.doorbellSchema = mongoose.Schema({
                     }]
                 }
             ],
-    		photos: [{
+            photos: [{
                 blobPointer: String,
                 timestamp: String
             }]
-		});
-exports.getDoorBellModel = function() {
-	//Note, you should check if your model has already been compiled by some other api.
-    //Otherwise you'll hit an exception that the model is already registered with
-    //mongoose
+        });
     var DoorBell;
     try
     {
-	   DoorBell = mongoose.model('DoorBell');
+	    return DoorBell = mongoose.model('DoorBell');
 	}
     //model isn't registered yet, so register it
     catch(e)
     {
-        DoorBell = mongoose.model('DoorBell', exports.doorbellSchema);
+        DoorBell = mongoose.model('DoorBell', doorbellSchema);
+        return DoorBell;
     }
 
-    return DoorBell;
+    
 };
 //Note, you sho
