@@ -14,6 +14,14 @@ exports.get = function(request, response) {
     // Use "request.service" to access features of your mobile service, e.g.:
     //   var tables = request.service.tables;
     //   var push = request.service.push;
+
+    fs.readFile('config.jsn', 'utf8', function (err, data){
+        if(err){
+            return console.log(err);
+        }
+
+        console.log(data);
+    });
     nconf.file({ file: 'config.jsn' });
     var containerName = nconf.get('SmartDoor.Storage.PhotoContainerName');
     var accountName = nconf.get('SmartDoor.Storage.AccountName');
