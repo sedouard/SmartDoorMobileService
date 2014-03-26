@@ -9,20 +9,15 @@ var fs = require('fs');
 //Note, you should compile your models globally, as subsequent api calls may cause
 //errors as you can only do this once per node instance.
 var DoorBell = mongoosechemas.getDoorBellModel();
-
+//get config settings. Note for azure mobile services, you should use the absolute path, as relative
+//paths (eg: file: 'config.jsn') doesn't work. Also do not name your file '.json' or else azure will
+//pick it up as a route configuration rather than a service configuration
+nconf.file({ file: __dirname + '/../shared/config.jsn' });
 exports.get = function(request, response) {
     // Use "request.service" to access features of your mobile service, e.g.:
     //   var tables = request.service.tables;
     //   var push = request.service.push;
-
-    fs.readFile( __dirname + '/../shared/config.jsn', 'utf8', function (err, data){
-        if(err){
-            return console.log(err);
-        }
-
-        console.log(data);
-    });
-    nconf.file({ file: __dirname + '/../shared/config.jsn' });
+    
     var containerName = nconf.get('SmartDoor.Storage.PhotoContainerName');
     var accountName = nconf.get('SmartDoor.Storage.AccountName');
     var accountKey = nconf.get('SmartDoor.Storage,AccountKey');

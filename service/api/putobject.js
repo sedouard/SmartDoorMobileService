@@ -4,8 +4,10 @@ var mongoosechemas = require('../shared/mongooschemas.js');
 
 //schema for the doorbell object in mongodb
 var DoorBell = mongoosechemas.getDoorBellModel();
-//get configuration settings file
-nconf.argv().env().file({ file: '../shared/config.jsn' });
+//get config settings. Note for azure mobile services, you should use the absolute path, as relative
+//paths (eg: file: 'config.jsn') doesn't work. Also do not name your file '.json' or else azure will
+//pick it up as a route configuration rather than a service configuration
+nconf.file({ file: __dirname + '/../shared/config.jsn' });
 
 //Begin PUT api, this api will register or update the registration of the doorbell object
 //the request body.
