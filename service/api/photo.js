@@ -63,7 +63,7 @@ exports.get = function(request, response) {
     });
     
     
-};
+}
 
 function addPhotoToDoorbell(doorbellID, photoId, callback) {
     //TODO: We really need to figure out why nconf doesn't work in mobile services
