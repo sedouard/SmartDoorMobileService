@@ -3,7 +3,7 @@ var nconf = require('nconf');
 var mongoosechemas = require('../shared/mongooschemas.js');
 
 //schema for the doorbell object in mongodb
-var DoorBell = mongoosechemas.getDoorBellModel();
+var DoorBell = mongoosechemas.DoorBell;
 //get config settings. Note for azure mobile services, you should use the absolute path, as relative
 //paths (eg: file: 'config.jsn') doesn't work. Also do not name your file '.json' or else azure will
 //pick it up as a route configuration rather than a service configuration
