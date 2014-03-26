@@ -6,12 +6,16 @@
   "engines": {
     "node": ">= 0.8.19"
   },
+<<<<<<< HEAD
   "dependencies": {
 	"mongoose": "3.8.x",
 	"nconf": "0.6.x",
 	"azure" : "0.8.x",
 	"uuid" : "1.4.x"
   },
+=======
+  "dependencies": {},
+>>>>>>> aea3303544388e410de893bfa8fa2d35ae14c68d
   "devDependencies": {},
   "scripts": {},
   "author": "unknown",
