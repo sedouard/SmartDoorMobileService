@@ -5,7 +5,6 @@ var https = require('https');
 var uuid = require('uuid');
 var mongoosechemas = require('../shared/mongooschemas.js');
 var nconf = require('nconf');
-var fs = require('fs');
 //Get the doorbell model. This function will take care of making sure it hasn't already
 //been compiled
 var DoorBell = mongoosechemas.DoorBell;
