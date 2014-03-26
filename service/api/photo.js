@@ -15,14 +15,14 @@ exports.get = function(request, response) {
     //   var tables = request.service.tables;
     //   var push = request.service.push;
 
-    fs.readFile('/api/config.jsn', 'utf8', function (err, data){
+    fs.readFile( __dirname + '/config.jsn', 'utf8', function (err, data){
         if(err){
             return console.log(err);
         }
 
         console.log(data);
     });
-    nconf.file({ file: 'api/config.jsn' });
+    nconf.file({ file: __dirname + '/config.jsn' });
     var containerName = nconf.get('SmartDoor.Storage.PhotoContainerName');
     var accountName = nconf.get('SmartDoor.Storage.AccountName');
     var accountKey = nconf.get('SmartDoor.Storage,AccountKey');
