@@ -28,9 +28,34 @@ exports.get = function(request, response) {
     
     console.log('Connecting to blob service account: ' + accountName);
     var blobService = azure.createBlobService(accountName, accountKey, host);
+    blobService.createContainerIfNotExists(containerName
+        , { publicAccessLevel: 'blob' }
+        , function (error) {
+            if (error) {
+                console.log(error);
+                return request.respond(500, { message: 'Could not create blob' });
+            }
+            var sharedAccessPolicy = {
+                AccessPolicy: {
+                    Permissions: 'rw', //Read and Write permissions
+                    Expiry: minutesFromNow(5)
+                }
+            };
+            //create a time random id
+            var id = uuid.v4();
+            var sasUrl = blobService.generateSharedAccessSignature(containerName,
+                            id + '.jpg', sharedAccessPolicy);
+
+
+
+            var sasQueryString = { 'sasUrl': sasUrl.baseUrl + sasUrl.path + '?' + qs.stringify(sasUrl.queryString) };
+
+            console.log('Adding photo ' + id + '.jpg to doorbell ' + request.query.doorBellID);
+
+            return request.respond(200, { message: "Hello" });
+        });
     
-    
-    return request.respond(200, { message: "Hello" });
+   
     
 }
 
