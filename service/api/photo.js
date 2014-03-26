@@ -15,7 +15,7 @@ nconf.file({ file: __dirname + '/../shared/config.jsn' });
 exports.get = function(request, response) {
     
     console.log('Query params: ' + request.query);
-    return request.respond(200, { message: "Hello" });
+    
     if(!request.query.doorbellID)
     {
         return request.respond(400,{message: 'Must specifiy doorbellID in url parameters'});
@@ -30,7 +30,7 @@ exports.get = function(request, response) {
     var blobService = azure.createBlobService(accountName, accountKey, host);
     
     
-    
+    return request.respond(200, { message: "Hello" });
     
 }
 
