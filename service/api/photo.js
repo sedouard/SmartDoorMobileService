@@ -15,7 +15,7 @@ var DoorBell = mongoosechemas.DoorBell;
 nconf.file({ file: __dirname + '/../shared/config.jsn' });
 exports.get = function(request, response) {
     
-    if(!request.doorbellID)
+    if(!request.query.doorbellID)
     {
         return request.respond(400,{message: 'Must specifiy doorbellID in url parameters'});
     }
