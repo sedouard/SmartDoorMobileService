@@ -1,4 +1,17 @@
-
+var qs = require('querystring');
+var azure = require('azure');
+var mongoose = require('mongoose');
+var https = require('https');
+var uuid = require('uuid');
+var mongoosechemas = require('../shared/mongooschemas.js');
+var nconf = require('nconf');
+//Get the doorbell model. This function will take care of making sure it hasn't already
+//been compiled
+var DoorBell = mongoosechemas.DoorBell;
+//get config settings. Note for azure mobile services, you should use the absolute path, as relative
+//paths (eg: file: 'config.jsn') doesn't work. Also do not name your file '.json' or else azure will
+//pick it up as a route configuration rather than a service configuration
+nconf.file({ file: __dirname + '/../shared/config.jsn' });
 exports.get = function(request, response) {
     
     console.log('Query params: ' + request.query);
