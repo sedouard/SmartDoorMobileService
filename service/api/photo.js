@@ -86,7 +86,7 @@ function addPhotoToDoorbell(doorbellID, photoId, callback) {
             if(err) return console.error(err);
 
             if(doorbell == null){
-                return callback('Could not find doorbellID' + doorbellID);
+                return callback('Could not find doorbellID ' + doorbellID);
             }
 
             //Create a new entry for photo and associate with this doorbell
