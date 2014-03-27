@@ -6,12 +6,15 @@ var nconf = require('nconf');
 //schema for the doorbell object in mongodb
 var DoorBell = mongoosechemas.DoorBell;
 
-var filename = module.uri;
-var dirname = path.dirname(filename);
 
-nconf.file({ file: dirname + '/../shared/config.jsn' });
+
+
+
+define(['module'],
 function doorBellRingListener() {
-
+    var filename = module.uri;
+    var dirname = path.dirname(module);
+    nconf.file({ file: dirname + '/../shared/config.jsn' });
     var sb = azure.createServiceBusService(nconf.get("SmartDoor.Notifications.DoorbellServiceBus"));
     
     listenForMessages();
@@ -54,13 +57,7 @@ function doorBellRingListener() {
                     });
     				
                 });
-                listenForMessages();
 			}
-            else
-            {
-                //no new messages
-                listenForMessages();
-            }
 		});
     }
 }
