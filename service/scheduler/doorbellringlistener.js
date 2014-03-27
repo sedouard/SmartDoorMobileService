@@ -1,21 +1,13 @@
 var azure = require('azure');
 var mongoose = require('mongoose');
 var mongoosechemas = require('../shared/mongooschemas.js');
-var nconf = require('nconf');
 
 //schema for the doorbell object in mongodb
 var DoorBell = mongoosechemas.DoorBell;
 
-
-
-
-
-define(['module'],
 function doorBellRingListener() {
-    var filename = module.uri;
-    var dirname = path.dirname(module);
-    nconf.file({ file: dirname + '/../shared/config.jsn' });
-    var sb = azure.createServiceBusService(nconf.get("SmartDoor.Notifications.DoorbellServiceBus"));
+    //TODO: can't use nconf because __dirname isn't supported in scheduled tasks for some reason :-(
+    var sb = azure.createServiceBusService('Endpoint=sb://dpeproject.servicebus.windows.net/;SharedAccessKeyName=servicepolicy;SharedAccessKey=Xn1mYsNIRj47xd25AKeVa2Ant6eLC+Br0xrNfqQbhO4=');
     
     listenForMessages();
     //TODO: We should validate the data coming from the SB. Its probably the most vulnerable part in terms of
@@ -24,10 +16,9 @@ function doorBellRingListener() {
         sb.receiveQueueMessage("arduino", { timeoutIntervalInS: 90 }, 
         function(err, data) {
 			if(data){
-                var connectionString = nconf.get('SmartDoor.MongodbConnectionString');
-                console.log('Connecting to mongodb with connection string: ' + connectionString);
+			    console.log('Connecting to mongodb');
                 
-                mongoose.connect(connectionString);
+			    mongoose.connect('mongodb://MongoLab-4q:X7TH5fVZWynS6qUM1rht7olpktsJgNr94_ArcTVwHqs-@ds030607.mongolab.com:30607/MongoLab-4q');
                 var db = mongoose.connection;
                 
                 db.on('error', console.error.bind(console, 'connection error:'));
