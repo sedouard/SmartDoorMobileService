@@ -11,6 +11,23 @@ nconf.file({ file: __dirname + '/../shared/config.jsn' });
 
 //Begin POST api, this api will register or update the registration of the doorbell object
 //the request body.
+
+//POST - smartdoor.azure-mobile.net/register
+/**
+ * BODY an object like the following:
+ * {
+   "doorBellID":"0101010",
+   "users":[{
+         "id":"facebook:1423438",
+         "mobileDevices":[
+              {
+                   "deviceId":"safasdfe0",
+                   "channel":"http://your.device.channel"
+              }
+         ]
+      }]
+    }
+ */
 exports.post = function(request, response) {
     // Use "request.service" to access features of your mobile service, e.g.:
     //   var tables = request.service.tables;
