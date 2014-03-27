@@ -15,7 +15,7 @@ function doorBellRingListener() {
     function listenForMessages() {
         sb.receiveQueueMessage("arduino", { timeoutIntervalInS: 90 }, 
         function(err, data) {
-			if(data){
+			if(!err){
                 console.log('Recieved notification: ' + data);
 			    console.log('Connecting to mongodb');
                 
@@ -32,6 +32,7 @@ function doorBellRingListener() {
                         if(err) return console.error(err);
 
                         if(doorbell == null){
+                            mongoose.disconnect();
                             return console.log('Could not find doorbellID ' + data.doorbellID + ' notification from unregistered device');
                         }
 
@@ -46,6 +47,8 @@ function doorBellRingListener() {
                                 }); 
                             }
                         }
+
+                        mongoose.disconnect();
                     });
     				
                 });
