@@ -52,7 +52,7 @@ exports.get = function(request, response) {
 
             console.log('Adding photo ' + id + '.jpg to doorbell ' + request.query.doorBellID);
             addPhotoToDoorbell(request.query.doorbellID, id, function (err) {
-                if (!err) {
+                if (err) {
                     console.log(err);
                     return request.respond(500, { message: 'Could not record photo entry in database' });
                 }
@@ -71,14 +71,14 @@ function addPhotoToDoorbell(doorbellID, photoId, callback) {
     
     mongoose.connect(connectionString);
     var db = mongoose.connection;
-    callback(false);
-    /**
+    
     db.on('error', console.error.bind(console, 'connection error:'));
     db.once('open', function callback() {
         console.log("Sucessfully Logged into mongo");
 
         console.log('Looking for doorBellID ' + doorbellID + ' in mongo');
         
+        /**
         //Query for the speicfied doorbell. There should only be one in the DB.
         DoorBell.findOne({ doorBellID: doorbellID }, function (err, doorbell) {
             if(err) return console.error(err);
@@ -109,8 +109,9 @@ function addPhotoToDoorbell(doorbellID, photoId, callback) {
                     }
                 });
         });
+        **/
     });
-**/
+
     
 }
 
