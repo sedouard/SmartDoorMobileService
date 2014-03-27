@@ -41,13 +41,15 @@ function doorBellRingListener() {
                         for(var user in doorbell.users){
                             console.log('sending push notification for user ' + doorbell.users[user].id);
                             for(var device in doorbell.users[user].mobileDevices){
-                                push.wns.sendToastText04(doorbell.users[user].mobileDevices[device].channel, {
-                                text1: 'New Ring from DoorBell ' + doorBellObj.doorBellID
-                                }, {
-                                        success: function(pushResponse) {
-                                        console.log("Sent push:", pushResponse);
-                                    }
-                                }); 
+                                if(doorbell.users[user].mobileDevices[device].channel){
+                                    push.wns.sendToastText04(doorbell.users[user].mobileDevices[device].channel, {
+                                    text1: 'New Ring from DoorBell ' + doorBellObj.doorBellID
+                                    }, {
+                                            success: function(pushResponse) {
+                                            console.log("Sent push:", pushResponse);
+                                        }
+                                    });
+                                }
                             }
                         }
 
