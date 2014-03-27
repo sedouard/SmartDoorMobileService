@@ -16,6 +16,7 @@ function doorBellRingListener() {
         sb.receiveQueueMessage("arduino", { timeoutIntervalInS: 90 }, 
         function(err, data) {
 			if(data){
+                console.log('Recieved notification: ' + data);
 			    console.log('Connecting to mongodb');
                 
 			    mongoose.connect('mongodb://MongoLab-4q:X7TH5fVZWynS6qUM1rht7olpktsJgNr94_ArcTVwHqs-@ds030607.mongolab.com:30607/MongoLab-4q');
@@ -49,6 +50,8 @@ function doorBellRingListener() {
     				
                 });
 			}
+            //look for more messages
+            listenForMessages();
 		});
     }
 }
