@@ -84,7 +84,7 @@ exports.post = function(request, response) {
                                 //we found a match, update the device push notification channel
                                 console.log('updating user ' + doorbell.users[u].id + ' device channel');
                                 //Update the stored matching device with the newest provided channel
-                                doorbell.users[u].mobileDevices[i].channel = deviceFromClient.deviceId;
+                                doorbell.users[u].mobileDevices[i].channel = deviceFromClient.channel;
                                 deviceMatched = true;
                                 break;
                             }
