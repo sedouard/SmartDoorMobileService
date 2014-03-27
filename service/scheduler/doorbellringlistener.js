@@ -13,6 +13,7 @@ function doorBellRingListener() {
     //TODO: We should validate the data coming from the SB. Its probably the most vulnerable part in terms of
     //malicious attack...
     function listenForMessages() {
+        console.log('listening for messages on queue arduino')
         sb.receiveQueueMessage("arduino", { timeoutIntervalInS: 90 }, 
         function(err, data) {
 			if(!err){
