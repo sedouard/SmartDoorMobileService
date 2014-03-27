@@ -68,8 +68,10 @@ function addPhotoToDoorbell(doorbellID, photoId, callback) {
     //TODO: We really need to figure out why nconf doesn't work in mobile services
     var connectionString = nconf.get('SmartDoor.MongodbConnectionString');
     console.log('Connecting to mongodb with connection string: ' + connectionString);
+    
     mongoose.connect(connectionString);
     var db = mongoose.connection;
+    /**
     db.on('error', console.error.bind(console, 'connection error:'));
     db.once('open', function callback() {
         console.log("Sucessfully Logged into mongo");
@@ -107,7 +109,7 @@ function addPhotoToDoorbell(doorbellID, photoId, callback) {
                 });
         });
     });
-
+**/
     
 }
 
