@@ -71,6 +71,7 @@ function addPhotoToDoorbell(doorbellID, photoId, callback) {
     
     mongoose.connect(connectionString);
     var db = mongoose.connection;
+    callback(false);
     /**
     db.on('error', console.error.bind(console, 'connection error:'));
     db.once('open', function callback() {
