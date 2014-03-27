@@ -1,6 +1,8 @@
 var azure = require('azure');
 var mongoose = require('mongoose');
 var mongoosechemas = require('../shared/mongooschemas.js');
+var nconf = require('nconf');
+
 //schema for the doorbell object in mongodb
 var DoorBell = mongoosechemas.DoorBell;
 nconf.file({ file: __dirname + '/../shared/config.jsn' });
