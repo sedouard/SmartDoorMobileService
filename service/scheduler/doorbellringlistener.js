@@ -39,8 +39,8 @@ function doorBellRingListener() {
 
                         for(var user in doorbell.users){
                             console.log('sending push notification for user ' + doorbell.users[user].id);
-                            for(var device in doorbell.users[user].devices){
-                                push.wns.sendToastText04(doorbell.users[user].devices[device].channel, {
+                            for(var device in doorbell.users[user].mobileDevices){
+                                push.wns.sendToastText04(doorbell.users[user].mobileDevices[device].channel, {
                                 text1: 'New Ring from DoorBell ' + doorBellObj.doorBellID
                                 }, {
                                         success: function(pushResponse) {
