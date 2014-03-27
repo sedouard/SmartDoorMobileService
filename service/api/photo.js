@@ -73,12 +73,12 @@ function addPhotoToDoorbell(doorbellID, photoId, callback) {
     var db = mongoose.connection;
     
     db.on('error', console.error.bind(console, 'connection error:'));
-    db.once('open', function callback() {
+    db.once('open', function callback2() {
         console.log("Sucessfully Logged into mongo");
 
         console.log('Looking for doorBellID ' + doorbellID + ' in mongo');
         callback(false);
-        /**
+        
         //Query for the speicfied doorbell. There should only be one in the DB.
         DoorBell.findOne({ doorBellID: doorbellID }, function (err, doorbell) {
             if(err) return console.error(err);
@@ -109,7 +109,7 @@ function addPhotoToDoorbell(doorbellID, photoId, callback) {
                     }
                 });
         });
-        **/
+        
     });
 
     
