@@ -18,7 +18,7 @@ exports.get = function(request, response) {
     
     if(request.query.doorbellID == null)
     {
-        return request.respond(400,{message: 'Must specifiy doorbellID in url parameters'});
+        return request.respond(401,{message: 'Must specifiy doorbellID in url parameters'});
     }
     
     var containerName = nconf.get('SmartDoor.Storage.PhotoContainerName');
@@ -54,7 +54,7 @@ exports.get = function(request, response) {
             addPhotoToDoorbell(request.query.doorbellID, id, function (err) {
                 if (err) {
                     console.log(err);
-                    return request.respond(500, { message: 'Could not record photo entry in database' });
+                    return request.respond(401, { message: 'Could not record photo entry in database' });
                 }
                 //Indicate that the photo was entered into the system
                 //and that the file should be uploaded via a PUT to
