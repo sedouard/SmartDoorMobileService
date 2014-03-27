@@ -32,7 +32,7 @@ function doorBellRingListener() {
                         if(err) return console.error(err);
 
                         if(doorbell == null){
-                            return callback('Could not find doorbellID ' + data.doorbellID);
+                            return console.log('Could not find doorbellID ' + data.doorbellID + ' notification from unregistered device');
                         }
 
                         for(var user in doorbell.users){
