@@ -105,6 +105,8 @@ function addPhotoToDoorbell(doorbellID, photoId, callback) {
                     }
                     else
                     {
+                        //We sucessfully associated this photo
+                        //to the doorbell.
                         callback(false);
                     }
                 });
