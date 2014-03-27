@@ -56,7 +56,10 @@ exports.get = function(request, response) {
                     console.log(err);
                     return request.respond(500, { message: 'Could not record photo entry in database' });
                 }
-                return request.respond(200, sasQueryString);
+                //Indicate that the photo was entered into the system
+                //and that the file should be uploaded via a PUT to
+                //the provided SAS url,
+                return request.respond(201, sasQueryString);
             });
         });
     
