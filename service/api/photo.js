@@ -59,7 +59,7 @@ exports.get = function(request, response) {
                 //Indicate that the photo was entered into the system
                 //and that the file should be uploaded via a PUT to
                 //the provided SAS url,
-                return request.respond(201, { sasUrl: sasQueryString, photoId: id + '.jpg'});
+                return request.respond(201, { sasUrl: sasQueryString, photoId: id });
             });
         });
     
