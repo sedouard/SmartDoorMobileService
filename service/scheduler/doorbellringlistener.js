@@ -17,7 +17,14 @@ function doorBellRingListener() {
         sb.receiveQueueMessage("arduino", { timeoutIntervalInS: 90 }, 
         function(err, data) {
 			if(!err){
+                //storage container settings
+                var containerName = nconf.get('SmartDoor.Storage.PhotoContainerName');
+                var accountName = nconf.get('SmartDoor.Storage.AccountName');
                 var doorBellObj = JSON.parse(data.body);
+                var imageUrl = accountName + '.blob.core.windows.net';
+                //image url in blob storage
+                imageUrl = imageUrl + '/' + containerName + doorBellObj.body.imageId;
+
                 console.log('Recieved notification: ' + doorBellObj.doorBellID);
 			    console.log('Connecting to mongodb');
                 
@@ -37,13 +44,17 @@ function doorBellRingListener() {
                             mongoose.disconnect();
                             return console.log('Could not find doorbellID ' + doorBellObj.doorBellID + ' notification. This is an unregistered device');
                         }
-                        
+                        var date = new Date();
+
                         //TODO: Assign Names to doorbells
                         for(var user in doorbell.users){
                             for(var device in doorbell.users[user].mobileDevices){
                                 if(doorbell.users[user].mobileDevices[device].channel){
                                     push.wns.sendToastImageAndText03(doorbell.users[user].mobileDevices[device].channel, {
-                                    text1: 'New Ring from your DoorBell ' + doorBellObj.doorBellID
+                                        text1: 'New Ring from your DoorBell ' + doorBellObj.doorBellID,
+                                        text2: 'At ' + date.getHours() + ':' + date.getMinutes() + ' today',
+                                        image1src: imageUrl,
+                                        image1alt: imageUrl
                                     }, {
                                             success: function(pushResponse) {
                                             console.log("Sent push:", pushResponse);
