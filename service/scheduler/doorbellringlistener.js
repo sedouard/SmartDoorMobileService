@@ -23,7 +23,7 @@ function doorBellRingListener() {
                 var doorBellObj = JSON.parse(data.body);
                 var imageUrl = accountName + '.blob.core.windows.net';
                 //image url in blob storage
-                imageUrl = 'http://' + imageUrl + '/' + containerName + '/' doorBellObj.imageId+'.jpg';
+                imageUrl = 'http://' + imageUrl + '/' + containerName + '/' + doorBellObj.imageId+'.jpg';
 
                 console.log('Recieved notification: ' + doorBellObj.doorBellID);
                 console.log('with image ' + imageUrl);
