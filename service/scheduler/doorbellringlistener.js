@@ -26,6 +26,7 @@ function doorBellRingListener() {
                 imageUrl = imageUrl + '/' + containerName + doorBellObj.imageId+'.jpg';
 
                 console.log('Recieved notification: ' + doorBellObj.doorBellID);
+                console.log('with image ' + imageUrl);
 			    console.log('Connecting to mongodb');
                 
                 var mongoConnString = nconf.get('SmartDoor.MongodbConnectionString');
