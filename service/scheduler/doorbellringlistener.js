@@ -13,6 +13,10 @@ function doorBellRingListener() {
     listenForMessages();
     //TODO: We should validate the data coming from the SB. Its probably the most vulnerable part in terms of
     //malicious attack...
+    
+    //Service bus message bodies should be a JSON object with photoID and doorbellID:
+    //{doorbellID: 1256235, photoId: SomeID.jpg}
+    //The photoId is returned from a call to GET /photo api.
     function listenForMessages() {
         console.log('listening for messages on queue arduino')
         sb.receiveQueueMessage("arduino", { timeoutIntervalInS: 90 }, 
