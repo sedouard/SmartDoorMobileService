@@ -11,7 +11,7 @@ var DoorBell = mongoosechemas.DoorBell;
 //get config settings. Note for azure mobile services, you should use the absolute path, as relative
 //paths (eg: file: 'config.jsn') doesn't work. Also do not name your file '.json' or else azure will
 //pick it up as a route configuration rather than a service configuration
-nconf.file({ file: __dirname + '/../shared/config.jsn' });
+nconf.argv().env()
 exports.get = function(request, response) {
     
     console.log('Query params: ' + request.query);

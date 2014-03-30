@@ -1,5 +1,0 @@
-{"SmartDoor.MongodbConnectionString":"mongodb://MongoLab-4q:X7TH5fVZWynS6qUM1rht7olpktsJgNr94_ArcTVwHqs-@ds030607.mongolab.com:30607/MongoLab-4q",
- "SmartDoor.Storage,AccountKey":"fy6fTMAFrAPNH1raM5BivcGoxUiUufrVvVkvZsnKzmjCZw1w6eqQWyc5pnTebPwhXYG0Yk9rw5UeSo3uHEEXPA==",
- "SmartDoor.Storage.AccountName":"smartdoor",
- "SmartDoor.Storage.PhotoContainerName":"maincontainer",
- "SmartDoor.Notifications.DoorbellServiceBus":"Endpoint=sb://dpeproject.servicebus.windows.net/;SharedAccessKeyName=servicepolicy;SharedAccessKey=Xn1mYsNIRj47xd25AKeVa2Ant6eLC+Br0xrNfqQbhO4="}

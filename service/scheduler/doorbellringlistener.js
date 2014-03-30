@@ -1,6 +1,7 @@
 var azure = require('azure');
 var mongoose = require('mongoose');
 var mongoosechemas = require('../shared/mongooschemas.js');
+var nconf = require*('nconf');
 
 //schema for the doorbell object in mongodb
 var DoorBell = mongoosechemas.DoorBell;
@@ -21,7 +22,7 @@ function doorBellRingListener() {
                 console.log('Recieved notification: ' + doorBellObj.doorBellID);
 			    console.log('Connecting to mongodb');
                 
-			    mongoose.connect('mongodb://MongoLab-4q:X7TH5fVZWynS6qUM1rht7olpktsJgNr94_ArcTVwHqs-@ds030607.mongolab.com:30607/MongoLab-4q');
+			    mongoose.connect(nconf.get('SmartDoor.MongodbConnectionString'));
                 var db = mongoose.connection;
                 
                 db.on('error', console.error.bind(console, 'connection error:'));
