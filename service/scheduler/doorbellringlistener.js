@@ -1,6 +1,7 @@
 var azure = require('azure');
 var mongoose = require('mongoose');
 var mongoosechemas = require('../shared/mongooschemas.js');
+var nconf = require('nconf');
 
 //schema for the doorbell object in mongodb
 var DoorBell = mongoosechemas.DoorBell;
@@ -23,7 +24,7 @@ function doorBellRingListener() {
                 var doorBellObj = JSON.parse(data.body);
                 var imageUrl = accountName + '.blob.core.windows.net';
                 //image url in blob storage
-                imageUrl = imageUrl + '/' + containerName + doorBellObj.body.imageId+'.jpg';
+                imageUrl = imageUrl + '/' + containerName + doorBellObj.imageId+'.jpg';
 
                 console.log('Recieved notification: ' + doorBellObj.doorBellID);
 			    console.log('Connecting to mongodb');
