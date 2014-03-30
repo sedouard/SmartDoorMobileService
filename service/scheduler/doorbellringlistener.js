@@ -42,12 +42,13 @@ function doorBellRingListener() {
                             mongoose.disconnect();
                             return console.log('Could not find doorbellID ' + doorBellObj.doorBellID + ' notification. This is an unregistered device');
                         }
-
+                        
+                        //TODO: Assign Names to doorbells
                         for(var user in doorbell.users){
                             for(var device in doorbell.users[user].mobileDevices){
                                 if(doorbell.users[user].mobileDevices[device].channel){
-                                    push.wns.sendToastText04(doorbell.users[user].mobileDevices[device].channel, {
-                                    text1: 'New Ring from DoorBell ' + doorBellObj.doorBellID
+                                    push.wns.sendToastImageAndText03(doorbell.users[user].mobileDevices[device].channel, {
+                                    text1: 'New Ring from your DoorBell ' + doorBellObj.doorBellID
                                     }, {
                                             success: function(pushResponse) {
                                             console.log("Sent push:", pushResponse);
