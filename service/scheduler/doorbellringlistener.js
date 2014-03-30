@@ -30,7 +30,7 @@ function doorBellRingListener() {
 			    console.log('Connecting to mongodb');
                 
                 var mongoConnString = nconf.get('SmartDoor.MongodbConnectionString');
-                console.log('Connecting to mongodb with connection string: ' + connectionString);
+                console.log('Connecting to mongodb with connection string: ' + mongoConnString);
 			    mongoose.connect(mongoConnString);
                 var db = mongoose.connection;
                 
