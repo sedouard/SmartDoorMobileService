@@ -1,7 +1,6 @@
 var azure = require('azure');
 var mongoose = require('mongoose');
 var mongoosechemas = require('../shared/mongooschemas.js');
-var nconf = require('nconf');
 
 //schema for the doorbell object in mongodb
 var DoorBell = mongoosechemas.DoorBell;
@@ -13,10 +12,6 @@ function doorBellRingListener() {
     listenForMessages();
     //TODO: We should validate the data coming from the SB. Its probably the most vulnerable part in terms of
     //malicious attack...
-    
-    //Service bus message bodies should be a JSON object with photoID and doorbellID:
-    //{doorbellID: 1256235, photoId: SomeID.jpg}
-    //The photoId is returned from a call to GET /photo api.
     function listenForMessages() {
         console.log('listening for messages on queue arduino')
         sb.receiveQueueMessage("arduino", { timeoutIntervalInS: 90 }, 
@@ -26,7 +21,7 @@ function doorBellRingListener() {
                 console.log('Recieved notification: ' + doorBellObj.doorBellID);
 			    console.log('Connecting to mongodb');
                 
-			    mongoose.connect(nconf.get('SmartDoor.MongodbConnectionString'));
+			    mongoose.connect('mongodb://MongoLab-4q:X7TH5fVZWynS6qUM1rht7olpktsJgNr94_ArcTVwHqs-@ds030607.mongolab.com:30607/MongoLab-4q');
                 var db = mongoose.connection;
                 
                 db.on('error', console.error.bind(console, 'connection error:'));
