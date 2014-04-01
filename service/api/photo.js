@@ -72,6 +72,7 @@ function addPhotoToDoorbell(doorbellID, photoId, callback) {
     var connectionString = nconf.get('SmartDoor.MongodbConnectionString');
     console.log('Connecting to mongodb with connection string: ' + connectionString);
     var containerName = nconf.get('SmartDoor.Storage.PhotoContainerName');
+    var accountName = nconf.get('SmartDoor.Storage.AccountName');
     var host = accountName + '.blob.core.windows.net';
     mongoose.connect(connectionString);
     var db = mongoose.connection;
