@@ -11,6 +11,7 @@ var doorbellSchema = mongoose.Schema({
             ],
             photos: [{
                 blobPointer: String,
+                url : String,
                 timestamp: String
             }]
         });
