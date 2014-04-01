@@ -27,7 +27,7 @@ exports.get = function(request, response) {
     
     var containerName = nconf.get('SmartDoor.Storage.PhotoContainerName');
     var accountName = nconf.get('SmartDoor.Storage.AccountName');
-    var doorBellObj = JSON.parse(data.body);
+    var doorBellID = request.query.doorbellID;
     var imageUrl = accountName + '.blob.core.windows.net';
     
     mongoose.connect(connectionString);
@@ -48,7 +48,7 @@ exports.get = function(request, response) {
             }
             if(doorbell == null){
                 mongoose.disconnect();
-                return response.send(500, 'Could not query database');
+                return response.send(404, 'Could not find doorbell ' + doorBellID);
             }
 
             //construct the full url to the image blob
