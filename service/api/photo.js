@@ -96,6 +96,7 @@ function addPhotoToDoorbell(doorbellID, photoId, callback) {
             var date = new Date();
 
             if (!doorbell.hasOwnProperty("photos")) {
+                console.log('debug: doorbell has no photo property, creating...');
                 doorbell.photos = new Array();
             }
             doorbell.photos.push({
@@ -113,6 +114,7 @@ function addPhotoToDoorbell(doorbellID, photoId, callback) {
                     {
                         //We sucessfully associated this photo
                         //to the doorbell.
+                        console.log('sucessfully added photo ' + photoId + ' to doorbell ' + doorbellID);
                         mongoose.disconnect();
                         return callback(false);
                     }
