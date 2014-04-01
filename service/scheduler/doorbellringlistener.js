@@ -2,6 +2,9 @@ var azure = require('azure');
 var nconf = require('nconf');
 var mongoose = require('mongoose');
 var mongoosechemas = require('../shared/mongooschemas.js');
+//Get the doorbell model. This function will take care of making sure it hasn't already
+//been compiled
+var DoorBell = mongoosechemas.DoorBell;
 function doorBellRingListener() {
 
     var sb = azure.createServiceBusService("Endpoint=sb://dpeproject.servicebus.windows.net/;SharedAccessKeyName=servicepolicy;SharedAccessKey=Xn1mYsNIRj47xd25AKeVa2Ant6eLC+Br0xrNfqQbhO4=");
