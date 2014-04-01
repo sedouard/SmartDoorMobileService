@@ -1,5 +1,7 @@
 var azure = require('azure');
 var nconf = require('nconf');
+var mongoose = require('mongoose');
+
 function doorBellRingListener() {
 
     var sb = azure.createServiceBusService("Endpoint=sb://dpeproject.servicebus.windows.net/;SharedAccessKeyName=servicepolicy;SharedAccessKey=Xn1mYsNIRj47xd25AKeVa2Ant6eLC+Br0xrNfqQbhO4=");
