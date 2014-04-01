@@ -5,7 +5,7 @@ var mongoose = require('mongoose');
 //Get the doorbell model. This function will take care of making sure it hasn't already
 //been compiled
 var DoorBell = mongoosechemas.DoorBell;
-
+nconf.argv().env()
 exports.post = function(request, response) {
     // Use "request.service" to access features of your mobile service, e.g.:
     //   var tables = request.service.tables;
