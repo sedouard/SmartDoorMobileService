@@ -56,6 +56,7 @@ exports.get = function(request, response) {
                 var imageUrl = 'http://' + imageUrl + '/' + containerName + '/' + doorbell.photos[i].blobPointer+'.jpg';
                 doorbell.photos[i].url = new Object();
                 doorbell.photos[i].url = imageUrl;
+                console.log('Added image url for doorbell object: ' doorbell.photos[i]);
             }
 
             response.send(statusCodes.OK, doorbell.photos);
