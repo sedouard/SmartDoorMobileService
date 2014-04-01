@@ -83,9 +83,12 @@ function addPhotoToDoorbell(doorbellID, photoId, callback) {
         
         //Query for the speicfied doorbell. There should only be one in the DB.
         DoorBell.findOne({ doorBellID: doorbellID }, function (err, doorbell) {
-            if(err) return console.error(err);
-
+            if(err) {
+                mongoose.disconnect();
+                return console.error(err);
+            }
             if(doorbell == null){
+                mongoose.disconnect();
                 return callback('Could not find doorbellID ' + doorbellID);
             }
 
@@ -103,12 +106,14 @@ function addPhotoToDoorbell(doorbellID, photoId, callback) {
             doorbell.save(function (err) {
                     if(err)
                     {
+                        mongoose.disconnect();
                         return callback(err);
                     }
                     else
                     {
                         //We sucessfully associated this photo
                         //to the doorbell.
+                        mongoose.disconnect();
                         return callback(false);
                     }
                 });
