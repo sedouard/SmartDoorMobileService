@@ -101,7 +101,7 @@ function addPhotoToDoorbell(doorbellID, photoId, callback) {
                 console.log('debug: doorbell has no photo property, creating...');
                 doorbell.photos = new Array();
             }
-            doorbell.photos.push({
+            doorbell.photos.push( new photo{
                 blobPointer: photoId ,
                 timeStamp: date.getMilliseconds(),
                 url: 'http://' + host + '/' + containerName + '/' + photoId +'.jpg'
