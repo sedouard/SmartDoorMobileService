@@ -8,7 +8,7 @@ var DoorBell = mongoosechemas.DoorBell;
 nconf.argv().env();
 function doorBellRingListener() {
 
-    var sb = azure.createServiceBusService("");
+    var sb = azure.createServiceBusService("SmartDoor.Notifications.DoorbellServiceBus");
     //var hub = new azure.NotificationHubService(nconf.get("SmartDoor.ServiceBus.DoorBellNotificationHubName"),
     //    nconf.get("SmartDoor.ServiceBus.DoorBellNotificationConnectionString"));
     
