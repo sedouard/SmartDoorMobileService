@@ -9,10 +9,7 @@ var nconf = require('nconf');
 //been compiled
 var DoorBell = mongoosechemas.DoorBell;
 
-var containerName = nconf.get('SmartDoor.Storage.PhotoContainerName');
-var accountName = nconf.get('SmartDoor.Storage.AccountName');
-var accountKey = nconf.get('SmartDoor.Storage.AccountKey');
-var host = accountName + '.blob.core.windows.net';
+
 
 //get config settings from azure mobile config dashboard page
 nconf.argv().env()
@@ -24,7 +21,11 @@ exports.get = function(request, response) {
     {
         return request.respond(400,{message: 'Must specifiy doorbellID in url parameters'});
     }
-
+    var containerName = nconf.get('SmartDoor.Storage.PhotoContainerName');
+    var accountName = nconf.get('SmartDoor.Storage.AccountName');
+    var accountKey = nconf.get('SmartDoor.Storage.AccountKey');
+    
+    var host = accountName + '.blob.core.windows.net';
     console.log('Connecting to blob service account: ' + accountName);
     var blobService = azure.createBlobService(accountName, accountKey, host);
     blobService.createContainerIfNotExists(containerName
@@ -70,7 +71,8 @@ function addPhotoToDoorbell(doorbellID, photoId, callback) {
     //TODO: We really need to figure out why nconf doesn't work in mobile services
     var connectionString = nconf.get('SmartDoor.MongodbConnectionString');
     console.log('Connecting to mongodb with connection string: ' + connectionString);
-    
+    var containerName = nconf.get('SmartDoor.Storage.PhotoContainerName');
+    var host = accountName + '.blob.core.windows.net';
     mongoose.connect(connectionString);
     var db = mongoose.connection;
     
