@@ -5,9 +5,10 @@ var mongoosechemas = require('../shared/mongooschemas.js');
 //Get the doorbell model. This function will take care of making sure it hasn't already
 //been compiled
 var DoorBell = mongoosechemas.DoorBell;
+nconf.argv().env();
 function doorBellRingListener() {
 
-    var sb = azure.createServiceBusService("Endpoint=sb://dpeproject.servicebus.windows.net/;SharedAccessKeyName=servicepolicy;SharedAccessKey=Xn1mYsNIRj47xd25AKeVa2Ant6eLC+Br0xrNfqQbhO4=");
+    var sb = azure.createServiceBusService("");
     //var hub = new azure.NotificationHubService(nconf.get("SmartDoor.ServiceBus.DoorBellNotificationHubName"),
     //    nconf.get("SmartDoor.ServiceBus.DoorBellNotificationConnectionString"));
     
