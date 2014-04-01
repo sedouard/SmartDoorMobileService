@@ -15,7 +15,7 @@ function doorBellRingListener() {
     function listenForMessages() {
         console.log('listening for messages on queue arduino')
         sb.receiveQueueMessage("arduino", { timeoutIntervalInS: 90 }, 
-        function(err, data) {
+        function(err, data) { 
             if(!err){
                 //storage container settings
                 var containerName = nconf.get('SmartDoor.Storage.PhotoContainerName');
