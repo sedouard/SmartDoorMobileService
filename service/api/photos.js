@@ -27,7 +27,7 @@ exports.get = function(request, response) {
     
     var containerName = nconf.get('SmartDoor.Storage.PhotoContainerName');
     var accountName = nconf.get('SmartDoor.Storage.AccountName');
-    var doorBellObj = JSON.parse(data.body);
+    var doorBellID = request.query.doorbellID;
     var imageUrl = accountName + '.blob.core.windows.net';
     
     mongoose.connect(connectionString);
@@ -37,31 +37,31 @@ exports.get = function(request, response) {
     db.once('open', function () {
         console.log("Sucessfully Logged into mongo");
 
-        console.log('Looking for doorBellID ' + doorbellID + ' in mongo');
+        console.log('Looking for doorBellID ' + doorBellID + ' in mongo');
         
         //Query for the speicfied doorbell. There should only be one in the DB.
-        DoorBell.findOne({ doorBellID: doorbellID }, function (err, doorbell) {
+        DoorBell.findOne({ doorBellID: doorBellID }, function (err, doorbell) {
             if(err) {
                 mongoose.disconnect();
-                return console.error(err);
+                return response.send(500, 'Could not query database');
+
             }
             if(doorbell == null){
                 mongoose.disconnect();
-                return callback('Could not find doorbellID ' + doorbellID);
+                return response.send(404, 'Could not find doorbell ' + doorBellID);
             }
 
-            //construct the full url to the image blob
-            //image url in blob storage
-            var imageUrl = 'http://' + imageUrl + '/' + containerName + '/' + doorBellObj.imageId+'.jpg';
-
             for(var i in doorbell.photos){
-
-            	doorbell.photos[i].url = imageUrl;
+                //construct the full url to the image blob
+                var imageUrl = 'http://' + imageUrl + '/' + containerName + '/' + doorbell.photos[i].blobPointer+'.jpg';
+                doorbell.photos[i].url = new Object();
+                doorbell.photos[i].url = imageUrl;
+                console.log('Added image url for doorbell object: ' + doorbell.photos[i]);
             }
 
             response.send(statusCodes.OK, doorbell.photos);
 
         });
-    
+    });
     
 };
