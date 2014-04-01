@@ -37,10 +37,10 @@ exports.get = function(request, response) {
     db.once('open', function () {
         console.log("Sucessfully Logged into mongo");
 
-        console.log('Looking for doorBellID ' + doorbellID + ' in mongo');
+        console.log('Looking for doorBellID ' + doorBellID + ' in mongo');
         
         //Query for the speicfied doorbell. There should only be one in the DB.
-        DoorBell.findOne({ doorBellID: doorbellID }, function (err, doorbell) {
+        DoorBell.findOne({ doorBellID: doorBellID }, function (err, doorbell) {
             if(err) {
                 mongoose.disconnect();
                 return response.send(500, 'Could not query database');
