@@ -25,7 +25,7 @@ exports.get = function(request, response) {
     var accountName = nconf.get('SmartDoor.Storage.AccountName');
     var accountKey = nconf.get('SmartDoor.Storage,AccountKey');
     var host = accountName + '.blob.core.windows.net';
-    var blobService = azure.createBlobService(accountName, accountKey, host);
+    var blobService = azure.createBlobService();
     console.log('Connecting to blob service account: ' + accountName);
     
     blobService.createContainerIfNotExists(containerName
