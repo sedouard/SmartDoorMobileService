@@ -1,4 +1,9 @@
 var mongoose = require('mongoose');
+var photoSchema = mongoose.Schema({
+                blobPointer: String,
+                url : String,
+                timestamp: String
+            });
 var doorbellSchema = mongoose.Schema({
             doorBellID: String,
             users: [{
@@ -9,13 +14,10 @@ var doorbellSchema = mongoose.Schema({
                     }]
                 }
             ],
-            photos: [{
-                blobPointer: String,
-                url : String,
-                timestamp: String
-            }]
+            photos: [photoSchema]
         });
 
+var Photo = mongoose.model('Photo', photoSchema)
 var DoorBell = mongoose.model('DoorBell', doorbellSchema);
 
 if(DoorBell){
@@ -25,3 +27,4 @@ else{
     console.log("Failed to compile model DoorBell");
 }
 exports.DoorBell = DoorBell;
+exports.Photo = Photo;
