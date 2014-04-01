@@ -51,14 +51,6 @@ exports.get = function(request, response) {
                 return response.send(404, 'Could not find doorbell ' + doorBellID);
             }
 
-            for(var i in doorbell.photos){
-                //construct the full url to the image blob
-                var imageUrl = 'http://' + imageUrl + '/' + containerName + '/' + doorbell.photos[i].blobPointer+'.jpg';
-                doorbell.photos[i].url = new Object();
-                doorbell.photos[i].url = imageUrl;
-                console.log('Added image url for doorbell object: ' + doorbell.photos[i]);
-            }
-
             response.send(statusCodes.OK, doorbell.photos);
 
         });
