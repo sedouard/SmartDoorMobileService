@@ -41,8 +41,10 @@ function doorBellRingListener() {
         
                     //Query for the speicfied doorbell. There should only be one in the DB.
                     DoorBell.findOne({ doorBellID: doorBellObj.doorBellID }, function (err, doorbell) {
-                        if(err) return console.error(err);
-
+                        if(err) {
+                            mongoose.disconnect();
+                            return console.error(err);
+                        }
                         if(doorbell == null){
                             mongoose.disconnect();
                             return console.log('Could not find doorbellID ' + doorBellObj.doorBellID + ' notification. This is an unregistered device');
