@@ -23,11 +23,11 @@ exports.get = function(request, response) {
     
     var containerName = nconf.get('SmartDoor.Storage.PhotoContainerName');
     var accountName = nconf.get('SmartDoor.Storage.AccountName');
-    var accountKey = nconf.get('SmartDoor.Storage,AccountKey');
+    var accountKey = nconf.get('SmartDoor.Storage.AccountKey');
     var host = accountName + '.blob.core.windows.net';
-    var blobService = azure.createBlobService(accountName, accountKey, host);
-    console.log('Connecting to blob service account: ' + accountName);
     
+    console.log('Connecting to blob service account: ' + accountName);
+    var blobService = azure.createBlobService(accountName, accountKey, host);
     blobService.createContainerIfNotExists(containerName
         , { publicAccessLevel: 'blob' }
         , function (error) {
