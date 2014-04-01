@@ -27,7 +27,7 @@ exports.get = function(request, response) {
     var host = accountName + '.blob.core.windows.net';
     
     console.log('Connecting to blob service account: ' + accountName);
-    var blobService = azure=createBlobService(accountName, accountKey, host);
+    var blobService = azure.createBlobService(accountName, accountKey, host);
     blobService.createContainerIfNotExists(containerName
         , { publicAccessLevel: 'blob' }
         , function (error) {
