@@ -50,7 +50,7 @@ exports.get = function(request, response) {
 
             var sasResponse = { 'sasUrl': sasUrl.baseUrl + sasUrl.path + '?' + qs.stringify(sasUrl.queryString), 'photoId': id };
 
-            console.log('Adding photo ' + id + '.jpg to doorbell ' + request.query.doorBellID);
+            console.log('Adding photo ' + id + '.jpg to doorbell ' + request.query.doorbellID);
             addPhotoToDoorbell(request.query.doorbellID, id, function (err) {
                 if (err) {
                     console.log(err);
