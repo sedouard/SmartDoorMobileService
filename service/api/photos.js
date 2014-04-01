@@ -48,7 +48,7 @@ exports.get = function(request, response) {
             }
             if(doorbell == null){
                 mongoose.disconnect();
-                return callback('Could not find doorbellID ' + doorbellID);
+                return response.send(500, 'Could not query database');
             }
 
             //construct the full url to the image blob
