@@ -99,7 +99,7 @@ function addPhotoToDoorbell(doorbellID, photoId, callback) {
                 doorbell.photos = new Array();
             }
             doorbell.photos.push({
-                blobId: photoId+'.jpg',
+                blobPointer: photoId+'.jpg',
                 timeStamp: date.getMilliseconds()
             });
 
