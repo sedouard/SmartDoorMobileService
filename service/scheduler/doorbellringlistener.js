@@ -1,20 +1,15 @@
 var azure = require('azure');
-var mongoose = require('mongoose');
-var mongoosechemas = require('../shared/mongooschemas.js');
-var nconf = require('nconf');
-
-//schema for the doorbell object in mongodb
-var DoorBell = mongoosechemas.DoorBell;
-
 function doorBellRingListener() {
-    var sb = azure.createServiceBusService(nconf.get('SmartDoor.Notifications.DoorbellServiceBus'));
+
+    var sb = azure.createServiceBusService("Endpoint=sb://dpeproject.servicebus.windows.net/;SharedAccessKeyName=servicepolicy;SharedAccessKey=Xn1mYsNIRj47xd25AKeVa2Ant6eLC+Br0xrNfqQbhO4=");
+    //var hub = new azure.NotificationHubService(nconf.get("SmartDoor.ServiceBus.DoorBellNotificationHubName"),
+    //    nconf.get("SmartDoor.ServiceBus.DoorBellNotificationConnectionString"));
     
     listenForMessages();
-    //TODO: We should validate the data coming from the SB. Its probably the most vulnerable part in terms of
-    //malicious attack...
+    
     function listenForMessages() {
-        console.log('listening for messages on queue arduino')
         sb.receiveQueueMessage("arduino", { timeoutIntervalInS: 90 }, 
+<<<<<<< HEAD
         function(err, data) { 
             if(!err){
                 //storage container settings

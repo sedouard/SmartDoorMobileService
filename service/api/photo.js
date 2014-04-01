@@ -48,7 +48,7 @@ exports.get = function(request, response) {
 
 
 
-            var sasQueryString = { 'sasUrl': sasUrl.baseUrl + sasUrl.path + '?' + qs.stringify(sasUrl.queryString) };
+            var sasResponse = { 'sasUrl': sasUrl.baseUrl + sasUrl.path + '?' + qs.stringify(sasUrl.queryString), 'photoId': id };
 
             console.log('Adding photo ' + id + '.jpg to doorbell ' + request.query.doorBellID);
             addPhotoToDoorbell(request.query.doorbellID, id, function (err) {
@@ -59,7 +59,7 @@ exports.get = function(request, response) {
                 //Indicate that the photo was entered into the system
                 //and that the file should be uploaded via a PUT to
                 //the provided SAS url,
-                return request.respond(201, { sasUrl: sasQueryString, photoId: id });
+                return request.respond(201, sasResponse);
             });
         });
     
