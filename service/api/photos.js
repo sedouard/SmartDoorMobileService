@@ -51,13 +51,12 @@ exports.get = function(request, response) {
                 return response.send(404, 'Could not find doorbell ' + doorBellID);
             }
 
-            //construct the full url to the image blob
-            //image url in blob storage
-            var imageUrl = 'http://' + imageUrl + '/' + containerName + '/' + doorBellObj.imageId+'.jpg';
+            
 
             for(var i in doorbell.photos){
-
-            	doorbell.photos[i].url = imageUrl;
+                //construct the full url to the image blob
+                var imageUrl = 'http://' + imageUrl + '/' + containerName + '/' + doorbell.photos[i].blobPointer+'.jpg';
+                doorbell.photos[i].url = imageUrl;
             }
 
             response.send(statusCodes.OK, doorbell.photos);
