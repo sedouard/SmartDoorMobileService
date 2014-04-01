@@ -43,7 +43,8 @@ exports.get = function(request, response) {
         DoorBell.findOne({ doorBellID: doorbellID }, function (err, doorbell) {
             if(err) {
                 mongoose.disconnect();
-                return console.error(err);
+                return response.send(500, 'Could not query database');
+
             }
             if(doorbell == null){
                 mongoose.disconnect();
