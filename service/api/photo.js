@@ -8,7 +8,7 @@ var nconf = require('nconf');
 //Get the doorbell model. This function will take care of making sure it hasn't already
 //been compiled
 var DoorBell = mongoosechemas.DoorBell;
-
+var Photo = mongoosechemas.Photo;
 
 
 //get config settings from azure mobile config dashboard page
