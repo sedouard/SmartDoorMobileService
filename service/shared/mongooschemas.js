@@ -20,11 +20,5 @@ var doorbellSchema = mongoose.Schema({
 var Photo = mongoose.model('Photo', photoSchema)
 var DoorBell = mongoose.model('DoorBell', doorbellSchema);
 
-if(DoorBell){
-    console.log("Sucessfully compile model DoorBell");
-}
-else{
-    console.log("Failed to compile model DoorBell");
-}
 exports.DoorBell = DoorBell;
 exports.Photo = Photo;

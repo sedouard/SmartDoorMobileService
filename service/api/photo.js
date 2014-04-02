@@ -83,7 +83,7 @@ function addPhotoToDoorbell(doorbellID, photoId, callback) {
 
         console.log('Looking for doorBellID ' + doorbellID + ' in mongo');
         
-        
+
         //Query for the speicfied doorbell. There should only be one in the DB.
         DoorBell.findOne({ doorBellID: doorbellID }, function (err, doorbell) {
             if(err) {
@@ -98,7 +98,7 @@ function addPhotoToDoorbell(doorbellID, photoId, callback) {
             //Create a new entry for photo and associate with this doorbell
             var date = new Date();
 
-            if (!doorbell.hasOwnProperty("photos")) {
+            if (!doorbell.photos) {
                 console.log('debug: doorbell has no photo property, creating...');
                 doorbell.photos = new Array();
             }
