@@ -12,7 +12,7 @@ var Photo = mongoosechemas.Photo;
 
 
 //get config settings from azure mobile config dashboard page
-nconf.argv().env()
+nconf.argv().env();
 exports.get = function(request, response) {
     
     console.log('Query params: ' + request.query);
