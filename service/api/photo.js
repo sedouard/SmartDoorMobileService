@@ -83,6 +83,7 @@ function addPhotoToDoorbell(doorbellID, photoId, callback) {
 
         console.log('Looking for doorBellID ' + doorbellID + ' in mongo');
         
+        
         //Query for the speicfied doorbell. There should only be one in the DB.
         DoorBell.findOne({ doorBellID: doorbellID }, function (err, doorbell) {
             if(err) {
