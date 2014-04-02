@@ -41,16 +41,17 @@ exports.get = function(request, response) {
         
         //Query for the speicfied doorbell. There should only be one in the DB.
         DoorBell.findOne({ doorBellID: doorBellID }, function (err, doorbell) {
+
+            mongoose.disconnect();
+            
             if(err) {
-                mongoose.disconnect();
-                return response.send(500, 'Could not query database');
-
+                response.send(500, 'Could not query database');
             }
-            if(doorbell == null){
-                mongoose.disconnect();
-                return response.send(404, 'Could not find doorbell ' + doorBellID);
+            else if(doorbell == null){
+                response.send(404, 'Could not find doorbell ' + doorBellID);
             }
 
+            
             response.send(statusCodes.OK, doorbell.photos);
 
         });
