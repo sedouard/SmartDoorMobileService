@@ -15,7 +15,7 @@ function doorBellRingListener() {
     listenForMessages();
     
     function listenForMessages() {
-        sb.receiveQueueMessage("arduino", { timeoutIntervalInS: 90 }, 
+        sb.receiveQueueMessage("arduino", { timeoutIntervalInS: 60 }, 
         function(err, data) { 
             if(!err){
                 //storage container settings
@@ -75,8 +75,6 @@ function doorBellRingListener() {
                     
                 });
             }
-            //look for more messages
-            listenForMessages();
         });
     }
 }
