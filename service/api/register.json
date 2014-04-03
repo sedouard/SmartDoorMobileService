@@ -1,1 +1,1 @@
-{"routes":{"*":{"get":{"permission":"admin"},"post":{"permission":"user"},"put":{"permission":"admin"},"patch":{"permission":"admin"},"delete":{"permission":"admin"}}}}
+{"routes":{"*":{"get":{"permission":"admin"},"post":{"permission":"public"},"put":{"permission":"admin"},"patch":{"permission":"admin"},"delete":{"permission":"admin"}}}}
