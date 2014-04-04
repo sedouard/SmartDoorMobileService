@@ -16,7 +16,7 @@ nconf.argv().env();
 exports.get = function(request, response) {
     
     console.log('Query params: ' + request.query);
-    ++
+    
     if(request.query.doorbellID == null)
     {
         return request.respond(400,{message: 'Must specifiy doorbellID in url parameters'});
