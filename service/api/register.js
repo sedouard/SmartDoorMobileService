@@ -130,7 +130,8 @@ exports.post = function(request, response) {
     };
     db.on('error', function(err){
         //check if connection is open
-        if(err.status == 1){
+        //HACK, HACK
+        if(err == '{ [Error: Trying to open unclosed connection.] state: 1 }'){
             procedure();
         }
         else{
