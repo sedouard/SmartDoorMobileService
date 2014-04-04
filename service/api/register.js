@@ -130,7 +130,7 @@ exports.post = function(request, response) {
     };
     db.on('error', function(err){
         //check if connection is open
-        if(err.status == ){
+        if(err.status == 1){
             procedure();
         }
         else{
