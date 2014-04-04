@@ -122,7 +122,7 @@ function addPhotoToDoorbell(doorbellID, photoId, callback) {
     }
     else
     {
-        response.send(500, 'Could not connect to database');
+        callback('Could not connect to database');
     }
 
     
