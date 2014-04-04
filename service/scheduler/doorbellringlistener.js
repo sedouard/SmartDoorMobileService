@@ -62,6 +62,8 @@ function doorBellRingListener() {
                             }
                         }
                     });
+                //we finsihed processing this request, look for more messages
+                listenForMessages();
                 } else{
                     console.error('Could not connect to database');
                 }
