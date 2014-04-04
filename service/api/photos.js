@@ -22,9 +22,6 @@ exports.post = function(request, response) {
 //just the image url within the container
 exports.get = function(request, response) {
     
-    var connectionString = nconf.get('SmartDoor.MongodbConnectionString');
-    console.log('Connecting to mongodb with connection string: ' + connectionString);
-    
     var containerName = nconf.get('SmartDoor.Storage.PhotoContainerName');
     var accountName = nconf.get('SmartDoor.Storage.AccountName');
     var doorBellID = request.query.doorbellID;
@@ -33,7 +30,7 @@ exports.get = function(request, response) {
     mongoose.connect(connectionString);
     var db = mongoose.connection;
     
-    var procedure = function(){
+    if(connection.readyState == 1){
         console.log("Sucessfully Logged into mongo");
 
         console.log('Looking for doorBellID ' + doorBellID + ' in mongo');
@@ -52,18 +49,9 @@ exports.get = function(request, response) {
             response.send(statusCodes.OK, doorbell.photos);
 
         });
+    } else{
+        response.send(500, 'Could not connect to database');
     }
 
-    db.on('error', function(err){
-        //conection was already open. Do the work
-        if(err.status == 2){
-            procedure();   
-        } else{
-            response.send(500, 'Could not connect to database');
-        }
-    });
-    db.once('open', function () {
-        procedure();
-    });
     
 };

@@ -38,7 +38,8 @@ exports.post = function(request, response) {
     //TODO: We really need to figure out why nconf doesn't work in mobile services
 
     var db = mongoose.connection;
-    if(db.readyState){
+    
+    if(db.readyState == 1){
         console.log("Sucessfully Logged into mongo");
 
         console.log('Looking for doorBellID ' + request.body.doorBellID + ' in mongo');

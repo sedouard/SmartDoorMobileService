@@ -36,18 +36,11 @@ function doorBellRingListener() {
                 mongoose.connect(mongoConnString);
                 var db = mongoose.connection;
                 
-                db.on('error', function(err){
-                    /**
-                        State is already connected
-                    **/
-                    if(err.state == 2){
-                        doPushTask(doorBellObj);
-                    }
-                    console.error(err);
-                });
-                db.once('open', function () {
+                if(db.readyState = 1){
                     doPushTask(doorBellObj);
-                });
+                } else{
+                    console.error('Could not connect to database');
+                }
             }
         });
     }
