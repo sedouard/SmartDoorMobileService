@@ -1,4 +1,8 @@
+//get config settings from azure mobile config dashboard page
+nconf.argv().env();
 var mongoose = require('mongoose');
+var connectionString = nconf.get('SmartDoor.MongodbConnectionString');
+mongoose.connect(connectionString);
 var photoSchema = mongoose.Schema({
                 blobPointer: String,
                 url : String,

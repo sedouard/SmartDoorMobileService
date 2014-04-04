@@ -69,15 +69,15 @@ exports.get = function(request, response) {
 
 function addPhotoToDoorbell(doorbellID, photoId, callback) {
     //TODO: We really need to figure out why nconf doesn't work in mobile services
-    var connectionString = nconf.get('SmartDoor.MongodbConnectionString');
+    
     console.log('Connecting to mongodb with connection string: ' + connectionString);
     var containerName = nconf.get('SmartDoor.Storage.PhotoContainerName');
     var accountName = nconf.get('SmartDoor.Storage.AccountName');
     var host = accountName + '.blob.core.windows.net';
-    mongoose.connect(connectionString);
+
     var db = mongoose.connection;
     
-    var procedure = function(){
+    if(mongoose.connection.readyState){
         console.log("Sucessfully Logged into mongo");
 
         console.log('Looking for doorBellID ' + doorbellID + ' in mongo');
@@ -121,18 +121,10 @@ function addPhotoToDoorbell(doorbellID, photoId, callback) {
                 });
         });
     }
-    db.on('error', function(err){
-        if(err.state == 2){
-            procedure();
-        } else
-        {
-            response.send(500, 'Could not connect to database');
-        }
-    });
-    db.once('open', function () {
-            procedure();
-            
-    });
+    else
+    {
+        response.send(500, 'Could not connect to database');
+    }
 
     
 }
