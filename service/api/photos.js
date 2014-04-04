@@ -24,7 +24,7 @@ exports.get = function(request, response) {
     
     var containerName = nconf.get('SmartDoor.Storage.PhotoContainerName');
     var accountName = nconf.get('SmartDoor.Storage.AccountName');
-    var doorBellID = request.query.doorbellID;
+    var doorBellID = request.query.doorBellID;
     var imageUrl = accountName + '.blob.core.windows.net';
     
     var db = mongoose.connection;
