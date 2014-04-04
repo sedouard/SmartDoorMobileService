@@ -37,16 +37,6 @@ function doorBellRingListener() {
                 var db = mongoose.connection;
                 
                 if(db.readyState = 1){
-                    doPushTask(doorBellObj);
-                } else{
-                    console.error('Could not connect to database');
-                }
-            }
-        });
-    }
-
-    function doPushTask(doorBellObj) {
-        //Query for the speicfied doorbell. There should only be one in the DB.
                     DoorBell.findOne({ doorBellID: doorBellObj.doorBellID }, function (err, doorbell) {
                         if(err) {
                             return console.error(err);
@@ -75,5 +65,10 @@ function doorBellRingListener() {
                             }
                         }
                     });
+                } else{
+                    console.error('Could not connect to database');
+                }
+            }
+        });
     }
 }
