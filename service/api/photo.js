@@ -70,7 +70,6 @@ exports.get = function(request, response) {
 function addPhotoToDoorbell(doorbellID, photoId, callback) {
     //TODO: We really need to figure out why nconf doesn't work in mobile services
     
-    console.log('Connecting to mongodb with connection string: ' + connectionString);
     var containerName = nconf.get('SmartDoor.Storage.PhotoContainerName');
     var accountName = nconf.get('SmartDoor.Storage.AccountName');
     var host = accountName + '.blob.core.windows.net';
