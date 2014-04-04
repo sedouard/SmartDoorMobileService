@@ -31,9 +31,6 @@ function doorBellRingListener() {
                 console.log('with image ' + imageUrl);
                 console.log('Connecting to mongodb');
                 
-                var mongoConnString = nconf.get('SmartDoor.MongodbConnectionString');
-                console.log('Connecting to mongodb with connection string: ' + mongoConnString);
-                mongoose.connect(mongoConnString);
                 var db = mongoose.connection;
                 
                 if(db.readyState = 1){
