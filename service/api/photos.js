@@ -56,7 +56,7 @@ exports.get = function(request, response) {
 
     db.on('error', function(err){
         //conection was already open. Do the work
-        if(err.status == 2){}
+        if(err.status == 2){
             procedure();   
         } else{
             response.send(500, 'Could not connect to database');
