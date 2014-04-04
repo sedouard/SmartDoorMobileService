@@ -27,10 +27,9 @@ exports.get = function(request, response) {
     var doorBellID = request.query.doorbellID;
     var imageUrl = accountName + '.blob.core.windows.net';
     
-    mongoose.connect(connectionString);
     var db = mongoose.connection;
     
-    if(connection.readyState == 1){
+    if(db.readyState == 1){
         console.log("Sucessfully Logged into mongo");
 
         console.log('Looking for doorBellID ' + doorBellID + ' in mongo');
