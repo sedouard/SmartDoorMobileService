@@ -134,7 +134,7 @@ exports.post = function(request, response) {
             procedure();
         }
         else{
-            console.error("Hit error with status " err.status);
+            console.error("Hit error with status " + err.status);
             console.error(err);
         }
 });
