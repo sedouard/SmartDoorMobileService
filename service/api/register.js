@@ -39,14 +39,13 @@ exports.post = function(request, response) {
     mongoose.connect(nconf.get("SmartDoor.MongodbConnectionString"));
 
     var db = mongoose.connection;
-    db.on('error', console.error.bind(console, 'connection error:'));
-    db.once('open', function callback() {
+    var procedure = function(){
         console.log("Sucessfully Logged into mongo");
 
         console.log('Looking for doorBellID ' + request.body.doorBellID + ' in mongo');
         
         DoorBell.findOne({ doorBellID: request.body.doorBellID }, function (err, doorbell) {
-            if (err) return console.error(err);
+           if (err) return console.error(err);
 
             if (doorbell == null) {
                 console.log('No registration found, creating a new one');
@@ -127,11 +126,20 @@ exports.post = function(request, response) {
                     console.log('Sucessfully updated doorbell registration ' + request.body.doorBellID + ' in MongoDB');
                     response.send(statusCodes.OK, { message: 'Sucessfully updated doorbell registration ' + request.body.doorBellID });
                     mongoose.disconnect();
-                });
+                }); 
 
-            }
         });
-    });
+    };
+    db.on('error', function(err){
+        //check if connection is open
+        if(err.status == 2){
+            procedure();
+        }
+});
+    db.once('open', function callback() {
+            procedure();
+        });
+
 
     
 };

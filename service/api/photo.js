@@ -16,7 +16,7 @@ nconf.argv().env();
 exports.get = function(request, response) {
     
     console.log('Query params: ' + request.query);
-    
+    ++
     if(request.query.doorbellID == null)
     {
         return request.respond(400,{message: 'Must specifiy doorbellID in url parameters'});
@@ -77,8 +77,7 @@ function addPhotoToDoorbell(doorbellID, photoId, callback) {
     mongoose.connect(connectionString);
     var db = mongoose.connection;
     
-    db.on('error', console.error.bind(console, 'connection error:'));
-    db.once('open', function () {
+    var procedure = function(){
         console.log("Sucessfully Logged into mongo");
 
         console.log('Looking for doorBellID ' + doorbellID + ' in mongo');
@@ -125,7 +124,15 @@ function addPhotoToDoorbell(doorbellID, photoId, callback) {
                     }
                 });
         });
-        
+    }
+    db.on('error', function(err){
+        if(err.state == 2){
+            procedure();
+        }
+    });
+    db.once('open', function () {
+            procedure();
+            
     });
 
     
