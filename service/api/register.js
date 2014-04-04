@@ -54,7 +54,6 @@ exports.post = function(request, response) {
                dbEntity.save(function (err, entity) {
                    console.log('sucessfully created new registration for registration: ' + entity);
                    response.send(201, { message: 'Sucessfully created doorbell registration for doorBellID: ' + request.body.doorBellID });
-                   mongoose.disconnect();
                    return;
                });
 
@@ -125,7 +124,6 @@ exports.post = function(request, response) {
                doorbell.save(function (err, dBell) {
                    console.log('Sucessfully updated doorbell registration ' + request.body.doorBellID + ' in MongoDB');
                    response.send(statusCodes.OK, { message: 'Sucessfully updated doorbell registration ' + request.body.doorBellID });
-                   mongoose.disconnect();
                });
            }
         });
@@ -134,6 +132,9 @@ exports.post = function(request, response) {
         //check if connection is open
         if(err.status == 2){
             procedure();
+        }
+        else{
+            console.error(err);
         }
 });
     db.once('open', function callback() {

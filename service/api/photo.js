@@ -86,11 +86,9 @@ function addPhotoToDoorbell(doorbellID, photoId, callback) {
         //Query for the speicfied doorbell. There should only be one in the DB.
         DoorBell.findOne({ doorBellID: doorbellID }, function (err, doorbell) {
             if(err) {
-                mongoose.disconnect();
                 return console.error(err);
             }
             if(doorbell == null){
-                mongoose.disconnect();
                 return callback('Could not find doorbellID ' + doorbellID);
             }
 
@@ -111,7 +109,6 @@ function addPhotoToDoorbell(doorbellID, photoId, callback) {
             doorbell.save(function (err) {
                     if(err)
                     {
-                        mongoose.disconnect();
                         return callback(err);
                     }
                     else
@@ -119,7 +116,6 @@ function addPhotoToDoorbell(doorbellID, photoId, callback) {
                         //We sucessfully associated this photo
                         //to the doorbell.
                         console.log('sucessfully added photo ' + photoId + ' to doorbell ' + doorbellID);
-                        mongoose.disconnect();
                         return callback(false);
                     }
                 });
@@ -128,6 +124,9 @@ function addPhotoToDoorbell(doorbellID, photoId, callback) {
     db.on('error', function(err){
         if(err.state == 2){
             procedure();
+        } else
+        {
+            response.send(500, 'Could not connect to database');
         }
     });
     db.once('open', function () {

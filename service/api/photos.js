@@ -33,8 +33,7 @@ exports.get = function(request, response) {
     mongoose.connect(connectionString);
     var db = mongoose.connection;
     
-    db.on('error', console.error.bind(console, 'connection error:'));
-    db.once('open', function () {
+    var procedure = function(){
         console.log("Sucessfully Logged into mongo");
 
         console.log('Looking for doorBellID ' + doorBellID + ' in mongo');
@@ -42,8 +41,6 @@ exports.get = function(request, response) {
         //Query for the speicfied doorbell. There should only be one in the DB.
         DoorBell.findOne({ doorBellID: doorBellID }, function (err, doorbell) {
 
-            mongoose.disconnect();
-            
             if(err) {
                 response.send(500, 'Could not query database');
             }
@@ -55,6 +52,18 @@ exports.get = function(request, response) {
             response.send(statusCodes.OK, doorbell.photos);
 
         });
+    }
+
+    db.on('error', function(err){
+        //conection was already open. Do the work
+        if(err.status == 2){}
+            procedure();   
+        } else{
+            response.send(500, 'Could not connect to database');
+        }
+    });
+    db.once('open', function () {
+        procedure();
     });
     
 };
