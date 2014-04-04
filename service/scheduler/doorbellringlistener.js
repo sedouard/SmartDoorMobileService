@@ -66,6 +66,10 @@ function doorBellRingListener() {
                     console.error('Could not connect to database');
                 }
             }
+            //no new messages, listen again
+            else{
+                listenForMessages();
+            }
         });
     }
 }
