@@ -126,7 +126,6 @@ exports.post = function(request, response) {
                 });
             }
         });
-        
     }
     else{
         console.error("Hit error with status " + err.status);
