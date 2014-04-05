@@ -78,10 +78,8 @@ function doorBellRingListener() {
                         })
                     }
                 }
+                
+                listenForMessages();
             });
     }
-}
-
-function processNotifications() {
-
 }
