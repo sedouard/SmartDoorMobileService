@@ -81,7 +81,3 @@ function doorBellRingListener() {
             });
     }
 }
-
-function processNotifications() {
-
-}
