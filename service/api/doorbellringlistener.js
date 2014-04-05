@@ -1,8 +1,14 @@
+/**
+This is actually a recurring task in desiguise. Because Azure Mobile is gauranteed to intialize all api scripts
+we create this script as an 'api' with only admin accees. It responds to http requests at all and actually
+only responds to the service bus.
+**/
+
 var azure = require('azure');
 var nconf = require('nconf');
 var mongoose = require('mongoose');
 var mongoosechemas = require('../shared/mongooschemas.js');
-var push = require('push');
+
 //Get the doorbell model. This function will take care of making sure it hasn't already
 //been compiled
 var DoorBell = mongoosechemas.DoorBell;
