@@ -54,7 +54,7 @@ function doorbellringlistener(){
                             for(var user in doorbell.users){
                                 for(var device in doorbell.users[user].mobileDevices){
                                     if(doorbell.users[user].mobileDevices[device].channel){
-                                        push.wns.sendToastText01(doorbell.users[user].mobileDevices[device].channel, {
+                                        push.wns.sendToastText01('https://bn1.notify.windows.com/?token=AgYAAABOs3qC5CqRIOIYCsRUJ2t2F4PXR87VKx%2faQgXECr3j5g0h5bkk%2bDbs9cKmzApNAv6D4XeXiMHV%2fm3J24mj27dbSEx%2bp6AbWQEkQsp%2fIKT9s82GtVEIfjjqWJ0N3u5PMAE%3d', {
                                             text1: 'Hello!'
                                         }, {
                                                 success: function(pushResponse) {
