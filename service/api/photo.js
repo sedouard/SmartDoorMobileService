@@ -1,5 +1,4 @@
 //this require kicks off the task that listens to the service bus
-var doorbellListener = require('../shared/doorbellringlistener.js');
 var qs = require('qs');
 var azure = require('azure');
 var mongoose = require('mongoose');
