@@ -55,7 +55,7 @@ function doorbellringlistener(){
                                 for(var device in doorbell.users[user].mobileDevices){
                                     if(doorbell.users[user].mobileDevices[device].channel){
 
-                                        push.wns.sendToastImageAndText03(doorbell.users[user].mobileDevices[device].channel, {
+                                        push.wns.sendToastImageAndText03('https://bn1.notify.windows.com/?token=AgYAAABlUUQRL/QKGnOraTuYhiVfAlMmxBlXkKcWIXDZ0cXAECt+3o5+wXE+99CjXCbaDUbOPHNREePchHiiSzCeg8S3MNqry0QQEfVAVpZLGdKmTjQ/G396m14ducbSoAaYlU0=', {
                                             text1: 'New Ring from your DoorBell ' + doorBellObj.doorBellID,
                                             text2: 'At ' + date.getHours() + ':' + date.getMinutes() + ' today',
                                             image1src: imageUrl,
