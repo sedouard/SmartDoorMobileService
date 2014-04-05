@@ -58,8 +58,11 @@ function doorbellringlistener(){
                                             text1: 'Hello!'
                                         }, {
                                                 success: function(pushResponse) {
-                                                console.log("Sent push:", pushResponse);
-                                            }
+                                                    console.log("Sent push:", pushResponse);
+                                                },
+                                                error: function(err){
+                                                    console.log("Couldn't send push: " + err);
+                                                }
                                         });
                                     }
                                 }
