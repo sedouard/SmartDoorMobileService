@@ -54,7 +54,7 @@ function doorbellringlistener(){
                             for(var user in doorbell.users){
                                 for(var device in doorbell.users[user].mobileDevices){
                                     if(doorbell.users[user].mobileDevices[device].channel){
-                                        /**
+
                                         push.wns.sendToastImageAndText03(doorbell.users[user].mobileDevices[device].channel, {
                                             text1: 'New Ring from your DoorBell ' + doorBellObj.doorBellID,
                                             text2: 'At ' + date.getHours() + ':' + date.getMinutes() + ' today',
@@ -65,7 +65,7 @@ function doorbellringlistener(){
                                                 console.log("Sent push:", pushResponse);
                                             }
                                         });
-                                        * **/
+                                        /**
                                         var payload = '<?xml version="1.0" encoding="utf-8"?><toast><visual><binding template="ToastText01">' +
                                         '<text id="1">Sample Toast</text></binding></visual></toast>';
                                         push.wns.send(doorbell.users[user].mobileDevices[device].channel,
@@ -75,6 +75,7 @@ function doorbellringlistener(){
                                                     console.log("Sent push:", pushResponse);
                                                 }
                                             });
+                                            * **/
                                     }
                                 }
                             }
