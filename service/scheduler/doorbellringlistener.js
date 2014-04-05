@@ -17,8 +17,6 @@ function doorbellringlistener(){
     console.log('Doorbell Listener Started');
 
     var sb = azure.createServiceBusService(nconf.get("SmartDoor.Notifications.DoorbellServiceBus"));
-    //var hub = new azure.NotificationHubService(nconf.get("SmartDoor.ServiceBus.DoorBellNotificationHubName"),
-    //    nconf.get("SmartDoor.ServiceBus.DoorBellNotificationConnectionString"));
 
     listenForMessages();
 
