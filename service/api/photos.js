@@ -1,4 +1,3 @@
-var mongoosechemas = require('../shared/mongooschemas.js');
 var nconf = require('nconf');
 var mongoose = require('mongoose');
 
