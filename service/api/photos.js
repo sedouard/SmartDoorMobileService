@@ -60,7 +60,10 @@ exports.get = function(request, response) {
         db.on('connect', function(){
             procedure();
         });
-        response.send(500, 'Could not connect to database');
+        db.on('error', function(){
+            response.send(500, 'Could not connect to database');
+        });
+        
     }
 
     
