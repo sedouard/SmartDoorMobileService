@@ -48,6 +48,7 @@ function doorBellRingListener() {
                         for(var user in doorbell.users){
                             for(var device in doorbell.users[user].mobileDevices){
                                 if(doorbell.users[user].mobileDevices[device].channel){
+                                    console.log('sending push to channel: ' + doorbell.users[user].mobileDevices[device].channel);
                                     push.wns.sendToastImageAndText03(doorbell.users[user].mobileDevices[device].channel, {
                                         text1: 'New Ring from your DoorBell ' + doorBellObj.doorBellID,
                                         text2: 'At ' + date.getHours() + ':' + date.getMinutes() + ' today',
