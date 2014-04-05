@@ -29,7 +29,7 @@ exports.get = function(request, response) {
     
     var db = mongoose.connection;
     
-    if(db.readyState == 1){
+    var procedure = function(){
         console.log("Sucessfully Logged into mongo");
 
         console.log('Looking for doorBellID ' + doorBellID + ' in mongo');
@@ -48,7 +48,18 @@ exports.get = function(request, response) {
             response.send(statusCodes.OK, doorbell.photos);
 
         });
+    };
+    
+    if(db.readyState == 1){
+        procedure();
     } else{
+        db.connect();
+        var connectionString = nconf.get('SmartDoor.MongodbConnectionString');
+        mongoose.connect(connectionString);
+        
+        db.on('connect', function(){
+            procedure();
+        });
         response.send(500, 'Could not connect to database');
     }
 
