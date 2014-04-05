@@ -24,7 +24,7 @@ function doorbellringlistener(){
 
     function listenForMessages() {
         //Listen for 59 seconds, this job runs for 60 seconds so we avoid having multiple invokations
-        sb.receiveQueueMessage("arduino", { timeoutIntervalInS: 90 }, 
+        sb.receiveQueueMessage("arduino", { timeoutIntervalInS: 60 }, 
             function(err, data) { 
                 if(!err){
                     //storage container settings
