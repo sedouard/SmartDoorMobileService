@@ -54,15 +54,15 @@ function doorbellringlistener(){
                             for(var user in doorbell.users){
                                 for(var device in doorbell.users[user].mobileDevices){
                                     if(doorbell.users[user].mobileDevices[device].channel){
-                                        push.wns.sendToastText01('https://bn1.notify.windows.com/?token=AgYAAABOs3qC5CqRIOIYCsRUJ2t2F4XR87VKx%2faQgXECr3j5g0h5bkk%2bDbs9cKmzApNAv6D4XeXiMHV%2fm3J24mj27dbSEx%2bp6AbWQEkQsp%2fIKT9s82GtVEIfjjqWJ0N3u5PMAE%3d', {
-                                            text1: 'Hello!'
+                                        push.wns.sendToastImageAndText03(doorbell.users[user].mobileDevices[device].channel, {
+                                            text1: 'New Ring from your DoorBell ' + doorBellObj.doorBellID,
+                                            text2: 'At ' + date.getHours() + ':' + date.getMinutes() + ' today',
+                                            image1src: imageUrl,
+                                            image1alt: imageUrl
                                         }, {
                                                 success: function(pushResponse) {
-                                                    console.log("Sent push:", pushResponse);
-                                                },
-                                                error: function(err){
-                                                    console.log("Couldn't send push: " + err);
-                                                }
+                                                console.log("Sent push:", pushResponse);
+                                            }
                                         });
                                     }
                                 }
