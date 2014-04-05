@@ -68,7 +68,7 @@ function doorbellringlistener(){
                                         * **/
                                         var payload = '<?xml version="1.0" encoding="utf-8"?><toast><visual><binding template="ToastText01">' +
                                         '<text id="1">Sample Toast</text></binding></visual></toast>';
-                                        push.wns.send(null,
+                                        push.wns.send(doorbell.users[user].mobileDevices[device].channel,
                                             payload,
                                             'wns/toast', {
                                                 success: function (pushResponse) {
