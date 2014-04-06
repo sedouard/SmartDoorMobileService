@@ -8,7 +8,7 @@ function doorbellringlistener(){
     var nconf = require('nconf');
     var mongoose = require('mongoose');
     var mongoosechemas = require('../shared/mongooschemas.js');
-
+    
     //Get the doorbell model. This function will take care of making sure it hasn't already
     //been compiled
     var DoorBell = mongoosechemas.DoorBell;
@@ -17,7 +17,8 @@ function doorbellringlistener(){
     console.log('Doorbell Listener Started');
 
     var sb = azure.createServiceBusService(nconf.get("SmartDoor.Notifications.DoorbellServiceBus"));
-
+    var hub = azure.createNotificationHubService(nconf.get("SmartDoor.Notifications.HubName",
+              "SmartDoor.Notifications.HubConnString"));
     listenForMessages();
 
     function listenForMessages() {
@@ -55,7 +56,7 @@ function doorbellringlistener(){
                                 for(var device in doorbell.users[user].mobileDevices){
                                     if(doorbell.users[user].mobileDevices[device].channel){
 
-                                        push.wns.sendToastImageAndText03('https://bn1.notify.windows.com/?token=AgYAAABlUUQRL/QKGnOraTuYhiVfAlMmxBlXkKcWIXDZ0cXAECt+3o5+wXE+99CjXCbaDUbOPHNREePchHiiSzCeg8S3MNqry0QQEfVAVpZLGdKmTjQ/G396m14ducbSoAaYlU0=', {
+                                        hub.wns.sendToastImageAndText03('https://bn1.notify.windows.com/?token=AgYAAABlUUQRL/QKGnOraTuYhiVfAlMmxBlXkKcWIXDZ0cXAECt+3o5+wXE+99CjXCbaDUbOPHNREePchHiiSzCeg8S3MNqry0QQEfVAVpZLGdKmTjQ/G396m14ducbSoAaYlU0=', {
                                             text1: 'New Ring from your DoorBell ' + doorBellObj.doorBellID,
                                             text2: 'At ' + date.getHours() + ':' + date.getMinutes() + ' today',
                                             image1src: imageUrl,
