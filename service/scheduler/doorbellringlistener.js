@@ -42,7 +42,7 @@ function doorbellringlistener(){
                     //TODO: It's super easy to send notifications to andriod/ios/wp8 too. We just need
                     //to modify the platform specific payload. In this case I'm using hub.wns because
                     //I'm telling the hub to notify all windows 8 devices registerd for this doorbell
-                    hub.wns.sendToast02(doorBellObj.doorBellID, {
+                    hub.wns.sendToast2(doorBellObj.doorBellID, {
                                             text1: 'New Ring from your DoorBell ' + doorBellObj.doorBellID,
                                             text2: 'At ' + date.getHours() + ':' + date.getMinutes() + ' today',
                                             image1src: imageUrl,
