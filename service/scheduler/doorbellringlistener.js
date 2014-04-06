@@ -45,7 +45,7 @@ function doorbellringlistener(){
                                             text2: 'At ' + date.getHours() + ':' + date.getMinutes() + ' today',
                                             image1src: imageUrl,
                                             image1alt: imageUrl
-                       },null, function(pushResponse) {
+                       }, function(pushResponse) {
                             console.log("Sent push:", pushResponse);
                     });
                 }
