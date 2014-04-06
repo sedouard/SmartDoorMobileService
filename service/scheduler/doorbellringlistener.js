@@ -6,7 +6,6 @@ your compute bill will go through the roof!
 function doorbellringlistener(){
     var azure = require('azure');
     var nconf = require('nconf');
-    var mongoose = require('mongoose');
     var mongoosechemas = require('../shared/mongooschemas.js');
     
     //Get the doorbell model. This function will take care of making sure it hasn't already
@@ -36,7 +35,6 @@ function doorbellringlistener(){
 
                     console.log('Recieved notification: ' + doorBellObj.doorBellID);
                     console.log('with image ' + imageUrl);
-                    console.log('Connecting to mongodb');
                     var date = new Date();
                     
                     //TODO: It's super easy to send notifications to andriod/ios/wp8 too. We just need
@@ -47,7 +45,7 @@ function doorbellringlistener(){
                                             text2: 'At ' + date.getHours() + ':' + date.getMinutes() + ' today',
                                             image1src: imageUrl,
                                             image1alt: imageUrl
-                       }, function(pushResponse) {
+                       },null, function(pushResponse) {
                             console.log("Sent push:", pushResponse);
                     });
                 }
