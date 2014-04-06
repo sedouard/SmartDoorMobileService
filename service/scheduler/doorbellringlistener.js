@@ -37,65 +37,19 @@ function doorbellringlistener(){
                     console.log('Recieved notification: ' + doorBellObj.doorBellID);
                     console.log('with image ' + imageUrl);
                     console.log('Connecting to mongodb');
+                    var date = new Date();
                     
-                    var db = mongoose.connection;
+                    //TODO: It's super easy to send notifications to andriod/ios/wp8 too. We just need
+                    //to modify the platform specific payload. In this case I'm using hub.wns because
+                    //I'm telling the hub to notify all windows 8 devices registerd for this doorbell
+                    var wnspayload = '<toast><visual><binding template="ToastImageAndText01"><image id="1" src='+ imageUrl +' alt='+imageUrl+'/><text id="1">New doorbell notification from ' + doorBellObj.doorBellID +'</text></binding>  </visual></toast>'
                     
-                    var processNotifications = function(){
-                        DoorBell.findOne({ doorBellID: doorBellObj.doorBellID }, function (err, doorbell) {
-                            if(err) {
-                                return console.error(err);
-                            }
-                            if(doorbell == null){
-                                mongoose.disconnect();
-                                return console.log('Could not find doorbellID ' + doorBellObj.doorBellID + ' notification. This is an unregistered device');
-                            }
-                            var date = new Date();
-
-                            //TODO: Assign Names to doorbells
-                            for(var user in doorbell.users){
-                                for(var device in doorbell.users[user].mobileDevices){
-                                    if(doorbell.users[user].mobileDevices[device].channel){
-
-                                        hub.wns.sendToastImageAndText03('https://bn1.notify.windows.com/?token=AgYAAABlUUQRL/QKGnOraTuYhiVfAlMmxBlXkKcWIXDZ0cXAECt+3o5+wXE+99CjXCbaDUbOPHNREePchHiiSzCeg8S3MNqry0QQEfVAVpZLGdKmTjQ/G396m14ducbSoAaYlU0=', {
-                                            text1: 'New Ring from your DoorBell ' + doorBellObj.doorBellID,
-                                            text2: 'At ' + date.getHours() + ':' + date.getMinutes() + ' today',
-                                            image1src: imageUrl,
-                                            image1alt: imageUrl
-                                        }, {
-                                                success: function(pushResponse) {
-                                                console.log("Sent push:", pushResponse);
-                                            }
-                                        });
-                                        /**
-                                        var payload = '<?xml version="1.0" encoding="utf-8"?><toast><visual><binding template="ToastText01">' +
-                                        '<text id="1">Sample Toast</text></binding></visual></toast>';
-                                        push.wns.send(doorbell.users[user].mobileDevices[device].channel,
-                                            payload,
-                                            'wns/toast', {
-                                                success: function (pushResponse) {
-                                                    console.log("Sent push:", pushResponse);
-                                                }
-                                            });
-                                            * **/
+                    //send a toast notification to all win 8 devices with a picture for this doorbell
+                    hub.wns.send(doorBellObj.doorBellID, wnspayload, {
+                                        success: function(pushResponse) {
+                                        console.log("Sent push:", pushResponse);
                                     }
-                                }
-                            }
-                        });
-                    }
-                    if(db.readyState = 1){
-                        processNotifications();
-                    } else{
-                        console.error('Reconnecting to database');
-
-                        var db = mongoose.connection;
-                        db.on('open', function(){
-                            processNotifications();
-                        });
-                        
-                        db.on('error', function(){
-                            console.error('Error connecting to mongodb');
-                        })
-                    }
+                                });
                 }
                 
                 listenForMessages();
