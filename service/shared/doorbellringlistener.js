@@ -3,7 +3,7 @@ This task really only needs to run once because after that we'll be listeneing t
 **WARNING** Set this script to run at most once every 3 months, or just 'On Demand' otherwise gradually
 your compute bill will go through the roof!
 **/
-function doorbellringlistener(){
+exports.startRingListener = function doorbellringlistener(){
     var azure = require('azure');
     var nconf = require('nconf');
     var mongoose = require('mongoose');
@@ -17,8 +17,8 @@ function doorbellringlistener(){
     console.log('Doorbell Listener Started');
 
     var sb = azure.createServiceBusService(nconf.get("SmartDoor.Notifications.DoorbellServiceBus"));
-    var hub = azure.createNotificationHubService(nconf.get("SmartDoor.Notifications.HubName",
-              nconf.get("SmartDoor.Notifications.HubConnString")));
+    var hub = azure.createNotificationHubService(nconf.get("SmartDoor.Notifications.HubName"),
+              nconf.get("SmartDoor.Notifications.HubConnString"));
     listenForMessages();
 
     function listenForMessages() {
@@ -42,14 +42,14 @@ function doorbellringlistener(){
                     //TODO: It's super easy to send notifications to andriod/ios/wp8 too. We just need
                     //to modify the platform specific payload. In this case I'm using hub.wns because
                     //I'm telling the hub to notify all windows 8 devices registerd for this doorbell
-                    var wnspayload = '<toast><visual><binding template="ToastImageAndText01"><image id="1" src='+ imageUrl +' alt='+imageUrl+'/><text id="1">New doorbell notification from ' + doorBellObj.doorBellID +'</text></binding>  </visual></toast>'
-                    
-                    //send a toast notification to all win 8 devices with a picture for this doorbell
-                    hub.wns.send(doorBellObj.doorBellID, wnspayload, {
-                                        success: function(pushResponse) {
-                                        console.log("Sent push:", pushResponse);
-                                    }
-                                });
+                    hub.wns.sendToastImageAndText02(doorBellObj.doorBellID, {
+                                            text1: 'New Ring from your DoorBell ' + doorBellObj.doorBellID,
+                                            text2: 'At ' + date.getHours() + ':' + date.getMinutes() + ' today',
+                                            image1src: imageUrl,
+                                            image1alt: imageUrl
+                       }, function(pushResponse) {
+                            console.log("Sent push:", pushResponse);
+                    });
                 }
                 
                 listenForMessages();
