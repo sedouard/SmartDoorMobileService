@@ -41,8 +41,8 @@ exports.startRingListener = function doorbellringlistener(){
                     //to modify the platform specific payload. In this case I'm using hub.wns because
                     //I'm telling the hub to notify all windows 8 devices registerd for this doorbell
                     hub.wns.sendToastImageAndText02(doorBellObj.doorBellID, {
-                                            text1: 'New Ring from your DoorBell ' + doorBellObj.doorBellID,
-                                            text2: 'At ' + date.getHours() + ':' + date.getMinutes() + ' today',
+                                            text1: 'New Ring From DoorBell:',
+                                            text2: doorBellObj.doorBellID,
                                             image1src: imageUrl,
                                             image1alt: imageUrl
                        }, function(pushResponse) {
