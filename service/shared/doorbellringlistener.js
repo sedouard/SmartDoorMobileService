@@ -1,8 +1,4 @@
-/**
-This task really only needs to run once because after that we'll be listeneing to the service bus forever.
-**WARNING** Set this script to run at most once every 3 months, or just 'On Demand' otherwise gradually
-your compute bill will go through the roof!
-**/
+
 exports.startRingListener = function doorbellringlistener(){
     var azure = require('azure');
     var nconf = require('nconf');
@@ -21,7 +17,7 @@ exports.startRingListener = function doorbellringlistener(){
     listenForMessages();
 
     function listenForMessages() {
-        //Listen for 59 seconds, this job runs for 60 seconds so we avoid having multiple invokations
+        //Listen for 60 seconds, this job runs for 60 seconds so we avoid having multiple invokations
         sb.receiveQueueMessage("arduino", { timeoutIntervalInS: 60 }, 
             function(err, data) { 
                 if(!err){
@@ -40,6 +36,8 @@ exports.startRingListener = function doorbellringlistener(){
                     //TODO: It's super easy to send notifications to andriod/ios/wp8 too. We just need
                     //to modify the platform specific payload. In this case I'm using hub.wns because
                     //I'm telling the hub to notify all windows 8 devices registerd for this doorbell
+
+                    //The first argument is the tag that I want to send a notification to
                     hub.wns.sendToastImageAndText02(doorBellObj.doorBellID, {
                                             text1: 'New Ring From DoorBell:',
                                             text2: doorBellObj.doorBellID,
