@@ -101,7 +101,7 @@ function addPhotoToDoorbell(doorbellID, photoId, callback) {
 
             doorbell.photos.push( new Photo({
                 blobPointer: photoId ,
-                timestamp: (date.getTime()/1000).toString(),
+                timestamp: ((new Date()).getTime()).toString(),
                 url: 'http://' + host + '/' + containerName + '/' + photoId +'.jpg'
             }));
 
