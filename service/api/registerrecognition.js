@@ -58,7 +58,8 @@ exports.post = function(request, response) {
             
             var req = unirest.post("https://lambda-face-recognition.p.mashape.com/album_train")
               .headers({ 
-                "X-Mashape-Authorization": nconf.get('SmartDoor.Identification.ApiKey')
+                "X-Mashape-Authorization": nconf.get('SmartDoor.Identification.ApiKey'),
+                "Content-Type": 'application/json'
               })
               .send({ 
                 "album": nconf.get('SmartDoor.Identification.AlbumName'),
