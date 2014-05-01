@@ -73,7 +73,7 @@ exports.post = function(request, response) {
                     response.send(statusCodes.OK, { message: 'User ' + request.body.userid + ' is now being identified!' });
                 }
                 else{
-                    response.send(500, { message: 'User ' + request.body.userid + ' is now being identified!' });
+                    response.send(500, { message: 'Mashape responded badly' });
                 }
             });
             req.end();
