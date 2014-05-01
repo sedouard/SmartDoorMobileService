@@ -53,7 +53,7 @@ exports.post = function(request, response) {
             }
 
             
-
+            console.log('calling lambda face recogniition');
             var options = {
                 hostname: 'lambda-face-recognition.p.mashape.com',
                 port: 443,
