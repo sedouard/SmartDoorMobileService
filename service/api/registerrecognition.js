@@ -60,18 +60,13 @@ exports.post = function(request, response) {
             console.log('Using album name: ' + nconf.get('SmartDoor.Identification.AlbumName'));
             console.log('Using album key: ' + nconf.get('SmartDoor.Identification.AlbumKey'));
             var entryid = request.body.userid.replace("Facebook:","");
-            var req = unirest.post("https://lambda-face-recognition.p.mashape.com/album_train")
+            var req = unirest.post("https://lambda-face-recognition.p.mashape.com/album_train?album="+nconf.get('SmartDoor.Identification.AlbumName')+"&albumkey="+nconf.get('SmartDoor.Identification.AlbumKey')+"&entryid="+entryid+"&urls="+request.body.photos)
               .headers({ 
                 "X-Mashape-Authorization": nconf.get('SmartDoor.Identification.ApiKey'),
                 "Content-Type": 'application/json'
               })
               .timeout(60000)
-              .send({ 
-                "album": nconf.get('SmartDoor.Identification.AlbumName'),
-                "albumkey": nconf.get('SmartDoor.Identification.AlbumKey'),
-                "entryid": entryid,
-                "urls": request.body.photos
-              })
+              .send()
               .end(function (resp) {
                 console.log('Response Status: ' + resp.statusCode);
                 console.log('Message: ' + resp.body);
