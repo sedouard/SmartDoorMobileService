@@ -8,10 +8,14 @@ exports.post = function(request, response) {
     // Use "request.service" to access features of your mobile service, e.g.:
     //   var tables = request.service.tables;
     //   var push = request.service.push;
-
+    
     //make request to lambda api
     console.log('Executing registration request for userid ' + request.body.userid);
     var db = mongoose.connection;
+    
+    if(!request.query.doorbellID){
+        response.send(400, { message : 'could not connect to database' });
+    }
     
     if(mongoose.connection.readyState == 1){
     
