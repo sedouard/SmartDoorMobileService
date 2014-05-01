@@ -1,4 +1,5 @@
 var nconf = require('nconf');
+nconf.argv().env();
 
 exports.post = function(request, response) {
     // Use "request.service" to access features of your mobile service, e.g.:
