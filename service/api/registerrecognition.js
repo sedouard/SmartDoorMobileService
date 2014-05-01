@@ -67,6 +67,10 @@ exports.post = function(request, response) {
                 console.log("statusCode: ", res.statusCode);
                 console.log("headers: ", res.headers);
                 
+                res.on('data', function(d) {
+                    console.log(d);
+                });
+                
                 if(res.statusCode == 200){
                     //record this user and the training set
                     doorBell.usersToDetect.push({ userid: request.body.userid, photos: request.body.photos });
@@ -77,7 +81,6 @@ exports.post = function(request, response) {
                 }
             });
             req.end();
-
             req.on('error', function (e) {
                 console.error(e);
             });
