@@ -59,6 +59,7 @@ exports.post = function(request, response) {
             console.log('Using api key: '+nconf.get('SmartDoor.Identification.ApiKey'));
             console.log('Using album name: ' + nconf.get('SmartDoor.Identification.AlbumName'));
             console.log('Using album key: ' + nconf.get('SmartDoor.Identification.AlbumKey'));
+            var entryid = request.body.userid.replace("Facebook:","");
             var req = unirest.post("https://lambda-face-recognition.p.mashape.com/album_train")
               .headers({ 
                 "X-Mashape-Authorization": nconf.get('SmartDoor.Identification.ApiKey'),
