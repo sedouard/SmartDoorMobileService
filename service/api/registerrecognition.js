@@ -64,12 +64,12 @@ exports.post = function(request, response) {
                 "X-Mashape-Authorization": nconf.get('SmartDoor.Identification.ApiKey'),
                 "Content-Type": 'application/json'
               })
+              .timeout(12000)
               .send({ 
                 "album": nconf.get('SmartDoor.Identification.AlbumName'),
                 "albumkey": nconf.get('SmartDoor.Identification.AlbumKey'),
                 "entryid": request.body.userid,
-                "urls": request.body.photos,
-                "timeout": 120000
+                "urls": request.body.photos
               })
               .end(function (resp) {
                 console.log('Response Status' + resp.statusCode);
