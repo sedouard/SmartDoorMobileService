@@ -52,8 +52,7 @@ exports.post = function(request, response) {
                 return;
             }
 
-            //record this user and the training set
-            doorBell.usersToDetect.push({ userid: request.body.userid, photos: request.body.photos });
+            
 
             var options = {
                 hostname: 'lambda-face-recognition.p.mashape.com',
@@ -67,6 +66,15 @@ exports.post = function(request, response) {
             var req = https.request(options, function (res) {
                 console.log("statusCode: ", res.statusCode);
                 console.log("headers: ", res.headers);
+                
+                if(res.statusCode == 200){
+                    //record this user and the training set
+                    doorBell.usersToDetect.push({ userid: request.body.userid, photos: request.body.photos });
+                    response.send(statusCodes.OK, { message: 'User ' + request.body.userid + ' is now being identified!' });
+                }
+                else{
+                    response.send(500, { message: 'User ' + request.body.userid + ' is now being identified!' });
+                }
             });
             req.end();
 
@@ -74,7 +82,7 @@ exports.post = function(request, response) {
                 console.error(e);
             });
 
-            response.send(statusCodes.OK, { message: 'User ' + request.body.userid + ' is now being identified!' });
+            
         });
 
     }
