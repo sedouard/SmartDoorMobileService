@@ -53,7 +53,7 @@ exports.post = function(request, response) {
             }
 
             //record this user and the training set
-            doorBell.usersToDetect.push({ userid: request.body.userid, photos: reqeust.body.photos });
+            doorBell.usersToDetect.push({ userid: request.body.userid, photos: request.body.photos });
 
             var options = {
                 hostname: 'lambda-face-recognition.p.mashape.com',
