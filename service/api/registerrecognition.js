@@ -77,7 +77,21 @@ exports.post = function(request, response) {
                     //record this user and the training set
                     console.log('Horray, we registered ' + request.body.userid + ' for recognition');
                     doorBell.usersToDetect.push({ userid: request.body.userid, photos: request.body.photos });
-                    response.send(statusCodes.OK, { message: 'User ' + request.body.userid + ' is now being identified!' });
+                    doorBell.save(function (err) {
+                        if(err)
+                        {
+                            response.send(500, { message: 'could not record identification tracking status to mongo' }); 
+                            return;
+                        }
+                        else
+                        {
+                            //We sucessfully associated this photo
+                            //to the doorbell.
+                            response.send(statusCodes.OK, { message: 'User ' + request.body.userid + ' is now being identified!' });
+                            return;
+                        }
+                    });
+                    
                 }
                 else{
                     response.send(500, { message: 'Mashape responded badly' });
