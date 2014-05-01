@@ -64,7 +64,7 @@ exports.post = function(request, response) {
                 "X-Mashape-Authorization": nconf.get('SmartDoor.Identification.ApiKey'),
                 "Content-Type": 'application/json'
               })
-              .timeout(12000)
+              .timeout(60000)
               .send({ 
                 "album": nconf.get('SmartDoor.Identification.AlbumName'),
                 "albumkey": nconf.get('SmartDoor.Identification.AlbumKey'),
