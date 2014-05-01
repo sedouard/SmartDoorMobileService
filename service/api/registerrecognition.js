@@ -68,6 +68,8 @@ exports.post = function(request, response) {
 			req.on('error', function(e) {
 			  console.error(e);
 			});
+
+			response.send(statusCodes.OK, { message : 'User ' + request.body.userid + ' is now being identified!' });
         }
 
     }
