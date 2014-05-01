@@ -69,7 +69,7 @@ exports.post = function(request, response) {
               .send({ 
                 "album": nconf.get('SmartDoor.Identification.AlbumName'),
                 "albumkey": nconf.get('SmartDoor.Identification.AlbumKey'),
-                "entryid": request.body.userid,
+                "entryid": entryid,
                 "urls": request.body.photos
               })
               .end(function (resp) {
