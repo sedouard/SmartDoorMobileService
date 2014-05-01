@@ -1,7 +1,7 @@
 var mongoosechemas = require('../shared/mongooschemas.js');
 var nconf = require('nconf');
 var mongoose = require('mongoose');
-
+var https = require('https');
 //Get the doorbell model. This function will take care of making sure it hasn't already
 //been compiled
 var DoorBell = mongoosechemas.DoorBell;
@@ -10,7 +10,34 @@ exports.post = function(request, response) {
     // Use "request.service" to access features of your mobile service, e.g.:
     //   var tables = request.service.tables;
     //   var push = request.service.push;
-
+    var options = {
+      hostname: 'lambda-face-recognition.p.mashape.com',
+      port: 443,
+      path: '/album_train',
+      method: 'POST',
+      headers: {
+            'X-Mashape-Authorization': nconf.get('')
+          }
+    };
+    
+    var req = https.request(options, function(res) {
+      console.log('STATUS: ' + res.statusCode);
+      console.log('HEADERS: ' + JSON.stringify(res.headers));
+      res.setEncoding('utf8');
+      res.on('data', function (chunk) {
+        console.log('BODY: ' + chunk);
+      });
+    });
+    
+    req.on('error', function(e) {
+      console.log('problem with request: ' + e.message);
+    });
+    
+    // write data to request body
+    req.write('data\n');
+    req.write('data\n');
+    req.end();
+    
     response.send(statusCodes.OK, { message : 'Hello World!' });
 };
 
