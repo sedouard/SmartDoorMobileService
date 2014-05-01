@@ -2,6 +2,7 @@ var nconf = require('nconf');
 var https = require('https');
 var mongoose = require('mongoose');
 var mongoosechemas = require('../shared/mongooschemas.js');
+var unirest = require('unirest');
 var DoorBell = mongoosechemas.DoorBell;
 nconf.argv().env();
 
@@ -54,24 +55,22 @@ exports.post = function(request, response) {
 
             
             console.log('calling lambda face recogniition');
-            var options = {
-                hostname: 'lambda-face-recognition.p.mashape.com',
-                port: 443,
-                path: '/album_train?album=' + nconf.get('SmartDoor.Identification.AlbumName') + '&albumkey=' + nconf.get('SmartDoor.Identification.AlbumKey') +
-                '&entryid=' + request.body.userid + '&urls=' + request.body.photos,
-                method: 'POST',
-                headers: { 'X-Mashape-Authorization': nconf.get('SmartDoor.Identification.ApiKey') }
-            };
-
-            var req = https.request(options, function (res) {
-                console.log("statusCode: ", res.statusCode);
-                console.log("headers: ", res.headers);
+            
+            var req = unirest.post("https://lambda-face-recognition.p.mashape.com/album_train")
+              .headers({ 
+                "X-Mashape-Authorization": nconf.get('SmartDoor.Identification.ApiKey')
+              })
+              .send({ 
+                "album": nconf.get('SmartDoor.Identification.AlbumName'),
+                "albumkey": nconf.get('SmartDoor.Identification.AlbumKey'),
+                "entryid": request.body.userid,
+                "urls": request.body.photos
+              })
+              .end(function (resp) {
+                console.log(resp);
                 
-                res.on('data', function(d) {
-                    console.log(d);
-                });
                 
-                if(res.statusCode == 200){
+                if(resp.statusCode == 200){
                     //record this user and the training set
                     doorBell.usersToDetect.push({ userid: request.body.userid, photos: request.body.photos });
                     response.send(statusCodes.OK, { message: 'User ' + request.body.userid + ' is now being identified!' });
@@ -79,14 +78,10 @@ exports.post = function(request, response) {
                 else{
                     response.send(500, { message: 'Mashape responded badly' });
                 }
+              });
+                
+                
             });
-            req.end();
-            req.on('error', function (e) {
-                console.error(e);
-            });
-
-            
-        });
 
     }
     else{
