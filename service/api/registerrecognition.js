@@ -68,8 +68,7 @@ exports.post = function(request, response) {
                 "urls": request.body.photos
               })
               .end(function (resp) {
-                console.log(resp);
-                console.log(resp.body.error);
+                console.log(resp.body);
                 
                 if(resp.statusCode == 200){
                     //record this user and the training set
