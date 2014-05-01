@@ -69,7 +69,7 @@ exports.post = function(request, response) {
               })
               .end(function (resp) {
                 console.log(resp);
-                
+                console.log(resp.body.error);
                 
                 if(resp.statusCode == 200){
                     //record this user and the training set
