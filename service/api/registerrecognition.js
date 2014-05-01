@@ -14,7 +14,7 @@ exports.post = function(request, response) {
     var db = mongoose.connection;
     
     if(!request.query.doorbellID){
-        response.send(400, { message : 'could not connect to database' });
+        response.send(400, { message : 'doorbellID is a required url parameter' });
     }
     
     if(mongoose.connection.readyState == 1){
@@ -23,7 +23,7 @@ exports.post = function(request, response) {
 
     	var doorBellID = request.query.doorbellID;
 
-        console.log('Looking for doorBellID ' + doorbellID + ' in mongo');
+        console.log('Looking for doorBellID ' + doorBellID + ' in mongo');
         
 
         //Query for the speicfied doorbell. There should only be one in the DB.
