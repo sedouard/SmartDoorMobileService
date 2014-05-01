@@ -18,7 +18,11 @@ var doorbellSchema = mongoose.Schema({
                         channel : String
                     }]
                 }
-            ],
+            ]
+            usersToDetect: [{
+                userid: String,
+                photos: String
+            }],
             photos: [photoSchema]
         });
 
