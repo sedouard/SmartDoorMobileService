@@ -2,6 +2,7 @@ var nconf = require('nconf');
 var https = require('https');
 var mongoose = require('mongoose');
 var mongoosechemas = require('../shared/mongooschemas.js');
+var DoorBell = mongoosechemas.DoorBell;
 nconf.argv().env();
 
 exports.post = function(request, response) {
@@ -27,7 +28,7 @@ exports.post = function(request, response) {
         
 
         //Query for the speicfied doorbell. There should only be one in the DB.
-        DoorBell.findOne({ doorBellID: doorbellID }, function (err, doorBell) {
+        DoorBell.findOne({ doorBellID: doorBellID }, function (err, doorBell) {
             if (err) {
                 console.log(err);
                 return;
