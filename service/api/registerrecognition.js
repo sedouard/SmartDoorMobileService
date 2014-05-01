@@ -74,6 +74,7 @@ exports.post = function(request, response) {
 
     }
     else{
+    	response.send(500, { message : 'could not connect to database' });
     	console.error("could not connect to database");
     }
 	
