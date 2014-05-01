@@ -72,7 +72,7 @@ exports.post = function(request, response) {
                 "urls": request.body.photos
               })
               .end(function (resp) {
-                console.log('Response Status' + resp.statusCode);
+                console.log('Response Status: ' + resp.statusCode);
                 console.log('Message: ' + resp.body);
                 
                 if(resp.statusCode == 200){
