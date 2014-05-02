@@ -49,14 +49,17 @@ exports.startRingListener = function doorbellringlistener(){
                             console.log("Mashape responded correctly");
 
                             //we always get one photo back because we sent one photo for recognition
-                            
+                            console.log('tags ' + response.body.photos[0].tags);
+                            console.log('tags.length' + response.body.photos[0].tags.length);
                             if(response.body.photos[0].tags.length > 0){
                                 var tags = response.body.photos[0].tags;
+                                console.log('got tag' + tags[0]);
+                                console.log('with uids' + tags[0].uids);
                                 //we aren't going to try to deal with the case with > 1 face on the doorbell cam
                                 if(tags[0].uids && tags[0].uids.length > 0){
                                     var threshold = parseFloat(nconf.get("SmartDoor.Identification.ConfidenceLevel"));
 
-                                    for(var i in tags.uids){
+                                    for(var i in tags[0].uids){
                                         var confidence = parseFloat(tags.uids[i].confidence);
                                         if(confidence > threshold){
                                             console.log('Found identification for picture!!!');
