@@ -53,7 +53,7 @@ exports.startRingListener = function doorbellringlistener(){
                             });
                     }
 
-                    var req = unirest.get("https://face.p.mashape.com/faces/recognize?api_key="+nconf.get('SmartDoor.Identification.ApiKey')+"&api_secret="+nconf.get('SmartDoor.Identification.ApiSecret')+"&uids=all"+"&urls="+imageUrl+"&namespace="+nconf.get('SmartDoor.Identification.NamespaceName')+"&detector=aggresive&attributes=none&limit=1")
+                    var req = unirest.get("https://face.p.mashape.com/faces/recognize?api_key="+nconf.get('SmartDoor.Identification.ApiKey')+"&api_secret="+nconf.get('SmartDoor.Identification.ApiSecret')+"&uids=all"+"&urls="+imageUrl+"&namespace="+nconf.get('SmartDoor.Identification.NamespaceName')+"&detector=aggresive&attributes=none&limit=3")
                       .headers({ 
                         "X-Mashape-Authorization": nconf.get('SmartDoor.Identification.MashapeKey'),
                         "Content-Type": 'application/json'
@@ -78,12 +78,15 @@ exports.startRingListener = function doorbellringlistener(){
                                 if(tags[0].uids && tags[0].uids.length > 0){
                                     var threshold = parseFloat(nconf.get("SmartDoor.Identification.ConfidenceLevel"));
 
-                                    
-                                    var confidence = parseFloat(tags[0].uids[i].confidence);
-                                    if(confidence > threshold){
-                                        console.log('Found identification for picture!!!');
-                                        message = message.replace("Somebody", tags[0].uids[i].uid);
+                                    for(var i in tags[0].uids){
+                                        var confidence = parseFloat(tags[0].uids[i].confidence);
+                                        if(confidence > threshold){
+                                            console.log('Found identification for picture!!!');
+                                            message = message.replace("Somebody", tags[0].uids[i].uid);
+                                            break;
+                                        }
                                     }
+                                    
 
                                 }
                             }
