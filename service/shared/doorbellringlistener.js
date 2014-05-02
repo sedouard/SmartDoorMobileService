@@ -3,6 +3,7 @@ exports.startRingListener = function doorbellringlistener(){
     var azure = require('azure');
     var nconf = require('nconf');
     var mongoosechemas = require('../shared/mongooschemas.js');
+    var unirest = require('unirest');
     
     //Get the doorbell model. This function will take care of making sure it hasn't already
     //been compiled
