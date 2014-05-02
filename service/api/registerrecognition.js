@@ -97,7 +97,7 @@ exports.post = function(request, response) {
                 		response.send(400, { message: 'None of the photos you sent had faces in it. ' + body.photos[i].url });
                 		return;
                 	}
-
+                	console.log('Making request GET ' + "https://face.p.mashape.com/tags/save?api_key="+nconf.get('SmartDoor.Identification.ApiKey')+"&api_secret="+nconf.get('SmartDoor.Identification.ApiSecret')+"&uid="+entryid+'@'+nconf.get("SmartDoor.Identification.NamespaceName")+"&tids="+tags);
                 	//now we need to save the tags...
                 	var req = unirest.get("https://face.p.mashape.com/tags/save?api_key="+nconf.get('SmartDoor.Identification.ApiKey')+"&api_secret="+nconf.get('SmartDoor.Identification.ApiSecret')+"&uid="+entryid+'@'+nconf.get("SmartDoor.Identification.NamespaceName")+"&tids="+tags)
 		              .headers({ 
