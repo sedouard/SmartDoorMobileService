@@ -53,9 +53,9 @@ exports.startRingListener = function doorbellringlistener(){
                             });
                     }
 
-                    var req = unirest.post("https://lambda-face-recognition.p.mashape.com/recognize?album="+nconf.get('SmartDoor.Identification.AlbumName')+"&albumkey="+nconf.get('SmartDoor.Identification.AlbumKey')+"&urls="+imageUrl)
+                    var req = unirest.get("https://face.p.mashape.com/faces/recognize?api_key="+nconf.get('SmartDoor.Identification.ApiKey')+"&api_secret="+nconf.get('SmartDoor.Identification.ApiSecret')+"&uids=all"+"&urls="+imageUrl+"&namespace="+nconf.get('SmartDoor.Identification.NamespaceName')+"&detector=aggresive&attributes=none&limit=1")
                       .headers({ 
-                        "X-Mashape-Authorization": nconf.get('SmartDoor.Identification.ApiKey'),
+                        "X-Mashape-Authorization": nconf.get('SmartDoor.Identification.MashapeKey'),
                         "Content-Type": 'application/json'
                       })
                       .timeout(60000)
@@ -78,13 +78,13 @@ exports.startRingListener = function doorbellringlistener(){
                                 if(tags[0].uids && tags[0].uids.length > 0){
                                     var threshold = parseFloat(nconf.get("SmartDoor.Identification.ConfidenceLevel"));
 
-                                    for(var i in tags[0].uids){
-                                        var confidence = parseFloat(tags[0].uids[i].confidence);
-                                        if(confidence > threshold){
-                                            console.log('Found identification for picture!!!');
-                                            message = message.replace("Somebody", tags[0].uids[i].prediction);
-                                        }
+                                    
+                                    var confidence = parseFloat(tags[0].uids[i].confidence);
+                                    if(confidence > threshold){
+                                        console.log('Found identification for picture!!!');
+                                        message = message.replace("Somebody", tags[0].uids[i].uid);
                                     }
+
                                 }
                             }
 

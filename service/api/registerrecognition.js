@@ -54,18 +54,25 @@ exports.post = function(request, response) {
             }
 
             
-            console.log('calling lambda face recogniition');
-            
+            //console.log('calling lambda face recognition');
+            console.log('calling skybiometry face recognition...');
             console.log('Using api key: '+nconf.get('SmartDoor.Identification.ApiKey'));
-            console.log('Using album name: ' + nconf.get('SmartDoor.Identification.AlbumName'));
-            console.log('Using album key: ' + nconf.get('SmartDoor.Identification.AlbumKey'));
+            console.log('Using api secret: ' + nconf.get('SmartDoor.Identification.ApiSecret'));
+            console.log('Using namespace: ' + nconf.get('SmartDoor.Identification.NamespaceName'));
             
-            //the lambda api doesn't like ':' in entry ids
+            /**
+            Process of setup up a face for recogntion:
+            1) Call faces/detect to collect a series of face recogition tags for a particular person
+            2) Call tags/save to save those tags and associate them with a userid. The user id takes the form of
+            entryid@namespace where entryid is the entryid variable we decide to be the facebook user id and the namespace
+            is the default namepsace specified by the configuration.
+            3) call faces/recognize when an image comes in to recognize the user who rang
+            **/
             var entryid = request.body.userid.replace("Facebook:","Facebook");
-            var req = unirest.post("https://lambda-face-recognition.p.mashape.com/album_train?album="+nconf.get('SmartDoor.Identification.AlbumName')+"&albumkey="+nconf.get('SmartDoor.Identification.AlbumKey')+"&entryid="+entryid+"&urls="+request.body.photos)
+            var req = unirest.get("https://face.p.mashape.com/faces/detect?api_key="+nconf.get('SmartDoor.Identification.ApiKey')+"&api_secret="+nconf.get('SmartDoor.Identification.ApiSecret')+"&urls="+request.body.photos)
               .headers({ 
-                "X-Mashape-Authorization": nconf.get('SmartDoor.Identification.ApiKey'),
-                "Content-Type": 'application/json'
+                "Content-Type": "application/json",
+                "X-Mashape-Authorization": nconf.get('SmartDoor.Identification.MashapeKey')
               })
               .timeout(60000)
               .send()
@@ -74,23 +81,57 @@ exports.post = function(request, response) {
                 console.log('Message: ' + resp.body);
                 
                 if(resp.statusCode == 200){
-                    //record this user and the training set
-                    console.log('Horray, we registered ' + request.body.userid + ' for recognition');
-                    doorBell.usersToDetect.push({ userid: request.body.userid, photos: request.body.photos });
-                    doorBell.save(function (err) {
-                        if(err)
-                        {
-                            response.send(500, { message: 'could not record identification tracking status to mongo' }); 
-                            return;
-                        }
-                        else
-                        {
-                            //We sucessfully associated this photo
-                            //to the doorbell.
-                            response.send(statusCodes.OK, { message: 'User ' + request.body.userid + ' is now being identified!' });
-                            return;
-                        }
-                    });
+                	var tags = "";
+                	for(var i in resp.photos){
+                		//we make the enforcement tha the client only sends pictures of people with only 1 face in it.
+                		//we do this because we don't want to deal with the complexity of multiple faces in training pictures
+                		if(resp.photos[i].tags.length > 1){
+                			response.send(400, { message: 'You must send photos with clearly only 1 face in it. This photo has more than one face ' + resp.photos[i].url });
+                			return;
+                		}
+
+                		tags += resp.photos[i].tags[0] + ',';
+                	}
+
+                	if(tags.length == 0){
+                		response.send(400, { message: 'None of the photos you sent had faces in it. ' + resp.photos[i].url });
+                		return;
+                	}
+
+                	//now we need to save the tags...
+                	var req = unirest.get("https://face.p.mashape.com/tags/save?api_key="+nconf.get('SmartDoor.Identification.ApiKey')+"&api_secret="+nconf.get('SmartDoor.Identification.ApiSecret')+"&uid="+entryid+'@'+nconf.get("SmartDoor.Identification.NamespaceName")+"&tids="+tags)
+		              .headers({ 
+		                "Content-Type": 'application/json',
+		                "X-Mashape-Authorization": nconf.get('SmartDoor.Identification.MashapeKey')
+		              })
+		              .timeout(60000)
+		              .send()
+		              .end(function (resp2) {
+		              	console.log('Response Status: ' + resp2.statusCode);
+                		console.log('Message: ' + resp2.body);
+                
+                		if(resp2.statusCode == 200){
+                			//record this user and the training set
+		                    console.log('Horray, we registered ' + request.body.userid + ' for recognition');
+		                    doorBell.usersToDetect.push({ userid: request.body.userid, photos: request.body.photos });
+		                    doorBell.save(function (err) {
+		                        if(err)
+		                        {
+		                            response.send(500, { message: 'could not record identification tracking status to mongo' }); 
+		                            return;
+		                        }
+		                        else
+		                        {
+		                            //We sucessfully associated this photo
+		                            //to the doorbell.
+		                            response.send(statusCodes.OK, { message: 'User ' + request.body.userid + ' is now being identified!' });
+		                            return;
+		                        }
+		                    });
+                		}
+		              });
+
+                    
                     
                 }
                 else{
