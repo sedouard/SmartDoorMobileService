@@ -21,6 +21,7 @@ var doorbellSchema = mongoose.Schema({
             ],
             usersToDetect: [{
                 userid: String,
+                name: String,
                 photos: String
             }],
             photos: [photoSchema]

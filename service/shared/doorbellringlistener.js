@@ -1,14 +1,61 @@
+var azure = require('azure');
+var nconf = require('nconf');
+var mongooseSchemas = require('../shared/mongooschemas.js');
+var unirest = require('unirest');
+var mongoose = require('mongoose');
+//Get the doorbell model. This function will take care of making sure it hasn't already
+//been compiled
+var DoorBell = mongooseSchemas.DoorBell;
+//pickup config values
+nconf.argv().env();
 
+
+function getNameforUserid(userid, completed){
+    var db = mongoose.connection;
+
+    var procedure = function(){
+        //Query for the speicfied doorbell. There should only be one in the DB.
+        DoorBell.findOne({ doorBellID: doorBellID }, function (err, doorbell) {
+
+            if(err) {
+                console.log('Could not query database');
+                completed(null);
+            }
+            else if(doorbell == null){
+                console.log('Could not find doorbell ' + doorBellID);
+                completed(null);
+            }
+
+            for(var i in doorbell.usersToDetect){
+                if(userid == doorbell.usersToDetect[i].userid){
+                    completed(doorbell.usersToDetect[i].name);
+                    break;
+                }
+            }
+
+        });
+
+    }
+    if(db.readyState == 1){
+        procedure();
+    } else{
+        db.connect();
+        var connectionString = nconf.get('SmartDoor.MongodbConnectionString');
+        mongoose.connect(connectionString);
+        
+        db.on('connect', function(){
+            procedure();
+        });
+        db.on('error', function(){
+            completed(null);
+        });
+        
+    }
+}
 exports.startRingListener = function doorbellringlistener(){
-    var azure = require('azure');
-    var nconf = require('nconf');
-    var mongoosechemas = require('../shared/mongooschemas.js');
-    var unirest = require('unirest');
+    
 
-    //Get the doorbell model. This function will take care of making sure it hasn't already
-    //been compiled
-    var DoorBell = mongoosechemas.DoorBell;
-    nconf.argv().env();
+    
 
     console.log('Doorbell Listener Started');
 
@@ -16,6 +63,7 @@ exports.startRingListener = function doorbellringlistener(){
     var hub = azure.createNotificationHubService(nconf.get("SmartDoor.Notifications.HubName"),
               nconf.get("SmartDoor.Notifications.HubConnString"));
     listenForMessages();
+
 
     function listenForMessages() {
         //Listen for 60 seconds, this job runs for 60 seconds so we avoid having multiple invokations
@@ -82,7 +130,22 @@ exports.startRingListener = function doorbellringlistener(){
                                         var confidence = parseFloat(tags[0].uids[i].confidence);
                                         if(confidence > threshold){
                                             console.log('Found identification for picture!!!');
-                                            message = message.replace("Somebody", tags[0].uids[i].uid);
+
+                                            var userid = tags[0].uids[i].uid;
+                                            userid = userid.replace("Facebook", "Facebook:");
+                                            userid = userid.replace("@"+nconf.get("SmartDoor.Identification.NamespaceName"),"");
+
+                                            console.log('Getting name for userid ' + userid);
+                                            getNameforUserid(userid, function(name){
+                                                if(!name){
+                                                    console.error('could not find user name in mongo for ' + userid);
+                                                    return;
+                                                }
+
+                                                message = message.replace("Somebody", name);
+
+                                            });
+                                            
                                             break;
                                         }
                                     }
