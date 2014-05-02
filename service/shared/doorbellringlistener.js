@@ -60,7 +60,7 @@ exports.startRingListener = function doorbellringlistener(){
                                     var threshold = parseFloat(nconf.get("SmartDoor.Identification.ConfidenceLevel"));
 
                                     for(var i in tags[0].uids){
-                                        var confidence = parseFloat(tags.uids[i].confidence);
+                                        var confidence = parseFloat(tags[0].uids[i].confidence);
                                         if(confidence > threshold){
                                             console.log('Found identification for picture!!!');
                                             message.replace("Somebody", tags.uids[i].prediction);
