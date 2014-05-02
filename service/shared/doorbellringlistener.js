@@ -31,6 +31,45 @@ exports.startRingListener = function doorbellringlistener(){
 
                     console.log('Recieved notification: ' + doorBellObj.doorBellID);
                     console.log('with image ' + imageUrl);
+                    var message = 'Somebody just rang!';
+                    //attempt to get identification
+                    var req = unirest.post("https://lambda-face-recognition.p.mashape.com/recognize?album="+nconf.get('SmartDoor.Identification.AlbumName')+"&albumkey="+nconf.get('SmartDoor.Identification.AlbumKey')+"&urls="+imageUrl)
+                      .headers({ 
+                        "X-Mashape-Authorization": nconf.get('SmartDoor.Identification.ApiKey'),
+                        "Content-Type": 'application/json'
+                      })
+                      .timeout(60000)
+                      .send()
+                      .end(function (response) {
+                        console.log('Response Status: ' + response.statusCode);
+                        console.log('Message: ' + response.body);
+                        
+                        if(response.statusCode == 200 && response.body.photos && response.body.photos.length > 0){
+                            console.log("Mashape responded correctly");
+
+                            //we always get one photo back because we sent one photo for recognition
+                            //we aren't going to try to deal with the case with > 1 face on the doorbell cam
+                            if(response.body.photos[0].tags.length > 0){
+                                var tags = repsonse.body.photos[0].tags;
+                                if(tags.uids.length > 0){
+                                    var threshold = parseFloat(nconf.get("SmartDoor.Identification.ConfidenceLevel"));
+
+                                    for(var i in tags.uids){
+                                        var confidence = parseFloat(tags.uids[i].confidence);
+                                        if(confidence > threshold){
+                                            console.log('Found identification for picture!!!');
+                                            message.replace("Somebody", tags.uids[i].prediction);
+                                        }
+                                    }
+                                }
+                            }
+
+                        }
+                        else{
+                            console.log('Mashape responded badly');
+                        }
+                      });
+
                     var date = new Date();
                     
                     //TODO: It's super easy to send notifications to andriod/ios/wp8 too. We just need
@@ -39,7 +78,7 @@ exports.startRingListener = function doorbellringlistener(){
 
                     //The first argument is the tag that I want to send a notification to
                     hub.wns.sendToastImageAndText02(doorBellObj.doorBellID, {
-                                            text1: 'New Ring From DoorBell:',
+                                            text1: message,
                                             text2: doorBellObj.doorBellID,
                                             image1src: imageUrl,
                                             image1alt: imageUrl
