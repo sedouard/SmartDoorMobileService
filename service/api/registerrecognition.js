@@ -68,6 +68,7 @@ exports.post = function(request, response) {
             is the default namepsace specified by the configuration.
             3) call faces/recognize when an image comes in to recognize the user who rang
             **/
+            console.log("Making request GET https://face.p.mashape.com/faces/detect?api_key="+nconf.get('SmartDoor.Identification.ApiKey')+"&api_secret="+nconf.get('SmartDoor.Identification.ApiSecret')+"&urls="+request.body.photos);
             var entryid = request.body.userid.replace("Facebook:","Facebook");
             var req = unirest.get("https://face.p.mashape.com/faces/detect?api_key="+nconf.get('SmartDoor.Identification.ApiKey')+"&api_secret="+nconf.get('SmartDoor.Identification.ApiSecret')+"&urls="+request.body.photos)
               .headers({ 
