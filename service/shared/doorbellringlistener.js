@@ -82,7 +82,7 @@ exports.startRingListener = function doorbellringlistener(){
                                         var confidence = parseFloat(tags[0].uids[i].confidence);
                                         if(confidence > threshold){
                                             console.log('Found identification for picture!!!');
-                                            message.replace("Somebody", tags[0].uids[i].prediction);
+                                            message = message.replace("Somebody", tags[0].uids[i].prediction);
                                         }
                                     }
                                 }
