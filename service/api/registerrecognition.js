@@ -79,22 +79,22 @@ exports.post = function(request, response) {
               .end(function (resp) {
                 console.log('Response Status: ' + resp.statusCode);
                 console.log('Message: ' + resp.body);
-                
+                var body = resp.body;
                 if(resp.statusCode == 200){
                 	var tags = "";
-                	for(var i in resp.photos){
+                	for(var i in body.photos){
                 		//we make the enforcement tha the client only sends pictures of people with only 1 face in it.
                 		//we do this because we don't want to deal with the complexity of multiple faces in training pictures
-                		if(resp.photos[i].tags.length > 1){
-                			response.send(400, { message: 'You must send photos with clearly only 1 face in it. This photo has more than one face ' + resp.photos[i].url });
+                		if(body.photos[i].tags.length > 1){
+                			response.send(400, { message: 'You must send photos with clearly only 1 face in it. This photo has more than one face ' + body.photos[i].url });
                 			return;
                 		}
 
-                		tags += resp.photos[i].tags[0] + ',';
+                		tags += body.photos[i].tags[0] + ',';
                 	}
 
                 	if(tags.length == 0){
-                		response.send(400, { message: 'None of the photos you sent had faces in it. ' + resp.photos[i].url });
+                		response.send(400, { message: 'None of the photos you sent had faces in it. ' + body.photos[i].url });
                 		return;
                 	}
 
@@ -109,7 +109,7 @@ exports.post = function(request, response) {
 		              .end(function (resp2) {
 		              	console.log('Response Status: ' + resp2.statusCode);
                 		console.log('Message: ' + resp2.body);
-                
+
                 		if(resp2.statusCode == 200){
                 			//record this user and the training set
 		                    console.log('Horray, we registered ' + request.body.userid + ' for recognition');
