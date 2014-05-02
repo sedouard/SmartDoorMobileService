@@ -51,7 +51,7 @@ exports.startRingListener = function doorbellringlistener(){
                             //we always get one photo back because we sent one photo for recognition
                             //we aren't going to try to deal with the case with > 1 face on the doorbell cam
                             if(response.body.photos[0].tags.length > 0){
-                                var tags = repsonse.body.photos[0].tags;
+                                var tags = response.body.photos[0].tags;
                                 if(tags.uids.length > 0){
                                     var threshold = parseFloat(nconf.get("SmartDoor.Identification.ConfidenceLevel"));
 
