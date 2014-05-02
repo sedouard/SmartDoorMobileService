@@ -10,7 +10,7 @@ var DoorBell = mongooseSchemas.DoorBell;
 nconf.argv().env();
 
 
-function getNameforUserid(userid, completed){
+function getNameforUserid(doorBellID, userid, completed){
     var db = mongoose.connection;
 
     var procedure = function(){
@@ -136,7 +136,7 @@ exports.startRingListener = function doorbellringlistener(){
                                             userid = userid.replace("@"+nconf.get("SmartDoor.Identification.NamespaceName"),"");
 
                                             console.log('Getting name for userid ' + userid);
-                                            getNameforUserid(userid, function(name){
+                                            getNameforUserid(doorBellObj.doorBellID, userid, function(name){
                                                 if(!name){
                                                     console.error('could not find user name in mongo for ' + userid);
                                                     return;
