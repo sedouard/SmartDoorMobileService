@@ -100,7 +100,7 @@ exports.post = function(request, response) {
                 	}
                 	console.log('Making request GET ' + "https://face.p.mashape.com/tags/save?api_key="+nconf.get('SmartDoor.Identification.ApiKey')+"&api_secret="+nconf.get('SmartDoor.Identification.ApiSecret')+"&uid="+entryid+'@'+nconf.get("SmartDoor.Identification.NamespaceName")+"&tids="+tags);
                 	//now we need to save the tags...
-                	var req = unirest.get("https://face.p.mashape.com/tags/save?api_key="+nconf.get('SmartDoor.Identification.ApiKey')+"&api_secret="+nconf.get('SmartDoor.Identification.ApiSecret')+"&uid="+entryid+'@'+nconf.get("SmartDoor.Identification.NamespaceName")+"&tids="+tags)
+                	var req = unirest.get("https://face.p.mashape.com/tags/save?api_key="+nconf.get('SmartDoor.Identification.ApiKey')+"&api_secret="+nconf.get('SmartDoor.Identification.ApiSecret')+"&uid="+entryid+'%40'+nconf.get("SmartDoor.Identification.NamespaceName")+"&tids="+tags)
 		              .headers({ 
 		                "Content-Type": 'application/json',
 		                "X-Mashape-Authorization": nconf.get('SmartDoor.Identification.MashapeKey')
