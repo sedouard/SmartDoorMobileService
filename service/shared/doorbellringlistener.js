@@ -34,6 +34,25 @@ exports.startRingListener = function doorbellringlistener(){
                     console.log('with image ' + imageUrl);
                     var message = 'Somebody just rang!';
                     //attempt to get identification
+
+                    var sendPush = function(msg){
+                        var date = new Date();
+                    
+                            //TODO: It's super easy to send notifications to andriod/ios/wp8 too. We just need
+                            //to modify the platform specific payload. In this case I'm using hub.wns because
+                            //I'm telling the hub to notify all windows 8 devices registerd for this doorbell
+
+                            //The first argument is the tag that I want to send a notification to
+                            hub.wns.sendToastImageAndText02(doorBellObj.doorBellID, {
+                                                    text1: msg,
+                                                    text2: doorBellObj.doorBellID,
+                                                    image1src: imageUrl,
+                                                    image1alt: imageUrl
+                               }, function(pushResponse) {
+                                    console.log("Sent push:", pushResponse);
+                            });
+                    }
+
                     var req = unirest.post("https://lambda-face-recognition.p.mashape.com/recognize?album="+nconf.get('SmartDoor.Identification.AlbumName')+"&albumkey="+nconf.get('SmartDoor.Identification.AlbumKey')+"&urls="+imageUrl)
                       .headers({ 
                         "X-Mashape-Authorization": nconf.get('SmartDoor.Identification.ApiKey'),
@@ -69,27 +88,18 @@ exports.startRingListener = function doorbellringlistener(){
                                 }
                             }
 
+                            sendPush(message);
+
                         }
                         else{
                             console.log('Mashape responded badly');
+                            var date = new Date();
+                    
+                            sendPush(message);
                         }
                       });
 
-                    var date = new Date();
                     
-                    //TODO: It's super easy to send notifications to andriod/ios/wp8 too. We just need
-                    //to modify the platform specific payload. In this case I'm using hub.wns because
-                    //I'm telling the hub to notify all windows 8 devices registerd for this doorbell
-
-                    //The first argument is the tag that I want to send a notification to
-                    hub.wns.sendToastImageAndText02(doorBellObj.doorBellID, {
-                                            text1: message,
-                                            text2: doorBellObj.doorBellID,
-                                            image1src: imageUrl,
-                                            image1alt: imageUrl
-                       }, function(pushResponse) {
-                            console.log("Sent push:", pushResponse);
-                    });
                 }
                 
                 listenForMessages();
