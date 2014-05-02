@@ -117,7 +117,7 @@ exports.post = function(request, response) {
                 		if(resp2.statusCode == 200){
                 			//record this user and the training set
 		                    console.log('Horray, we registered ' + request.body.userid + ' for recognition');
-		                    doorBell.usersToDetect.push({ userid: request.body.userid, name:request.body.name, photos: request.body.tags });
+		                    doorBell.usersToDetect.push({ userid: request.body.userid, name:request.body.name, photos: request.body.photos });
 		                    doorBell.save(function (err) {
 		                        if(err)
 		                        {
