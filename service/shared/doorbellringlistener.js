@@ -16,7 +16,7 @@ function getNameforUserid(doorBellID, userid, completed){
     var procedure = function(){
         //Query for the speicfied doorbell. There should only be one in the DB.
         DoorBell.findOne({ doorBellID: doorBellID }, function (err, doorbell) {
-
+            
             if(err) {
                 console.log('Could not query database');
                 completed(null);
@@ -25,7 +25,7 @@ function getNameforUserid(doorBellID, userid, completed){
                 console.log('Could not find doorbell ' + doorBellID);
                 completed(null);
             }
-
+            console.log('found doorbell ' + doorBellID);
             for(var i in doorbell.usersToDetect){
                 if(userid == doorbell.usersToDetect[i].userid){
                     completed(doorbell.usersToDetect[i].name);
@@ -125,12 +125,12 @@ exports.startRingListener = function doorbellringlistener(){
                                 //we aren't going to try to deal with the case with > 1 face on the doorbell cam
                                 if(tags[0].uids && tags[0].uids.length > 0){
                                     var threshold = parseFloat(nconf.get("SmartDoor.Identification.ConfidenceLevel"));
-
+                                    var gotIdMatch = false;
                                     for(var i in tags[0].uids){
                                         var confidence = parseFloat(tags[0].uids[i].confidence);
                                         if(confidence > threshold){
                                             console.log('Found identification for picture!!!');
-
+                                            var gotIdMatch = true;
                                             var userid = tags[0].uids[i].uid;
                                             userid = userid.replace("Facebook", "Facebook:");
                                             userid = userid.replace("@"+nconf.get("SmartDoor.Identification.NamespaceName"),"");
@@ -141,20 +141,23 @@ exports.startRingListener = function doorbellringlistener(){
                                                     console.error('could not find user name in mongo for ' + userid);
                                                     return;
                                                 }
-
+                                                console.log('got name ' + userid);
                                                 message = message.replace("Somebody", name);
-
+                                                sendPush(message);
                                             });
                                             
                                             break;
                                         }
                                     }
                                     
+                                    if(!gotIdMatch){
+                                        sendPush(message);
+                                    }
 
                                 }
                             }
 
-                            sendPush(message);
+                            
 
                         }
                         else{
