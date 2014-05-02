@@ -4,7 +4,7 @@ exports.startRingListener = function doorbellringlistener(){
     var nconf = require('nconf');
     var mongoosechemas = require('../shared/mongooschemas.js');
     var unirest = require('unirest');
-    
+
     //Get the doorbell model. This function will take care of making sure it hasn't already
     //been compiled
     var DoorBell = mongoosechemas.DoorBell;
@@ -49,10 +49,11 @@ exports.startRingListener = function doorbellringlistener(){
                             console.log("Mashape responded correctly");
 
                             //we always get one photo back because we sent one photo for recognition
-                            //we aren't going to try to deal with the case with > 1 face on the doorbell cam
+                            
                             if(response.body.photos[0].tags.length > 0){
                                 var tags = response.body.photos[0].tags;
-                                if(tags.uids.length > 0){
+                                //we aren't going to try to deal with the case with > 1 face on the doorbell cam
+                                if(tags[0].uids && tags[0].uids.length > 0){
                                     var threshold = parseFloat(nconf.get("SmartDoor.Identification.ConfidenceLevel"));
 
                                     for(var i in tags.uids){
