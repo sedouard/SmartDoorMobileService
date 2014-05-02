@@ -80,7 +80,7 @@ exports.startRingListener = function doorbellringlistener(){
 
                     console.log('Recieved notification: ' + doorBellObj.doorBellID);
                     console.log('with image ' + imageUrl);
-                    var message = 'Somebody just rang!';
+                    var message = 'Somebody';
                     //attempt to get identification
 
                     var sendPush = function(msg){
@@ -93,7 +93,7 @@ exports.startRingListener = function doorbellringlistener(){
                             //The first argument is the tag that I want to send a notification to
                             hub.wns.sendToastImageAndText02(doorBellObj.doorBellID, {
                                                     text1: msg,
-                                                    text2: doorBellObj.doorBellID,
+                                                    text2: 'just rang!',
                                                     image1src: imageUrl,
                                                     image1alt: imageUrl
                                }, function(pushResponse) {
