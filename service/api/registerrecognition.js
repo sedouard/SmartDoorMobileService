@@ -91,7 +91,10 @@ exports.post = function(request, response) {
                 			return;
                 		}
 
-                		tags += body.photos[i].tags[0].tid + ',';
+                		if(body.photos[i].tags.length == 1){
+                			tags += body.photos[i].tags[0].tid + ',';
+                		}
+                		
                 	}
 
                 	if(tags.length == 0){
@@ -114,7 +117,7 @@ exports.post = function(request, response) {
                 		if(resp2.statusCode == 200){
                 			//record this user and the training set
 		                    console.log('Horray, we registered ' + request.body.userid + ' for recognition');
-		                    doorBell.usersToDetect.push({ userid: request.body.userid, name:request.body.name, photos: request.body.photos });
+		                    doorBell.usersToDetect.push({ userid: request.body.userid, name:request.body.name, photos: request.body.tags });
 		                    doorBell.save(function (err) {
 		                        if(err)
 		                        {
