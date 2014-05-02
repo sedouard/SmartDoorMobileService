@@ -91,7 +91,7 @@ exports.post = function(request, response) {
                 			return;
                 		}
 
-                		tags += body.photos[i].tags[0] + ',';
+                		tags += body.photos[i].tags[0].tid + ',';
                 	}
 
                 	if(tags.length == 0){
