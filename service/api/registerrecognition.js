@@ -84,16 +84,21 @@ exports.post = function(request, response) {
                 if(resp.body.status && resp.body.status != 'error'){
                 	var tags = "";
                 	for(var i in body.photos){
-                		//we make the enforcement tha the client only sends pictures of people with only 1 face in it.
-                		//we do this because we don't want to deal with the complexity of multiple faces in training pictures
-                		if(body.photos[i].tags.length > 1){
-                			response.send(400, { message: 'You must send photos with clearly only 1 face in it. This photo has more than one face ' + body.photos[i].url });
-                			return;
-                		}
+                		
+                		if(body.photos[i].tags){
+                            //we make the enforcement tha the client only sends pictures of people with only 1 face in it.
+                            //we do this because we don't want to deal with the complexity of multiple faces in training pictures
+                            if(body.photos[i].tags.length > 1){
+                            response.send(400, { message: 'You must send photos with clearly only 1 face in it. This photo has more than one face ' + body.photos[i].url });
+                            return;
+                            }
 
-                		if(body.photos[i].tags.length == 1){
-                			tags += body.photos[i].tags[0].tid + ',';
-                		}
+                            if(body.photos[i].tags.length == 1){
+                                tags += body.photos[i].tags[0].tid + ',';
+                            }
+                            //0 tags just means no faces detected
+                        }
+                        
                 		
                 	}
 
