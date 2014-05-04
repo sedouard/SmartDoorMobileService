@@ -132,7 +132,7 @@ exports.startRingListener = function doorbellringlistener(){
                                         console.log('threshold: ' + threshold);
                                         if(confidence > threshold){
                                             console.log('Found identification for picture!!!');
-                                            var gotIdMatch = true;
+                                            gotIdMatch = true;
                                             var userid = tags[0].uids[i].uid;
                                             userid = userid.replace("Facebook", "Facebook:");
                                             userid = userid.replace("@"+nconf.get("SmartDoor.Identification.NamespaceName"),"");
@@ -156,6 +156,9 @@ exports.startRingListener = function doorbellringlistener(){
                                         sendPush(message);
                                     }
 
+                                }
+                                else{
+                                    sendPush(message);
                                 }
                             }
 

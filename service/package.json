@@ -13,6 +13,7 @@
 	"uuid" : "1.4.x",
 	"qs" : "0.6.x",
 	"azure" : "0.8.x",
-	"unirest": "0.2.6"
+	"unirest": "0.2.6",
+	node-inspector@0.7.3
   }
 }
