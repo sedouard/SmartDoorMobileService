@@ -81,7 +81,7 @@ exports.post = function(request, response) {
                 console.log('Response Status: ' + resp.statusCode);
                 console.log('Message: ' + resp.body);
                 var body = resp.body;
-                if(resp.statusCode == 200){
+                if(resp.body.status && response.body.status != 'error'){
                 	var tags = "";
                 	for(var i in body.photos){
                 		//we make the enforcement tha the client only sends pictures of people with only 1 face in it.
@@ -114,7 +114,7 @@ exports.post = function(request, response) {
 		              	console.log('Response Status: ' + resp2.statusCode);
                 		console.log('Message: ' + resp2.body);
 
-                		if(resp2.statusCode == 200){
+                		if(resp2.status && resp2.status != 'error'){
                 			//record this user and the training set
 		                    console.log('Horray, we registered ' + request.body.userid + ' for recognition');
 		                    doorBell.usersToDetect.push({ userid: request.body.userid, name:request.body.name, photos: request.body.photos });
