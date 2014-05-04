@@ -128,6 +128,7 @@ exports.startRingListener = function doorbellringlistener(){
                                     var gotIdMatch = false;
                                     for(var i in tags[0].uids){
                                         var confidence = parseFloat(tags[0].uids[i].confidence);
+                                        console.log('confidence: ' + confidence);
                                         if(confidence > threshold){
                                             console.log('Found identification for picture!!!');
                                             var gotIdMatch = true;
