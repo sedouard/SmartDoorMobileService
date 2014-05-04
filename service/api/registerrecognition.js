@@ -81,7 +81,7 @@ exports.post = function(request, response) {
                 console.log('Response Status: ' + resp.statusCode);
                 console.log('Message: ' + resp.body);
                 var body = resp.body;
-                if(resp.body.status && response.body.status != 'error'){
+                if(resp.body.status && resp.body.status != 'error'){
                 	var tags = "";
                 	for(var i in body.photos){
                 		//we make the enforcement tha the client only sends pictures of people with only 1 face in it.
