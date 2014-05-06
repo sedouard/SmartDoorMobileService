@@ -2,6 +2,7 @@
 exports.post = function(request, response) {
     response.send(statusCodes.OK,{ message : 'Hello World!' })
     
+
     // The following call is for illustration purpose only
     // The call and function body should be moved to a script in your app
     // where you want to send a notification
