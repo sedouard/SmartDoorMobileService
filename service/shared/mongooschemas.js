@@ -7,7 +7,15 @@ mongoose.connect(connectionString);
 var photoSchema = mongoose.Schema({
                 blobPointer: String,
                 url : String,
-                timestamp: String
+                timestamp: String,
+                //if the recognition guessed someone this is filled in
+                identifiedPerson: {
+                    //if confidence is 100, that means
+                    //that the user idenfied this person at some point
+                    confidence: Number,
+                    id: String,
+                    name: String
+                },
             });
 var doorbellSchema = mongoose.Schema({
             doorBellID: String,

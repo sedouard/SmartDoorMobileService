@@ -65,6 +65,7 @@ exports.startRingListener = function doorbellringlistener(){
     listenForMessages();
 
 
+    //TODO: This function can use some cleanup, way too much nesting
     function listenForMessages() {
         //Listen for 60 seconds, this job runs for 60 seconds so we avoid having multiple invokations
         sb.receiveQueueMessage("arduino", { timeoutIntervalInS: 60 }, 
@@ -142,6 +143,11 @@ exports.startRingListener = function doorbellringlistener(){
                                                 if(!name){
                                                     console.error('could not find user name in mongo for ' + userid);
                                                     return;
+                                                }
+                                                doorBellObj.identifiedPerson = {
+                                                    confidence: confidence,
+                                                    id: userid,
+                                                    name: name
                                                 }
                                                 console.log('got name ' + userid);
                                                 message = message.replace("Somebody", name);
