@@ -54,7 +54,7 @@ function getNameforUserid(doorBellID, userid, callback){
 }
 
 //returns a photo object from mongo with the cooresponding pointer
-function getPhotoForPointer(pointer, callback){
+function getDoorBell(pointer, callback){
     var db = mongoose.connection;
 
     var procedure = function(){
@@ -70,12 +70,8 @@ function getPhotoForPointer(pointer, callback){
                 callback('Could not query database');
             }
             console.log('found doorbell ' + pointer.doorBellID);
-            for(var i in doorbell.photos){
-                if (pointer.imageId == doorbell.photos[i].blobPointer) {
-                    callback(null,doorbell.photos[i]);
-                    return;
-                }
-            }
+            callback(null,doorbell);
+            
 
         });
 
@@ -196,18 +192,26 @@ exports.startRingListener = function doorbellringlistener(){
                                                             console.err(err);
                                                             return;
                                                         }
-                                                        result["identifiedPerson"] = {
-                                                            confidence: confidence,
-                                                            id: userid,
-                                                            name: name
-                                                        }
-                                                        //we don't need to block the resposne for the save to the db
-                                                        result.save(function (err) {
-                                                            if (err) {
-                                                                console.log('could not save identity to photo');
+                                                        for(var i in doorbell.photos){
+                                                            if (doorBellObj.imageId == doorbell.photos[i].blobPointer) {
+                                                                doorbell.photos[i]["identifiedPerson"] = {
+                                                                    confidence: confidence,
+                                                                    id: userid,
+                                                                    name: name
+                                                                }
+                                                                result.save(function (err) {
+                                                                if (err) {
+                                                                        console.log('could not save identity to photo');
+                                                                    }
+                                                                    console.log('saved identity of photo: ' + result.blobPointer);
+                                                                });
+                                                                return;
+                                                                
                                                             }
-                                                            console.log('saved identity of photo: ' + result.blobPointer);
-                                                        });
+                                                        }
+                                                        
+                                                        //we don't need to block the resposne for the save to the db
+                                                        
                                                     });
                                                 console.log('got name ' + userid);
                                                 message = message.replace("Somebody", name);
