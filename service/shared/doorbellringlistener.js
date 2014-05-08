@@ -144,7 +144,7 @@ exports.startRingListener = function doorbellringlistener(){
                                                     console.error('could not find user name in mongo for ' + userid);
                                                     return;
                                                 }
-                                                doorBellObj.identifiedPerson = {
+                                                doorBellObj["identifiedPerson"] = {
                                                     confidence: confidence,
                                                     id: userid,
                                                     name: name
