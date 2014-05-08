@@ -65,7 +65,7 @@ function getPhotoForPointer(pointer, callback){
                 console.log('Could not query database');
                 callback('Could not query database');
             }
-            else if(photo == null){
+            else if (doorbell == null) {
                 console.log('Could not find doorbell ' + doorBellID);
                 callback('Could not query database');
             }
