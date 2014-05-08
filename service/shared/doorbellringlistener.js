@@ -71,7 +71,7 @@ function getPhotoForPointer(pointer, callback){
             }
             console.log('found doorbell ' + pointer.doorBellID);
             for(var i in doorbell.photos){
-                if (pointer.imageId == doorbell.photos[i].imageId) {
+                if (pointer.imageId == doorbell.photos[i].blobPointer) {
                     callback(null,doorbell.photos[i]);
                     return;
                 }
