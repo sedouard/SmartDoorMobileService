@@ -59,7 +59,7 @@ function getPhotoForPointer(pointer, callback){
 
     var procedure = function(){
         //Query for the speicfied doorbell. There should only be one in the DB.
-        DoorBell.findOne({ doorBellID: doorBellID }, function (err, doorbell) {
+        DoorBell.findOne({ doorBellID: pointer.doorBellID }, function (err, doorbell) {
             
             if(err) {
                 console.log('Could not query database');
@@ -71,7 +71,7 @@ function getPhotoForPointer(pointer, callback){
             }
             console.log('found doorbell ' + doorBellID);
             for(var i in doorbell.photos){
-                if(pointer == doorbell.photos[i].blobPointer){
+                if (pointer.imageId == doorbell.photos[i].imageId) {
                     callback(null,doorbell.photos[i]);
                     return;
                 }
@@ -190,7 +190,7 @@ exports.startRingListener = function doorbellringlistener(){
                                                 }
 
                                                 //we go the picture pointer get the oject
-                                                getPhotoForPointer(doorBellObj.imageId,
+                                                getPhotoForPointer(doorBellObj,
                                                     function(err,result){
                                                         if(err){
                                                             console.err(err);
