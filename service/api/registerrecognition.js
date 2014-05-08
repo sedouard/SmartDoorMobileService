@@ -110,8 +110,8 @@ exports.post = function(request, response) {
                         console.log('Message: ' + resp2.body);
 
                         if(resp2.status && resp2.status != 'error'){
-                            console.log('Making request ' + "https://face.p.mashape.com/faces/train?api_key="+nconf.get('SmartDoor.Identification.ApiKey')+"&api_secret="+nconf.get('SmartDoor.Identification.ApiSecret')+"&uid="+entryid);
-                            var trainReq = unirest.get("https://face.p.mashape.com/faces/train?api_key="+nconf.get('SmartDoor.Identification.ApiKey')+"&api_secret="+nconf.get('SmartDoor.Identification.ApiSecret')+"&uid="+entryid)
+                            console.log('Making request ' + "https://face.p.mashape.com/faces/train?api_key="+nconf.get('SmartDoor.Identification.ApiKey')+"&api_secret="+nconf.get('SmartDoor.Identification.ApiSecret')+"&uids="+entryid);
+                            var trainReq = unirest.get("https://face.p.mashape.com/faces/train?api_key="+nconf.get('SmartDoor.Identification.ApiKey')+"&api_secret="+nconf.get('SmartDoor.Identification.ApiSecret')+"&uids="+entryid)
                             .headers({
                                 "Content-Type": 'application/json',
                                 "X-Mashape-Authorization": nconf.get('SmartDoor.Identification.MashapeKey')
