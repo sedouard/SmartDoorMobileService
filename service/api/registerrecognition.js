@@ -110,6 +110,7 @@ exports.post = function(request, response) {
                         console.log('Message: ' + resp2.body);
 
                         if(resp2.status && resp2.status != 'error'){
+                            console.log('Making request ' + "https://face.p.mashape.com/faces/train?api_key="+nconf.get('SmartDoor.Identification.ApiKey')+"&api_secret="+nconf.get('SmartDoor.Identification.ApiSecret')+"&uid="+entryid);
                             var trainReq = unirest.get("https://face.p.mashape.com/faces/train?api_key="+nconf.get('SmartDoor.Identification.ApiKey')+"&api_secret="+nconf.get('SmartDoor.Identification.ApiSecret')+"&uid="+entryid)
                             .headers({
                                 "Content-Type": 'application/json',
@@ -136,6 +137,10 @@ exports.post = function(request, response) {
                                         }
                                     });
                                 
+                                }
+                                else{
+                                    console.error('did not get valid response from face recg api' + resp3);
+                                    response.send(500, { message: 'could not train for face' }); 
                                 }
                             });
                             
