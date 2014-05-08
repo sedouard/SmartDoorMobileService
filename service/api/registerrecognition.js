@@ -110,23 +110,35 @@ exports.post = function(request, response) {
                         console.log('Message: ' + resp2.body);
 
                         if(resp2.status && resp2.status != 'error'){
-                            //record this user and the training set
-                            console.log('Horray, we registered ' + request.body.userid + ' for recognition');
-                            doorBell.usersToDetect.push({ userid: request.body.userid, name:request.body.name, photos: request.body.photos });
-                            doorBell.save(function (err) {
-                                if(err)
-                                {
-                                    response.send(500, { message: 'could not record identification tracking status to mongo' }); 
-                                    return;
-                                }
-                                else
-                                {
-                                    //We sucessfully associated this photo
-                                    //to the doorbell.
-                                    response.send(statusCodes.OK, { message: 'User ' + request.body.userid + ' is now being identified!' });
-                                    return;
+                            var trainReq = unirest.get("https://face.p.mashape.com/faces/train?api_key="+nconf.get('SmartDoor.Identification.ApiKey')+"&api_secret="+nconf.get('SmartDoor.Identification.ApiSecret')+"&uid="+entryid)
+                            .headers({
+                                "Content-Type": 'application/json',
+                                "X-Mashape-Authorization": nconf.get('SmartDoor.Identification.MashapeKey')
+                            })
+                            .send()
+                            .end(function(resp3){
+                                if(resp3.status == 'success'){
+                                    //record this user and the training set
+                                    console.log('Horray, we registered ' + request.body.userid + ' for recognition');
+                                    doorBell.usersToDetect.push({ userid: request.body.userid, name:request.body.name, photos: request.body.photos });
+                                    doorBell.save(function (err) {
+                                        if(err)
+                                        {
+                                            response.send(500, { message: 'could not record identification tracking status to mongo' }); 
+                                            return;
+                                        }
+                                        else
+                                        {
+                                            //We sucessfully associated this photo
+                                            //to the doorbell.
+                                            response.send(statusCodes.OK, { message: 'User ' + request.body.userid + ' is now being identified!' });
+                                            return;
+                                        }
+                                    });
+                                
                                 }
                             });
+                            
                         }
                       });
 
