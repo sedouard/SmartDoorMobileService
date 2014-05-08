@@ -10,7 +10,7 @@ var DoorBell = mongooseSchemas.DoorBell;
 nconf.argv().env();
 
 
-function getNameforUserid(doorBellID, userid, completed){
+function getNameforUserid(doorBellID, userid, callback){
     var db = mongoose.connection;
 
     var procedure = function(){
@@ -19,16 +19,16 @@ function getNameforUserid(doorBellID, userid, completed){
             
             if(err) {
                 console.log('Could not query database');
-                completed(null);
+                callback(null);
             }
             else if(doorbell == null){
                 console.log('Could not find doorbell ' + doorBellID);
-                completed(null);
+                callback(null);
             }
             console.log('found doorbell ' + doorBellID);
             for(var i in doorbell.usersToDetect){
                 if(userid == doorbell.usersToDetect[i].userid){
-                    completed(doorbell.usersToDetect[i].name);
+                    callback(doorbell.usersToDetect[i].name);
                     break;
                 }
             }
@@ -47,7 +47,51 @@ function getNameforUserid(doorBellID, userid, completed){
             procedure();
         });
         db.on('error', function(){
-            completed(null);
+            callback(null);
+        });
+        
+    }
+}
+
+//returns a photo object from mongo with the cooresponding pointer
+function getPhotoForPointer(pointer, callback){
+    var db = mongoose.connection;
+
+    var procedure = function(){
+        //Query for the speicfied doorbell. There should only be one in the DB.
+        DoorBell.photos.findOne({ blobPointer: pointer }, function (err, photo) {
+            
+            if(err) {
+                console.log('Could not query database');
+                callback('Could not query database');
+            }
+            else if(photo == null){
+                console.log('Could not find doorbell ' + doorBellID);
+                callback('Could not query database');
+            }
+            console.log('found doorbell ' + pointer);
+            for(var i in doorbell.usersToDetect){
+                if(userid == doorbell.usersToDetect[i].userid){
+                    callback(null,doorbell.usersToDetect[i].name);
+                    break;
+                }
+            }
+
+        });
+
+    }
+    if(db.readyState == 1){
+        procedure();
+    } else{
+        db.connect();
+        var connectionString = nconf.get('SmartDoor.MongodbConnectionString');
+        mongoose.connect(connectionString);
+        
+        db.on('connect', function(){
+            procedure();
+        });
+        db.on('error', function(){
+            callback('Could not query database');
         });
         
     }
@@ -144,11 +188,27 @@ exports.startRingListener = function doorbellringlistener(){
                                                     console.error('could not find user name in mongo for ' + userid);
                                                     return;
                                                 }
-                                                doorBellObj["identifiedPerson"] = {
-                                                    confidence: confidence,
-                                                    id: userid,
-                                                    name: name
-                                                }
+
+                                                //we go the picture pointer get the oject
+                                                getPhotoForPointer(doorBellObj.imageId,
+                                                    function(err,result){
+                                                        if(err){
+                                                            console.err(err);
+                                                            return;
+                                                        }
+                                                        result["identifiedPerson"] = {
+                                                            confidence: confidence,
+                                                            id: userid,
+                                                            name: name
+                                                        }
+                                                        //we don't need to block the resposne for the save to the db
+                                                        result.save(function (err) {
+                                                            if (err) {
+                                                                console.log('could not save identity to photo');
+                                                            }
+                                                            console.log('saved identity to photo');
+                                                        });
+                                                    });
                                                 console.log('got name ' + userid);
                                                 message = message.replace("Somebody", name);
                                                 sendPush(message);
