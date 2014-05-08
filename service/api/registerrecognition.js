@@ -42,17 +42,9 @@ exports.post = function(request, response) {
             var userAlreadyTracked = false;
             for (var i in doorBell.usersToDetect) {
                 if (doorBell.usersToDetect[i].userid == request.body.userid) {
-                    userAlreadyTracked = true;
+                    doorBell.usersToDetect[i].photos += ',' + request.body.photos;
                 }
             }
-
-            if (userAlreadyTracked) {
-                //In the future we may allow users to rebuild training set
-                console.log('User ' + request.body.userid + ' already being identified')
-                response.send(statusCodes.OK, { message: 'User ' + request.body.userid + ' already being identified' });
-                return;
-            }
-
             
             //console.log('calling lambda face recognition');
             console.log('calling skybiometry face recognition...');
