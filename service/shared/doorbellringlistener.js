@@ -192,8 +192,8 @@ exports.startRingListener = function doorbellringlistener(){
                                                             console.err(err);
                                                             return;
                                                         }
-                                                        for(var i in doorbell.photos){
-                                                            if (doorBellObj.imageId == doorbell.photos[i].blobPointer) {
+                                                        for (var i in result.photos) {
+                                                            if (doorBellObj.imageId == result.photos[i].blobPointer) {
                                                                 doorbell.photos[i]["identifiedPerson"] = {
                                                                     confidence: confidence,
                                                                     id: userid,
