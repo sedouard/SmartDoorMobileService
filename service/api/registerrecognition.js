@@ -89,9 +89,7 @@ exports.post = function(request, response) {
                                 tags += body.photos[i].tags[0].tid + ',';
                             }
                             //0 tags just means no faces detected
-                        }
-                        
-                        
+                        }  
                     }
 
                     if(tags.length == 0){
