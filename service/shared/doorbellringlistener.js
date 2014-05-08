@@ -203,7 +203,7 @@ exports.startRingListener = function doorbellringlistener(){
                                                                 if (err) {
                                                                         console.log('could not save identity to photo');
                                                                     }
-                                                                    console.log('saved identity of photo: ' + result.blobPointer);
+                                                                console.log('saved identity of photo: ' + result.photos[i].blobPointer);
                                                                 });
                                                                 return;
                                                                 

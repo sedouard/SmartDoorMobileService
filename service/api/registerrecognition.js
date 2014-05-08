@@ -21,9 +21,9 @@ exports.post = function(request, response) {
     
     if(mongoose.connection.readyState == 1){
     
-    	console.log("Sucessfully Logged into mongo");
+        console.log("Sucessfully Logged into mongo");
 
-    	var doorBellID = request.query.doorbellID;
+        var doorBellID = request.query.doorbellID;
 
         console.log('Looking for doorBellID ' + doorBellID + ' in mongo');
         
@@ -42,17 +42,9 @@ exports.post = function(request, response) {
             var userAlreadyTracked = false;
             for (var i in doorBell.usersToDetect) {
                 if (doorBell.usersToDetect[i].userid == request.body.userid) {
-                    userAlreadyTracked = true;
+                    doorBell.usersToDetect[i].photos += ',' + request.body.photos;
                 }
             }
-
-            if (userAlreadyTracked) {
-                //In the future we may allow users to rebuild training set
-                console.log('User ' + request.body.userid + ' already being identified')
-                response.send(statusCodes.OK, { message: 'User ' + request.body.userid + ' already being identified' });
-                return;
-            }
-
             
             //console.log('calling lambda face recognition');
             console.log('calling skybiometry face recognition...');
@@ -82,10 +74,10 @@ exports.post = function(request, response) {
                 console.log('Message: ' + resp.body);
                 var body = resp.body;
                 if(resp.body.status && resp.body.status != 'error'){
-                	var tags = "";
-                	for(var i in body.photos){
-                		
-                		if(body.photos[i].tags){
+                    var tags = "";
+                    for(var i in body.photos){
+                        
+                        if(body.photos[i].tags){
                             //we make the enforcement tha the client only sends pictures of people with only 1 face in it.
                             //we do this because we don't want to deal with the complexity of multiple faces in training pictures
                             if(body.photos[i].tags.length > 1){
@@ -99,46 +91,46 @@ exports.post = function(request, response) {
                             //0 tags just means no faces detected
                         }
                         
-                		
-                	}
+                        
+                    }
 
-                	if(tags.length == 0){
-                		response.send(400, { message: 'None of the photos you sent had faces in it. ' + body.photos[i].url });
-                		return;
-                	}
-                	console.log('Making request GET ' + "https://face.p.mashape.com/tags/save?api_key="+nconf.get('SmartDoor.Identification.ApiKey')+"&api_secret="+nconf.get('SmartDoor.Identification.ApiSecret')+"&uid="+entryid+'@'+nconf.get("SmartDoor.Identification.NamespaceName")+"&tids="+tags);
-                	//now we need to save the tags...
-                	var req = unirest.get("https://face.p.mashape.com/tags/save?api_key="+nconf.get('SmartDoor.Identification.ApiKey')+"&api_secret="+nconf.get('SmartDoor.Identification.ApiSecret')+"&uid="+entryid+'%40'+nconf.get("SmartDoor.Identification.NamespaceName")+"&tids="+tags)
-		              .headers({ 
-		                "Content-Type": 'application/json',
-		                "X-Mashape-Authorization": nconf.get('SmartDoor.Identification.MashapeKey')
-		              })
-		              .timeout(60000)
-		              .send()
-		              .end(function (resp2) {
-		              	console.log('Response Status: ' + resp2.statusCode);
-                		console.log('Message: ' + resp2.body);
+                    if(tags.length == 0){
+                        response.send(400, { message: 'None of the photos you sent had faces in it. ' + body.photos[i].url });
+                        return;
+                    }
+                    console.log('Making request GET ' + "https://face.p.mashape.com/tags/save?api_key="+nconf.get('SmartDoor.Identification.ApiKey')+"&api_secret="+nconf.get('SmartDoor.Identification.ApiSecret')+"&uid="+entryid+'@'+nconf.get("SmartDoor.Identification.NamespaceName")+"&tids="+tags);
+                    //now we need to save the tags...
+                    var req = unirest.get("https://face.p.mashape.com/tags/save?api_key="+nconf.get('SmartDoor.Identification.ApiKey')+"&api_secret="+nconf.get('SmartDoor.Identification.ApiSecret')+"&uid="+entryid+'%40'+nconf.get("SmartDoor.Identification.NamespaceName")+"&tids="+tags)
+                      .headers({ 
+                        "Content-Type": 'application/json',
+                        "X-Mashape-Authorization": nconf.get('SmartDoor.Identification.MashapeKey')
+                      })
+                      .timeout(60000)
+                      .send()
+                      .end(function (resp2) {
+                        console.log('Response Status: ' + resp2.statusCode);
+                        console.log('Message: ' + resp2.body);
 
-                		if(resp2.status && resp2.status != 'error'){
-                			//record this user and the training set
-		                    console.log('Horray, we registered ' + request.body.userid + ' for recognition');
-		                    doorBell.usersToDetect.push({ userid: request.body.userid, name:request.body.name, photos: request.body.photos });
-		                    doorBell.save(function (err) {
-		                        if(err)
-		                        {
-		                            response.send(500, { message: 'could not record identification tracking status to mongo' }); 
-		                            return;
-		                        }
-		                        else
-		                        {
-		                            //We sucessfully associated this photo
-		                            //to the doorbell.
-		                            response.send(statusCodes.OK, { message: 'User ' + request.body.userid + ' is now being identified!' });
-		                            return;
-		                        }
-		                    });
-                		}
-		              });
+                        if(resp2.status && resp2.status != 'error'){
+                            //record this user and the training set
+                            console.log('Horray, we registered ' + request.body.userid + ' for recognition');
+                            doorBell.usersToDetect.push({ userid: request.body.userid, name:request.body.name, photos: request.body.photos });
+                            doorBell.save(function (err) {
+                                if(err)
+                                {
+                                    response.send(500, { message: 'could not record identification tracking status to mongo' }); 
+                                    return;
+                                }
+                                else
+                                {
+                                    //We sucessfully associated this photo
+                                    //to the doorbell.
+                                    response.send(statusCodes.OK, { message: 'User ' + request.body.userid + ' is now being identified!' });
+                                    return;
+                                }
+                            });
+                        }
+                      });
 
                     
                     
@@ -153,10 +145,10 @@ exports.post = function(request, response) {
 
     }
     else{
-    	response.send(500, { message : 'could not connect to database' });
-    	console.error("could not connect to database");
+        response.send(500, { message : 'could not connect to database' });
+        console.error("could not connect to database");
     }
-	
-	
-	
+    
+    
+    
 };
