@@ -186,7 +186,7 @@ exports.startRingListener = function doorbellringlistener(){
                                                 }
 
                                                 //we go the picture pointer get the oject
-                                                getPhotoForPointer(doorBellObj,
+                                                getDoorBell(doorBellObj,
                                                     function(err,result){
                                                         if(err){
                                                             console.err(err);
