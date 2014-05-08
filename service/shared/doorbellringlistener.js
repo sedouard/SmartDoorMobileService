@@ -59,7 +59,7 @@ function getPhotoForPointer(pointer, callback){
 
     var procedure = function(){
         //Query for the speicfied doorbell. There should only be one in the DB.
-        DoorBell.photos.findOne({ blobPointer: pointer }, function (err, photo) {
+        DoorBell.findOne({ doorBellID: doorBellID }, function (err, doorbell) {
             
             if(err) {
                 console.log('Could not query database');
@@ -69,11 +69,11 @@ function getPhotoForPointer(pointer, callback){
                 console.log('Could not find doorbell ' + doorBellID);
                 callback('Could not query database');
             }
-            console.log('found doorbell ' + pointer);
-            for(var i in doorbell.usersToDetect){
-                if(userid == doorbell.usersToDetect[i].userid){
-                    callback(null,doorbell.usersToDetect[i].name);
-                    break;
+            console.log('found doorbell ' + doorBellID);
+            for(var i in doorbell.photos){
+                if(pointer == doorbell.photos[i].blobPointer){
+                    callback(null,doorbell.photos[i]);
+                    return;
                 }
             }
 
