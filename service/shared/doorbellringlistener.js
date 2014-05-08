@@ -69,7 +69,7 @@ function getPhotoForPointer(pointer, callback){
                 console.log('Could not find doorbell ' + doorBellID);
                 callback('Could not query database');
             }
-            console.log('found doorbell ' + doorBellID);
+            console.log('found doorbell ' + pointer.doorBellID);
             for(var i in doorbell.photos){
                 if (pointer.imageId == doorbell.photos[i].imageId) {
                     callback(null,doorbell.photos[i]);
