@@ -118,7 +118,7 @@ exports.post = function(request, response) {
                             })
                             .send()
                             .end(function(resp3){
-                                if(resp3.status == 'success'){
+                                if(resp2.status && resp2.status != 'error'){
                                     //record this user and the training set
                                     console.log('Horray, we registered ' + request.body.userid + ' for recognition');
                                     doorBell.usersToDetect.push({ userid: request.body.userid, name:request.body.name, photos: request.body.photos });
