@@ -54,7 +54,8 @@ function getNameforUserid(doorBellID, userid, callback){
 }
 
 //returns a photo object from mongo with the cooresponding pointer
-function getDoorBell(pointer, callback){
+//export this as a global
+g_getDoorBell = function getDoorBell(pointer, callback){
     var db = mongoose.connection;
 
     var procedure = function(){
@@ -186,7 +187,7 @@ exports.startRingListener = function doorbellringlistener(){
                                                 }
 
                                                 //we go the picture pointer get the oject
-                                                getDoorBell(doorBellObj,
+                                                g_getDoorBell(doorBellObj,
                                                     function(err,result){
                                                         if(err){
                                                             console.err(err);
@@ -197,7 +198,8 @@ exports.startRingListener = function doorbellringlistener(){
                                                                 result.photos[i]["identifiedPerson"] = {
                                                                     confidence: confidence,
                                                                     id: userid,
-                                                                    name: name
+                                                                    name: name,
+                                                                    tid: tags[0].uids[i].tid
                                                                 }
                                                                 result.save(function (err) {
                                                                 if (err) {
