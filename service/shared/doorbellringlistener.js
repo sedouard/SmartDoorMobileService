@@ -199,7 +199,7 @@ exports.startRingListener = function doorbellringlistener(){
                                                                     confidence: confidence,
                                                                     id: userid,
                                                                     name: name,
-                                                                    tid: tags[0].uids[i].tid
+                                                                    tid: tags[0].tid
                                                                 }
                                                                 result.save(function (err) {
                                                                 if (err) {
