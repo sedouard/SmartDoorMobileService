@@ -14,6 +14,7 @@ var photoSchema = mongoose.Schema({
                     //that the user idenfied this person at some point
                     confidence: Number,
                     id: String,
+                    tid: String,
                     name: String
                 },
             });
