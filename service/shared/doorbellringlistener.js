@@ -143,6 +143,7 @@ exports.startRingListener = function doorbellringlistener(){
                             });
                     }
 
+                    //TODO: This is getting sort of messy
                     var req = unirest.get("https://face.p.mashape.com/faces/recognize?api_key="+nconf.get('SmartDoor.Identification.ApiKey')+"&api_secret="+nconf.get('SmartDoor.Identification.ApiSecret')+"&uids=all"+"&urls="+imageUrl+"&namespace="+nconf.get('SmartDoor.Identification.NamespaceName')+"&detector=aggresive&attributes=none&limit=3")
                       .headers({ 
                         "X-Mashape-Authorization": nconf.get('SmartDoor.Identification.MashapeKey'),
@@ -158,9 +159,8 @@ exports.startRingListener = function doorbellringlistener(){
                             console.log("Mashape responded correctly");
 
                             //we always get one photo back because we sent one photo for recognition
-                            console.log('tags ' + response.body.photos[0].tags);
-                            console.log('tags.length' + response.body.photos[0].tags.length);
-                            if(response.body.photos[0].tags.length > 0){
+                            if(response.body.photos[0].tags &&
+                                response.body.photos[0].tags.length > 0){
                                 var tags = response.body.photos[0].tags;
                                 console.log('got tag' + tags[0]);
                                 console.log('with uids' + tags[0].uids);
@@ -233,7 +233,9 @@ exports.startRingListener = function doorbellringlistener(){
                                     sendPush(message);
                                 }
                             }
-
+                            else {
+                                sendPush(message);
+                            }
                             
 
                         }
