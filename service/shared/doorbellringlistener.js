@@ -154,7 +154,7 @@ exports.startRingListener = function doorbellringlistener(){
                       .headers({ 
                         "X-Mashape-Authorization": nconf.get('SmartDoor.Identification.MashapeKey'),
                         "Content-Type": 'application/json'
-                      })
+                      }) 
                       .timeout(60000)
                       .send()
                       .end(function (response) {
