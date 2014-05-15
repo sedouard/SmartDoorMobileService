@@ -133,13 +133,19 @@ exports.startRingListener = function doorbellringlistener(){
                             //I'm telling the hub to notify all windows 8 devices registerd for this doorbell
 
                             //The first argument is the tag that I want to send a notification to
+                        console.log('Sending push...');
                             hub.wns.sendToastImageAndText02(doorBellObj.doorBellID, {
                                                     text1: msg,
                                                     text2: 'just rang!',
                                                     image1src: imageUrl,
                                                     image1alt: imageUrl
-                               }, function(pushResponse) {
+                            }, function (error) {
+                                if (!error) {
                                     console.log("Sent push:", pushResponse);
+                                    return;
+                                }
+                                
+                                console.error(error);
                             });
                     }
 
