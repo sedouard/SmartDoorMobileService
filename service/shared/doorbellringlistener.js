@@ -141,7 +141,7 @@ exports.startRingListener = function doorbellringlistener(){
                                                     image1alt: imageUrl
                             }, function (error) {
                                 if (!error) {
-                                    console.log("Sent push:", pushResponse);
+                                    console.log("Sent push:", error);
                                     return;
                                 }
                                 
