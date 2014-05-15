@@ -159,10 +159,12 @@ exports.startRingListener = function doorbellringlistener(){
                       .send()
                       .end(function (response) {
                         console.log('Response Status: ' + response.statusCode);
-                        console.log('Message: ' + response.body.toString());
                         
-                        if(response.body.status != 'error' && response.body.photos && response.body.photos.length > 0){
+                        //validate response
+                        if(response.body && response.body.status != 'error' && response.body.photos && response.body.photos.length > 0){
                             console.log("Mashape responded correctly");
+
+                            console.log('Message: ' + response.body.toString());
 
                             //we always get one photo back because we sent one photo for recognition
                             if(response.body.photos[0].tags &&
