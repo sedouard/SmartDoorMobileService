@@ -3,7 +3,7 @@ var mongoose = require('mongoose');
 var unirest = require('unirest');
 var nconf = require('nconf');
 exports.delete = function(request, response) {
-
+ 
     var blobPointer = request.query.blobPointer;
     var userid = request.query.userid;
     var doorbellID = request.query.doorbellID;
