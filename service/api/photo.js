@@ -35,10 +35,11 @@ exports.get = function(request, response) {
                 console.log(error);
                 return request.respond(500, { message: 'Could not create blob' });
             }
+            var expiry = minutesFromNow(60);
             var sharedAccessPolicy = {
                 AccessPolicy: {
                     Permissions: 'rw', //Read and Write permissions
-                    Expiry: minutesFromNow(5)
+                    Expiry: expiry
                 }
             };
             //create a time random id
@@ -48,7 +49,7 @@ exports.get = function(request, response) {
 
 
 
-            var sasResponse = { 'sasUrl': sasUrl.baseUrl + sasUrl.path + '?' + qs.stringify(sasUrl.queryString), 'photoId': id };
+            var sasResponse = { 'sasUrl': sasUrl.baseUrl + sasUrl.path + '?' + qs.stringify(sasUrl.queryString), 'photoId': id, 'expiry':expiry };
 
             console.log('Adding photo ' + id + '.jpg to doorbell ' + request.query.doorbellID);
             addPhotoToDoorbell(request.query.doorbellID, id, function (err) {
