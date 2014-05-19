@@ -10,7 +10,7 @@ var DoorBell = mongooseSchemas.DoorBell;
 nconf.argv().env();
 
 
-function getNameforUserid(doorBellID, userid, callback){
+export.getNameforUserid = function(doorBellID, userid, callback){
     var db = mongoose.connection;
 
     var procedure = function(){
@@ -55,7 +55,7 @@ function getNameforUserid(doorBellID, userid, callback){
 
 //returns a photo object from mongo with the cooresponding pointer
 //export this as a global
-g_getDoorBell = function getDoorBell(pointer, callback){
+exports.getDoorBell = function (pointer, callback){
     var db = mongoose.connection;
 
     var procedure = function(){

@@ -2,6 +2,7 @@ var c_Timeout = 10;
 var azure = require('azure');
 var nconf = require('nconf');
 var mongooseSchemas = require('../shared/mongooschemas.js');
+var common = require('../shared/common.js');
 var unirest = require('unirest');
 var mongoose = require('mongoose');
 //Get the doorbell model. This function will take care of making sure it hasn't already
@@ -9,91 +10,6 @@ var mongoose = require('mongoose');
 var DoorBell = mongooseSchemas.DoorBell;
 //pickup config values
 nconf.argv().env();
-
-
-function getNameforUserid(doorBellID, userid, callback){
-    var db = mongoose.connection;
-
-    var procedure = function(){
-        //Query for the speicfied doorbell. There should only be one in the DB.
-        DoorBell.findOne({ doorBellID: doorBellID }, function (err, doorbell) {
-            
-            if(err) {
-                console.log('Could not query database');
-                callback(null);
-            }
-            else if(doorbell == null){
-                console.log('Could not find doorbell ' + doorBellID);
-                callback(null);
-            }
-            console.log('found doorbell ' + doorBellID);
-            for(var i in doorbell.usersToDetect){
-                if(userid == doorbell.usersToDetect[i].userid){
-                    callback(doorbell.usersToDetect[i].name);
-                    break;
-                }
-            }
-
-        });
-
-    }
-    if(db.readyState == 1){
-        procedure();
-    } else{
-        db.connect();
-        var connectionString = nconf.get('SmartDoor.MongodbConnectionString');
-        mongoose.connect(connectionString);
-        
-        db.on('connect', function(){
-            procedure();
-        });
-        db.on('error', function(){
-            callback(null);
-        });
-        
-    }
-}
-
-//returns a photo object from mongo with the cooresponding pointer
-//export this as a global
-g_getDoorBell = function getDoorBell(pointer, callback){
-    var db = mongoose.connection;
-
-    var procedure = function(){
-        //Query for the speicfied doorbell. There should only be one in the DB.
-        DoorBell.findOne({ doorBellID: pointer.doorBellID }, function (err, doorbell) {
-            
-            if(err) {
-                console.log('Could not query database');
-                callback('Could not query database');
-            }
-            else if (doorbell == null) {
-                console.log('Could not find doorbell ' + doorBellID);
-                callback('Could not query database');
-            }
-            console.log('found doorbell ' + pointer.doorBellID);
-            callback(null,doorbell);
-            
-
-        });
-
-    }
-    if(db.readyState == 1){
-        procedure();
-    } else{
-        db.connect();
-        var connectionString = nconf.get('SmartDoor.MongodbConnectionString');
-        mongoose.connect(connectionString);
-        
-        db.on('connect', function(){
-            procedure();
-        });
-        db.on('error', function(){
-            callback('Could not query database');
-        });
-        
-    }
-}
 
 function doorbellListener() {
     
@@ -191,14 +107,14 @@ function doorbellListener() {
                                             userid = userid.replace("@"+nconf.get("SmartDoor.Identification.NamespaceName"),"");
 
                                             console.log('Getting name for userid ' + userid);
-                                            getNameforUserid(doorBellObj.doorBellID, userid, function(name){
+                                            common.getNameforUserid(doorBellObj.doorBellID, userid, function(name){
                                                 if(!name){
                                                     console.error('could not find user name in mongo for ' + userid);
                                                     return;
                                                 }
 
                                                 //we go the picture pointer get the oject
-                                                g_getDoorBell(doorBellObj,
+                                                common.getDoorBell(doorBellObj,
                                                     function(err,result){
                                                         if(err){
                                                             console.err(err);

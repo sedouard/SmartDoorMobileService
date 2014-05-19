@@ -2,6 +2,7 @@ var unirest = require('unirest');
 var mongoose = require('mongoose');
 var unirest = require('unirest');
 var nconf = require('nconf');
+var common = require('../shared/common.js');
 exports.delete = function(request, response) {
  
     var blobPointer = request.query.blobPointer;
@@ -10,7 +11,7 @@ exports.delete = function(request, response) {
     var db = mongoose.connection;
 
     //grab the doorbell
-    g_getDoorBell({doorBellID: doorbellID}, function(err, result){
+    common.getDoorBell({doorBellID: doorbellID}, function(err, result){
         if(err){
             response.send(500, err);
             return;
@@ -64,7 +65,7 @@ exports.post = function(request, response){
     var db = mongoose.connection;
 
     //grab the doorbell
-    g_getDoorBell({doorBellID: doorbellID}, function(err, result){
+    common.getDoorBell({doorBellID: doorbellID}, function(err, result){
         if(err){
             response.send(500, err);
             return;

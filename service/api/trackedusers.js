@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var mongoosechemas = require('../shared/mongooschemas.js');
+var common = require('../shared/common.js');
 var DoorBell = mongoosechemas.DoorBell;
 var nconf = require('nconf');
 
