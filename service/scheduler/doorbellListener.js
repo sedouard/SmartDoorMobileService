@@ -1,4 +1,4 @@
-var c_Timeout = 10;
+var c_Timeout = 60;
 var azure = require('azure');
 var nconf = require('nconf');
 var mongooseSchemas = require('../shared/mongooschemas.js');
