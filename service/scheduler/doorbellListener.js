@@ -10,7 +10,10 @@ var DoorBell = mongooseSchemas.DoorBell;
 //pickup config values
 nconf.argv().env();
 
-
+var sb = azure.createServiceBusService(nconf.get("SmartDoor.Notifications.DoorbellServiceBus"));
+    var hub = azure.createNotificationHubService(nconf.get("SmartDoor.Notifications.HubName"),
+              nconf.get("SmartDoor.Notifications.HubConnString"));
+              
 function getNameforUserid(doorBellID, userid, callback){
     var db = mongoose.connection;
 
@@ -102,9 +105,7 @@ function doorbellListener() {
     //get the current unix time in seconds
     var startSeconds = time / 1000;
 
-    var sb = azure.createServiceBusService(nconf.get("SmartDoor.Notifications.DoorbellServiceBus"));
-    var hub = azure.createNotificationHubService(nconf.get("SmartDoor.Notifications.HubName"),
-              nconf.get("SmartDoor.Notifications.HubConnString"));
+    
     listenForMessages(c_Timeout);
 
 
@@ -154,7 +155,7 @@ function doorbellListener() {
                                 console.error(error);
                             });
                        //update tiles
-                       
+                       hub.wns.send
                     }
 
                     //TODO: This is getting sort of messy
