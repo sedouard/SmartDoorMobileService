@@ -10,10 +10,7 @@ var DoorBell = mongooseSchemas.DoorBell;
 //pickup config values
 nconf.argv().env();
 
-var sb = azure.createServiceBusService(nconf.get("SmartDoor.Notifications.DoorbellServiceBus"));
-    var hub = azure.createNotificationHubService(nconf.get("SmartDoor.Notifications.HubName"),
-              nconf.get("SmartDoor.Notifications.HubConnString"));
-              
+
 function getNameforUserid(doorBellID, userid, callback){
     var db = mongoose.connection;
 
@@ -71,7 +68,7 @@ g_getDoorBell = function getDoorBell(pointer, callback){
                 callback('Could not query database');
             }
             else if (doorbell == null) {
-                console.log('Could not find doorbell ' + doorBellID);
+                console.log('Could not find doorbell ');
                 callback('Could not query database');
             }
             console.log('found doorbell ' + pointer.doorBellID);
@@ -105,7 +102,9 @@ function doorbellListener() {
     //get the current unix time in seconds
     var startSeconds = time / 1000;
 
-    
+    var sb = azure.createServiceBusService(nconf.get("SmartDoor.Notifications.DoorbellServiceBus"));
+    var hub = azure.createNotificationHubService(nconf.get("SmartDoor.Notifications.HubName"),
+              nconf.get("SmartDoor.Notifications.HubConnString"));
     listenForMessages(c_Timeout);
 
 
@@ -148,14 +147,23 @@ function doorbellListener() {
                                                     image1alt: imageUrl
                             }, function (error) {
                                 if (!error) {
-                                    console.log("Sent push:", error);
+                                    console.log("Sent push!");
                                     return;
                                 }
                                 
                                 console.error(error);
                             });
                        //update tiles
-                       hub.wns.send
+                       hub.wns.sendTileSquare150x150PeekImageAndText03(doorBellObj.doorBellID, {
+                                text1: msg + 'just rang!',
+                                image11: imageUrl
+                            },
+                            function(error){
+                                if(!error){
+                                    console.log("Sent tile update!");
+                                }
+                            }
+                       );
                     }
 
                     //TODO: This is getting sort of messy
