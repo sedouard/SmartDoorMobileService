@@ -137,6 +137,9 @@ function doorbellListener() {
 
                             //The first argument is the tag that I want to send a notification to
                         console.log('Sending push...');
+                        
+                        //(note) this works the same for windows phone and windows! :-)
+                        //toast notification
                             hub.wns.sendToastImageAndText02(doorBellObj.doorBellID, {
                                                     text1: msg,
                                                     text2: 'just rang!',
@@ -150,6 +153,8 @@ function doorbellListener() {
                                 
                                 console.error(error);
                             });
+                       //update tiles
+                       
                     }
 
                     //TODO: This is getting sort of messy
