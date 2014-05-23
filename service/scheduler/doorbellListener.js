@@ -116,9 +116,10 @@ function doorbellListener() {
                             });
                        //update tiles
                        console.log('Sending Tile update');
-                       hub.wns.sendTileSquare150x150PeekImageAndText03(doorBellObj.doorBellID, {
-                                text1: msg + ' just rang!',
-                                image1: imageUrl
+                       hub.wns.sendTileSquarePeekImageAndText01(doorBellObj.doorBellID, {
+                                text1: 'Ring!',
+                                text2: msg,
+                                image1src: imageUrl
                             },
                             function(error){
                                 if(!error){
