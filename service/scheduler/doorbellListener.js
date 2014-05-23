@@ -119,6 +119,7 @@ function doorbellListener() {
                        hub.wns.sendTileSquarePeekImageAndText01(doorBellObj.doorBellID, {
                                 text1: 'Ring!',
                                 text2: msg,
+                                text3: 'Just rang!',
                                 image1src: imageUrl
                             },
                             function(error){
