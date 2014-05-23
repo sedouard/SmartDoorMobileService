@@ -1,11 +1,12 @@
-exports.post = function(request, response) {
-    // Use "request.service" to access features of your mobile service, e.g.:
-    //   var tables = request.service.tables;
-    //   var push = request.service.push;
+var unirest = require('unirest');
 
-    response.send(statusCodes.OK, { message : 'Hello World!' });
-};
 
 exports.get = function(request, response) {
+    if(!request.query.access_token){
+        return response.send(400, {message: "must provide access_token uri parameter" } );
+    }
+    
+    var req = unirest.get("https://graph.facebook.com/oauth/access_token?=" + request.)
+    response.send(statusCodes.OK, { message : 'Hello World!' });
     response.send(statusCodes.OK, { message : 'Hello World!' });
 };
