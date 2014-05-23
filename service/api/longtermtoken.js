@@ -1,6 +1,6 @@
 var unirest = require('unirest');
-
-
+var nconf = require('nconf');
+nconf.argv().env();
 exports.get = function(request, response) {
     if(!request.query.access_token){
         return response.send(400, {message: "must provide access_token uri parameter" } );
