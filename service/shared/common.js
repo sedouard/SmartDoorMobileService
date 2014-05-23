@@ -10,7 +10,7 @@ var DoorBell = mongooseSchemas.DoorBell;
 nconf.argv().env();
 
 
-export.getNameforUserid = function(doorBellID, userid, callback){
+exports.getNameforUserid = function(doorBellID, userid, callback){
     var db = mongoose.connection;
 
     var procedure = function(){
