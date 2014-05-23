@@ -115,6 +115,7 @@ function doorbellListener() {
                                 console.error(error);
                             });
                        //update tiles
+                       console.log('Sending Tile update');
                        hub.wns.sendTileSquare150x150PeekImageAndText03(doorBellObj.doorBellID, {
                                 text1: msg + ' just rang!',
                                 image11: imageUrl
@@ -122,7 +123,10 @@ function doorbellListener() {
                             function(error){
                                 if(!error){
                                     console.log("Sent tile update!");
+                                    return;
                                 }
+                                
+                                console.log(error);
                             }
                        );
                     }
